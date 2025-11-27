@@ -25,4 +25,11 @@ class Product extends Model
     {
         return $this->hasMany(Rating::class);
     }
+
+    public function getAverageRatingAttribute()
+    {
+        $rating = Rating::where('product_id',$this->id)
+                        ->avg('rate');
+        return $rating;
+    }
 }

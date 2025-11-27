@@ -8,7 +8,7 @@ export const useProductsFetch = () => {
         Product[], //from api response
         unknown, //error
         { //return values 
-            list:Product[],
+            products:Product[],
             map: Record<string,ProductDetail>
         }>
         ({
@@ -22,7 +22,7 @@ export const useProductsFetch = () => {
             });
             
             return {
-                list: products,
+                products,
                 map,
             };
         }

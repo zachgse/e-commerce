@@ -11,11 +11,11 @@ class ProductRepository implements ProductInterface
 {
     public function all() : Collection
     {
-        $products = Cache::remember('products',60, function() {
+        // $products = Cache::remember('products',60, function() {
             return Product::all();
-        });
+        // });
 
-        return $products;
+        // return $products;
     }
 
     public function search(string $keyword=null,string $mode=null,string $sortBy=null)

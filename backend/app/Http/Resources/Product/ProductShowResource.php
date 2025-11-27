@@ -22,7 +22,8 @@ class ProductShowResource extends JsonResource
             'stock' => $this->stock,
             'thumbnail_image' => $this?->thumbnail_image?->file_path,
             'collection_images' => $this?->collection_images,
-            'reviews' => $this?->reviews
+            'reviews' => $this?->reviews,
+            'average_rating' => (float)($this?->average_rating)
         ];
     }
 }

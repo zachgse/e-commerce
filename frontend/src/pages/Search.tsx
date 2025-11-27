@@ -1,11 +1,8 @@
 import { useState } from 'react'  
-import { useSearchParams,Link } from 'react-router'
+import { useSearchParams } from 'react-router'
 import { useFetchFullSearchProducts } from '../features/products/productQueries'
-import type { Product } from '../features/products/productType'
-import ProductListSkeleton from '../components/products/list/ProductListSkeleton'
-import Box from '../components/reusable/Box'
-import { money_format } from '../helpers/helper'
 import { FaRegLightbulb } from "react-icons/fa"
+import ProductListData from '../components/products/list/ProductListData'
 
 type SortBy = "asc" | "desc" | "";
 
@@ -32,10 +29,12 @@ const Search = () => {
     const [selectedFilter,setSelectedFilter] = useState<{ [key: string]: string }>({});
     
     if (isLoading) {
-        <div className="flex flex-col gap-4">
-            {/* <Box class='' */}
-            <ProductListSkeleton/>
-        </div>
+        return <div>loading...</div>
+        // <div className="flex flex-col gap-4">
+        //     Loading...
+        //     {/* <Box class='' */}
+        //     <ProductListSkeleton/>
+        // </div>
         
     }
 
@@ -98,21 +97,7 @@ const Search = () => {
                 <FaStar className='w-4 h-4 text-yellow-500'/>
             </div> */}
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
-            {searchedProducts && searchedProducts.length > 0 ?
-                searchedProducts.map((product:Product,index:number) => (
-                <Link to={`/product/${product.slug}`} key={index}
-                    className="border border-gray-300 flex flex-col gap-1 p-4">
-                    {product.thumbnail_image ? 
-                    <img src={`${product.thumbnail_image}`}/> //refactor soon resize later
-                        : <Box class="w-full aspect-square"/>}
-                    <p className="font-bold">{product.name}</p>
-                    <p className="text-xs text-gray-500 font-semibold">{money_format(product.price)}</p>
-                </Link>
-                ))
-                : <div className="text-xs text-center text-gray-500 font-semibold col-span-12">No products found.</div>
-            }
-        </div>
+        <ProductListData products={searchedProducts}/>
     </div>
     )
 }
