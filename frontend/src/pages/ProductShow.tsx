@@ -1,7 +1,7 @@
 import { useParams } from "react-router"
 import { useSingleProductFetch } from "../features/products/productQueries"
 import ProductSingleSkeleton from "../components/products/single/ProductSingleSkeleton"
-import ProductDetail from "../components/products/single/ProductDetail"
+import ProductInfo from "../components/products/single/ProductInfo"
 import ProductReview from "../components/products/single/ProductReview"
 
 const ProductShow = () => {
@@ -32,7 +32,7 @@ const ProductShow = () => {
     
     return (
         <div className="flex flex-col gap-8">
-            <ProductDetail product={product}/>
+            <ProductInfo product={product}/>
             <ProductReview reviews={reviews}/>
         </div>
     )

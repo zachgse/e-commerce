@@ -28,8 +28,19 @@ class Product extends Model
 
     public function getAverageRatingAttribute()
     {
-        $rating = Rating::where('product_id',$this->id)
-                        ->avg('rate');
-        return $rating;
+        return Rating::where('product_id',$this->id)->avg('rate');
+    }
+
+    public function getReviewsInfoAttribute(){
+        return Rating::with(['user:id,name'])
+                    ->where('product_id', $this->id)
+                    ->get(['rate', 'ordered_quantity', 'description', 'created_at', 'user_id'])
+                    ->map(fn ($rating) => [
+                        "name" => $rating->user->name,
+                        "rate" => $rating->rate,
+                        "quantity" => $rating->ordered_quantity,
+                        "description" => $rating->description,
+                        "date" => $rating->created_at->format("M d, Y")
+                    ]);
     }
 }

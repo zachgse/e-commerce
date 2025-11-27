@@ -19,7 +19,8 @@ class ProductListResource extends JsonResource
             'slug' => $this->slug,
             'price' => (float)($this->price),
             'thumbnail_image' => $this?->thumbnail_image?->file_path,
-            'average_rating' => (float)($this?->average_rating) 
+            'total_number_reviews' => $this->reviews->count(),
+            'average_reviews' => (float)($this?->average_rating)
         ];
     }
 }

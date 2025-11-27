@@ -6,8 +6,8 @@ import type { ProductDetail } from '../../../features/products/productType'
 import type { CartItem } from '../../../features/cart/cartType'
 import { money_format } from '../../../helpers/helper'
 import Box from '../../reusable/Box'
-// import { FaStar } from "react-icons/fa";
-// import { FaRegStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa"
+import { FaRegStar } from "react-icons/fa"
 
 type ProductProps = {
     product: ProductDetail;
@@ -18,7 +18,7 @@ type AddToCartType = {
     product: ProductDetail;
 }
 
-const ProductDetail = ({product}:ProductProps) => {
+const ProductInfo = ({product}:ProductProps) => {
     const dispatch = useAppDispatch();
     const auth = useAppSelector((state) => state.auth.auth);
 
@@ -82,6 +82,17 @@ const ProductDetail = ({product}:ProductProps) => {
                 </div>
                 <div className="md:col-span-2 col-span-3 flex flex-col gap-2">
                     <p className="text-2xl font-bold">{product.name}</p>
+                    <div className="flex items-center gap-1">
+                        {Array.from({ length:5 }).map((_,index) => (
+                            <div key={index}>
+                                {index+1 <= product.average_reviews 
+                                ? <FaStar className="text-yellow-500 w-5 h-5"/>
+                                : <FaRegStar className="text-yellow-500 w-5 h-5"/>
+                                }
+                            </div> 
+                        ))}
+                        <p className="font-semibold">{product.average_reviews} / 5 ({product.total_number_reviews})</p>
+                    </div>
                     <p className="text-gray-500">{money_format(product.price)}</p>
                     <p className="text-xs text-gray-500">In stock: {product.stock}</p>
                     <div className="flex items-center gap-1">
@@ -117,4 +128,4 @@ const ProductDetail = ({product}:ProductProps) => {
     )
 }
 
-export default ProductDetail
+export default ProductInfo

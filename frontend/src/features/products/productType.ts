@@ -5,7 +5,8 @@ export type Product = { //used for list of all products
     slug: string
     price: number
     thumbnail_image?: string
-    average_rating: number
+    total_number_reviews: number
+    average_reviews: number
 }
 
 export type ProductDetail = Product & { //used for single products
@@ -18,7 +19,7 @@ export type ProductDetail = Product & { //used for single products
     collection_images?: {
         file_path: string
     }[]
-    reviews?: Review[]
+    reviews: Review[]
 }
 
 export type ProductKeywordSearch = {
