@@ -1,5 +1,5 @@
 import React from 'react'
-import type { ColumnDef,SortingState,ColumnFiltersState, PaginationState,OnChangeFn } from '@tanstack/react-table'
+import type { ColumnDef,SortingState,ColumnFiltersState, PaginationState,OnChangeFn, GlobalFilterTableState } from '@tanstack/react-table'
 import {
   flexRender,
   getCoreRowModel,
@@ -30,9 +30,17 @@ import {
 import { FaDeleteLeft } from "react-icons/fa6"
 
 interface DataTableProps<TData, TValue> {
+    isFetching: boolean
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     totalItems: number
+    keyword: string
+    globalFilter: string; // ← simple string
+    onGlobalFilterChange: React.Dispatch<React.SetStateAction<string>>
+    sorting: SortingState
+    onSortingChange: OnChangeFn<SortingState>
+    columnFilters: ColumnFiltersState 
+    onColumnFiltersChange: OnChangeFn<ColumnFiltersState>
     pagination: PaginationState
     onPaginationChange: OnChangeFn<PaginationState>
     filters?:{
@@ -41,25 +49,36 @@ interface DataTableProps<TData, TValue> {
     }[]
 }
 
-const DataTable = <TData,TValue>({columns,data,totalItems,pagination,onPaginationChange,filters}:DataTableProps<TData,TValue>) => {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-    const [globalFilter,setGlobalFilter] = React.useState<string>("")
+const DataTable = <TData,TValue>({
+    isFetching,
+    columns,data,totalItems,keyword,
+    globalFilter,onGlobalFilterChange,
+    sorting,onSortingChange,
+    columnFilters,onColumnFiltersChange,
+    pagination,onPaginationChange,
+    filters}
+    :DataTableProps<TData,TValue>) => {
+
+    // const [sorting, setSorting] = React.useState<SortingState>([]) //sort arrow key
+    // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>( //sort dropdown
+    //     []
+    // )
+    // const [globalFilter,setGlobalFilter] = React.useState<string>("") //keyword search bar
 
     const table = useReactTable({
         data,
         columns,
         manualPagination:true,
+        manualSorting: true,
+        manualFiltering: true,
         pageCount: Math.ceil(totalItems / pagination.pageSize),
-        onColumnFiltersChange: setColumnFilters,
-        onGlobalFilterChange: setGlobalFilter,
-        onSortingChange: setSorting,
+        onGlobalFilterChange,
+        onSortingChange,
+        onColumnFiltersChange,
         onPaginationChange,
         getCoreRowModel:getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
+        // getSortedRowModel: getSortedRowModel(),
+        // getFilteredRowModel: getFilteredRowModel(),
         state: {
             sorting,
             globalFilter,
@@ -69,18 +88,19 @@ const DataTable = <TData,TValue>({columns,data,totalItems,pagination,onPaginatio
     })
 
     const clearFilter = () => {
-        setSorting([]);
-        setColumnFilters([]);
-        setGlobalFilter("");
+        onGlobalFilterChange("");
+        onColumnFiltersChange([]);
+        onSortingChange([]);
     }
+
+    if (isFetching) return <div>Fetching..</div>
 
     return (
         <>
             <div className="flex items-center gap-2 py-4">
-                <Input
-                    placeholder="Email"
-                    value={globalFilter}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
+                <Input placeholder="Email"
+                    value={keyword}
+                    onChange={(e) => onGlobalFilterChange(e.target.value)}
                     className="max-w-sm"
                 />
                 {filters?.map((filter,index) => (
@@ -113,13 +133,14 @@ const DataTable = <TData,TValue>({columns,data,totalItems,pagination,onPaginatio
                 </div>
             </div>
             <div className="overflow-hidden rounded-md border">
-                <Table>
+                <Table className='text-center'>
                     <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                            <TableHead key={header.id}>
+                            <TableHead className='text-center' 
+                                key={header.id}>
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(

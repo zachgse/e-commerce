@@ -8,7 +8,7 @@ use App\Models\Product;
 interface ProductInterface 
 {
     public function all() : Collection;
-    public function allAdmin();
+    public function allAdmin(array $params);
     public function search(string $keyword=null,string $mode=null,string $price=null);
     public function create(array $data) : Product;
     public function find(int $productId) : ?Product;

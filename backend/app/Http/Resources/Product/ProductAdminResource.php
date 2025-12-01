@@ -19,7 +19,7 @@ class ProductAdminResource extends JsonResource
             'slug' => $this->slug,
             'price' => (float)($this->price),
             'stock' => $this->stock,
-            'total_products_sold' => $this->total_sold,
+            'total_sold' => $this->total_sold,
             'status' => $this->status
         ];
     }

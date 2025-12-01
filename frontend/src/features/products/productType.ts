@@ -1,3 +1,4 @@
+import type { SortingState,ColumnFiltersState } from "@tanstack/react-table"
 import type { Review } from "../reviews/reviewType"
 
 export type Product = { //used for list of all products
@@ -31,25 +32,27 @@ export type ProductFullSearch = {
     sortBy: "asc" | "desc" | ""
 }
 
-// export type ProductAdmin = {
-//     name: string
-//     slug: string
-//     price: number
-//     stock: number
-//     total_products_sold: number
-//     status: string
-// }
-
 export type ProductAdmin = {
     data: {
         name: string
         slug: string
         price: number
         stock: number
-        total_products_sold: number
+        total_sold: number
         status: string
     }[],
     meta: {
         total: number
     }
+}
+
+export type ProductAdminSearch = {
+    page: number
+    keyword: string | ""
+    sortBy?: string
+    sortOrder?: boolean
+    filterBy?: string
+    filterValue?: string | unknown
+    // sortByPrice: "asc" | "desc" | null
+    // status: "active" | "inactive" | null
 }

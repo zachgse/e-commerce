@@ -20,9 +20,9 @@ class ProductService
         return $this->productRepository->all();
     }
 
-    public function getProductsAdmin()
+    public function getProductsAdmin(array $params)
     {
-        return $this->productRepository->allAdmin();
+        return $this->productRepository->allAdmin($params);
     }
 
     public function searchProducts(string $keyword = null,string $mode = null,string $sortBy = null) 

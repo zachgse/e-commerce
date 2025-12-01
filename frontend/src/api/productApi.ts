@@ -1,5 +1,5 @@
 import { axiosClient,apiAuth } from "./axiosClient"
-import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin } from "../features/products/productType"
+import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch } from "../features/products/productType"
 
 export const fetchAllProducts = async () => {
     const response = await axiosClient.get('/products');
@@ -23,7 +23,17 @@ export const fetchFullSearchProducts = async({keyword,sortBy}:ProductFullSearch)
     return response.data.data;
 }
 
-export const fetchAdminProducts = async(page:number):Promise<ProductAdmin[]> => {
-    const response = await apiAuth(`/admin/products?page=${page}`);
-    return response.data;
+export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,filterValue}:ProductAdminSearch):Promise<ProductAdmin[]> => {
+  // console.log("in api: ", sortOrder);
+  const response = await apiAuth.get("/admin/products", {
+    params: {
+      page,
+      keyword,
+      sortBy,
+      sortOrder,
+      filterBy,
+      filterValue
+    },
+  });
+  return response.data;
 }

@@ -18,9 +18,24 @@ class ProductRepository implements ProductInterface
         // return $products;
     }
 
-    public function allAdmin() 
+    public function allAdmin(array $params) 
     {
-        return Product::paginate(1);
+        $query = Product::query();
+
+        if (isset($params['keyword'])){
+            $query->where('name','LIKE',"%".$params['keyword']."%")
+                ->where('slug','LIKE',"%".$params['keyword']."%");
+        }
+
+        if (isset($params['sortBy']) && isset($params['sortOrder'])) {
+            $query->orderBy($params['sortBy'],$params['sortOrder'] == "false" ? 'asc' : 'desc');
+        }
+
+        if (isset($params['filterBy']) && isset($params['filterValue'])){
+            $query->where($params['filterBy'],$params['filterValue']);
+        }
+        
+        return $query->paginate(config('app.items_per_page'));
     }
 
     public function search(string $keyword=null,string $mode=null,string $sortBy=null)

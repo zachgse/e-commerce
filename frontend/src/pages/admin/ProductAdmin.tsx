@@ -1,10 +1,9 @@
 import React from "react"
 import { useQueryClient } from "@tanstack/react-query"
-import { fetchAdminProducts } from "@/api/productApi"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { type ColumnFiltersState, type SortingState, type ColumnDef } from "@tanstack/react-table"
+import { ArrowUpDown, ArrowUp,ArrowDown, MoreHorizontal } from "lucide-react"
 import type { ProductAdmin } from "@/features/products/productType"
-import { useFetchAdminProducts } from "@/features/products/productQueries"
+import { queryFetchAdminProducts, useFetchAdminProducts } from "@/features/products/productQueries"
 import DataTable from "@/components/reusable/DataTable"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -17,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useDebounce } from "use-debounce"
+import { money_format } from "@/helpers/helper"
 
 
 // const data: Payment[] = [
@@ -214,13 +215,7 @@ const columnsNew: ColumnDef<ProductAdmin>[] = [
     accessorKey: "name",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown />
-        </Button>
+          "Name"
       )
     },
     cell: ({ row }) => <div>{row.getValue("name")}</div>,
@@ -230,13 +225,7 @@ const columnsNew: ColumnDef<ProductAdmin>[] = [
     accessorKey: "slug",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Slug
-          <ArrowUpDown />
-        </Button>
+        "Slug"
       )
     },
     cell: ({ row }) => <div>{row.getValue("slug")}</div>,
@@ -247,15 +236,18 @@ const columnsNew: ColumnDef<ProductAdmin>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="text-left"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Price
-          <ArrowUpDown />
+          {!column.getIsSorted() ? <ArrowUpDown /> : (
+            column.getIsSorted() === "asc" ? <ArrowUp/> : <ArrowDown/>
+          )}
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("price")}</div>,
+    cell: ({ row }) => <div>{money_format(row.getValue("price"))}</div>,
     enableGlobalFilter:false
   },
   {
@@ -263,11 +255,14 @@ const columnsNew: ColumnDef<ProductAdmin>[] = [
     header: ({ column }) => {
       return (
         <Button
+          className="text-left"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Stock
-          <ArrowUpDown />
+          {!column.getIsSorted() ? <ArrowUpDown /> : (
+            column.getIsSorted() === "asc" ? <ArrowUp/> : <ArrowDown/>
+          )}
         </Button>
       )
     },
@@ -275,67 +270,91 @@ const columnsNew: ColumnDef<ProductAdmin>[] = [
     enableGlobalFilter:false
   },
   {
-    accessorKey: "total_products_sold",
+    accessorKey: "total_sold",
     header: ({ column }) => {
       return (
         <Button
+          className="text-left"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Total sold
-          <ArrowUpDown />
+          Total Sold
+          {!column.getIsSorted() ? <ArrowUpDown /> : (
+            column.getIsSorted() === "asc" ? <ArrowUp/> : <ArrowDown/>
+          )}
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue("total_products_sold")}</div>,
+    cell: ({ row }) => <div>{row.getValue("total_sold")}</div>,
     enableGlobalFilter:false
   },
   {
     accessorKey: "status",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status
-          <ArrowUpDown />
-        </Button>
+        "Status"
       )
     },
-    cell: ({ row }) => <div>{row.getValue("status")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
     enableGlobalFilter:false
   }
 ]
 
 const ProductAdmin = () =>  {
   const queryClient = useQueryClient();
+  const [globalFilter,setGlobalFilter] = React.useState<string>(""); //global search
+  const [debouncedFilter] = useDebounce(globalFilter,500); //debounced search
+  const [sorting,setSorting] = React.useState<SortingState>([]); //sort per column
+  const [columnFilters,setColumnFilters] = React.useState<ColumnFiltersState>([]); //dropdown filters
   const [pagination,setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 1
   })
 
-  const { data,isLoading,isError } = useFetchAdminProducts(pagination.pageIndex+1)
+  const { data,isLoading,isError,isFetching } = useFetchAdminProducts({
+                                      "page":pagination.pageIndex+1,
+                                      "keyword":debouncedFilter,
+                                      "sortBy":sorting[0]?.id,
+                                      "sortOrder":sorting[0]?.desc,
+                                      "filterBy":columnFilters[0]?.id,
+                                      "filterValue":columnFilters[0]?.value
+                                    });
 
   React.useEffect(() => {
     const nextPage = pagination.pageIndex + 2;
-    // console.log("next page is: ", nextPage);
-    queryClient.prefetchQuery({
-      queryKey: ["admin/products",nextPage],
-      queryFn: () => fetchAdminProducts(nextPage)
-    });
-  },[pagination]);
+    queryClient.prefetchQuery(queryFetchAdminProducts({
+                                "page":nextPage,
+                                "keyword":debouncedFilter,
+                                "sortBy":sorting[0]?.id,
+                                "sortOrder":sorting[0]?.desc,
+                                "filterBy":columnFilters[0]?.id,
+                                "filterValue":columnFilters[0]?.value
+                              }));
+  },[pagination,debouncedFilter,sorting,columnFilters]);
+
+  React.useEffect(() => {
+    console.log("sorting filters: ", sorting);
+  }, [sorting])
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error!</div>
 
-  // console.log("products: ", data.list);
-  // console.log("total items: ", data.totalItems)
-
   return (
     <>
-        <DataTable columns={columnsNew} data={data.list} totalItems={data.totalItems}
-          pagination={pagination} onPaginationChange={setPagination}
+        <DataTable 
+          isFetching={isFetching}
+          columns={columnsNew} 
+          data={data.list} 
+          totalItems={data.totalItems}
+          keyword={globalFilter}
+          globalFilter={debouncedFilter} 
+          onGlobalFilterChange={setGlobalFilter}
+          pagination={pagination} 
+          onPaginationChange={setPagination}
+          sorting={sorting} 
+          onSortingChange={setSorting}
+          columnFilters={columnFilters} 
+          onColumnFiltersChange={setColumnFilters}
           filters={
             [
               {columnName:"status",values:["active","inactive"]}

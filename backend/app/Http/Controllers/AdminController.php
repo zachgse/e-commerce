@@ -17,10 +17,11 @@ class AdminController extends Controller
     {
     }
 
-    public function products()
+    public function products(Request $request)
     {
         try {
-            $data = ProductAdminResource::collection($this->productService->getProductsAdmin());
+            // dd($request->all());
+            $data = ProductAdminResource::collection($this->productService->getProductsAdmin($request->all()));
             return $this->paginatedResponse($data,200,"List of products");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
