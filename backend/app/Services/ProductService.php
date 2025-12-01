@@ -20,6 +20,11 @@ class ProductService
         return $this->productRepository->all();
     }
 
+    public function getProductsAdmin()
+    {
+        return $this->productRepository->allAdmin();
+    }
+
     public function searchProducts(string $keyword = null,string $mode = null,string $sortBy = null) 
     {
         return $this->productRepository->search($keyword,$mode,$sortBy);
@@ -54,7 +59,13 @@ class ProductService
     {
         $product = $this->getProductBySlug($slug);
         return $this->productRepository->updateStock($product,$quantity);
-    } 
+    }
+    
+    public function updateProductTotalSold(string $slug,int $quantity) : ?Product
+    {
+        $product = $this->getProductBySlug($slug);
+        return $this->productRepository->updateTotalSold($product,$quantity);    
+    }
 
     public function updateStatus(string $slug) : ?Product
     {

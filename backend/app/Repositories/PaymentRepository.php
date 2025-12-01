@@ -2,11 +2,17 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\PaymentInterface;
 use App\Models\Payment;
 
 class PaymentRepository implements PaymentInterface
 {
+    public function getAllPayments() : Collection
+    {
+        return Payment::all();
+    }
+
     public function create(int $orderId, string $paymentIntentId,string $clientKeyId,
                                 float $subTotal,float $shippingFee) : Payment 
     {

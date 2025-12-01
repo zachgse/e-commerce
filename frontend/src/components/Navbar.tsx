@@ -31,6 +31,7 @@ const Navbar = () => {
       {user
         ? (
             <div className="flex gap-4">
+              <Link to="/admin/products" className="cursor-pointer">Admin</Link>
               <Link to="/user/order" className="cursor-pointer">Orders</Link>
               <Link to="cart" className="relative inline-block">
                 <AiOutlineShoppingCart className="w-7 h-7 text-gray-800" />

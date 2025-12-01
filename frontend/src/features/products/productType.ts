@@ -30,3 +30,26 @@ export type ProductFullSearch = {
     keyword: string
     sortBy: "asc" | "desc" | ""
 }
+
+// export type ProductAdmin = {
+//     name: string
+//     slug: string
+//     price: number
+//     stock: number
+//     total_products_sold: number
+//     status: string
+// }
+
+export type ProductAdmin = {
+    data: {
+        name: string
+        slug: string
+        price: number
+        stock: number
+        total_products_sold: number
+        status: string
+    }[],
+    meta: {
+        total: number
+    }
+}

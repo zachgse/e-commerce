@@ -21,6 +21,11 @@ class PaymentService
     {
     }
 
+    public function getPayments()
+    {
+        return $this->paymentRepository->getAllPayments();
+    }
+
     public function createPaymentCheckout(array $data) 
     {
         $userInfo = $data['user_info'];
@@ -130,6 +135,7 @@ class PaymentService
         foreach(json_decode($order->details) as $orderItem) {
             $product = $this->productService->getProduct($orderItem->id);
             $this->productService->updateProductStock($product->slug,$orderItem->quantity);
+            $this->productService->updateProductTotalSold($product->slug,$orderItem->quantity);
         }
 
         \Log::info("I am here near payment notifiation event");

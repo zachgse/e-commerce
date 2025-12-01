@@ -1,5 +1,5 @@
-import { axiosClient } from "./axiosClient"
-import type { ProductDetail,ProductKeywordSearch,ProductFullSearch } from "../features/products/productType"
+import { axiosClient,apiAuth } from "./axiosClient"
+import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin } from "../features/products/productType"
 
 export const fetchAllProducts = async () => {
     const response = await axiosClient.get('/products');
@@ -21,4 +21,9 @@ export const fetchFullSearchProducts = async({keyword,sortBy}:ProductFullSearch)
     const response = await 
         axiosClient.get(`/products/search?keyword=${keyword}&mode=full&sortBy=${sortBy}`);
     return response.data.data;
+}
+
+export const fetchAdminProducts = async(page:number):Promise<ProductAdmin[]> => {
+    const response = await apiAuth(`/admin/products?page=${page}`);
+    return response.data;
 }

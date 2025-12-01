@@ -18,6 +18,11 @@ class ProductRepository implements ProductInterface
         // return $products;
     }
 
+    public function allAdmin() 
+    {
+        return Product::paginate(1);
+    }
+
     public function search(string $keyword=null,string $mode=null,string $sortBy=null)
     {
         if (!$keyword) return;
@@ -91,6 +96,13 @@ class ProductRepository implements ProductInterface
         if ($product->stock == 0){
             $product->status = "inactive";
         }
+        $product->save();
+        return $product;
+    }
+
+    public function updateTotalSold(Product $product,int $quantity) : ?Product
+    {
+        $product->total_sold += $quantity;
         $product->save();
         return $product;
     }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\OrderInterface;
 use App\Models\{Order,Payment,User};
 
@@ -9,6 +10,11 @@ use Str;
 
 class OrderRepository implements OrderInterface
 {
+    public function getAllOrders() : Collection
+    {
+        return Order::all();
+    }
+
     public function referenceNumber() : string
     {
         $referenceNumber = "";

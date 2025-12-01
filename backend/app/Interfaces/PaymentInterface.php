@@ -2,10 +2,13 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Payment;
 
 interface PaymentInterface
 {    
+    public function getAllPayments() : Collection;
+    
     public function create(int $orderId, string $paymentIntentId,string $clientKeyId,
                             float $subTotal,float $shippingFee) : Payment;
 

@@ -62,6 +62,12 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
             Route::post('/',['as'=>'create','uses'=>'RatingController@create']);
         });
     });
+
+    Route::group(['prefix'=>'admin','as'=>'admin.','namespace'=>'App\Http\Controllers'], function() {
+        Route::get('products',['as'=>'products','uses'=>'AdminController@products']);
+        Route::get('orders',['as'=>'orders','uses'=>'AdminController@orders']);
+        Route::get('payments',['as'=>'payments','uses'=>'AdminController@payments']);
+    });
 });
 
 Route::group(['prefix'=>'payment','as'=>'payment.','namespace'=>'App\Http\Controllers'], function () {

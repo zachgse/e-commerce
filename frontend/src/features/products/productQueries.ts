@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
-import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts } from "../../api/productApi";
+import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts } from "../../api/productApi";
 import type { Product,ProductDetail,ProductFullSearch } from "./productType";
 
 export const useProductsFetch = () => {
@@ -15,6 +15,7 @@ export const useProductsFetch = () => {
         queryKey: ["products"],
         queryFn: () => fetchAllProducts(),
         select: (products) => {
+            
             const map: Record<string, ProductDetail> = {}; 
 
             products.forEach((p:Product) => {
@@ -55,10 +56,18 @@ export const useFetchFullSearchProducts = ({keyword,sortBy}:ProductFullSearch) =
     });
 }
 
-// export const useSearchProductsFetch = ({keyword,mode,sortBy}:ProductFilter) => {
-//     return useQuery({
-//         queryKey: ["searchedProducts",keyword,mode], //add key mode 
-//         queryFn: () => fetchSearchProducts(keyword,mode,sortBy),
-//         enabled: false
-//     });
-// }
+export const useFetchAdminProducts = (page:number) => {
+    return useQuery({
+        queryKey: ["admin/products",page],
+        queryFn: () => fetchAdminProducts(page),
+        keepPreviousData: true,
+        select: (p) => {
+            const list = p.data
+            const totalItems = p.meta.total
+            return {
+                list,
+                totalItems
+            }
+        }
+    });
+}

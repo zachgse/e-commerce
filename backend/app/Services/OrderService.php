@@ -13,6 +13,11 @@ class OrderService
     {
     }
 
+    public function getOrders()
+    {
+        return $this->orderRepository->getAllOrders();
+    }
+
     public function createOrderReferenceNumber()
     {
         return $this->orderRepository->referenceNumber();

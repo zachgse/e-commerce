@@ -2,10 +2,13 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\{Order,User};
 
 interface OrderInterface 
 {
+    public function getAllOrders() : Collection;
+    
     public function referenceNumber() : string;
     
     public function create(int $userId,
