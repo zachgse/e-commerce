@@ -1,12 +1,9 @@
 import React from 'react'
-import type { ColumnDef,SortingState,ColumnFiltersState, PaginationState,OnChangeFn, GlobalFilterTableState } from '@tanstack/react-table'
+import type { ColumnDef,SortingState,ColumnFiltersState, PaginationState,OnChangeFn } from '@tanstack/react-table'
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel
 } from "@tanstack/react-table"
 import {
   Table,
@@ -35,7 +32,8 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
     totalItems: number
     keyword: string
-    globalFilter: string; // ← simple string
+    placeholder: string[]
+    globalFilter: string
     onGlobalFilterChange: React.Dispatch<React.SetStateAction<string>>
     sorting: SortingState
     onSortingChange: OnChangeFn<SortingState>
@@ -50,47 +48,38 @@ interface DataTableProps<TData, TValue> {
 }
 
 const DataTable = <TData,TValue>({
-    isFetching,
-    columns,data,totalItems,keyword,
-    globalFilter,onGlobalFilterChange,
-    sorting,onSortingChange,
-    columnFilters,onColumnFiltersChange,
-    pagination,onPaginationChange,
-    filters}
-    :DataTableProps<TData,TValue>) => {
-
-    // const [sorting, setSorting] = React.useState<SortingState>([]) //sort arrow key
-    // const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>( //sort dropdown
-    //     []
-    // )
-    // const [globalFilter,setGlobalFilter] = React.useState<string>("") //keyword search bar
-
+                                isFetching,columns,data,totalItems,
+                                keyword,placeholder,
+                                globalFilter,onGlobalFilterChange,
+                                sorting,onSortingChange,
+                                columnFilters,onColumnFiltersChange,
+                                pagination,onPaginationChange,
+                                filters}
+                                :DataTableProps<TData,TValue>) => {
     const table = useReactTable({
         data,
         columns,
-        manualPagination:true,
         manualSorting: true,
         manualFiltering: true,
+        manualPagination:true,
         pageCount: Math.ceil(totalItems / pagination.pageSize),
         onGlobalFilterChange,
         onSortingChange,
         onColumnFiltersChange,
         onPaginationChange,
         getCoreRowModel:getCoreRowModel(),
-        // getSortedRowModel: getSortedRowModel(),
-        // getFilteredRowModel: getFilteredRowModel(),
         state: {
-            sorting,
             globalFilter,
+            sorting,
             columnFilters,
-            pagination
+            pagination,
         },
     })
 
     const clearFilter = () => {
         onGlobalFilterChange("");
-        onColumnFiltersChange([]);
         onSortingChange([]);
+        onColumnFiltersChange([]);
     }
 
     if (isFetching) return <div>Fetching..</div>
@@ -98,7 +87,7 @@ const DataTable = <TData,TValue>({
     return (
         <>
             <div className="flex items-center gap-2 py-4">
-                <Input placeholder="Email"
+                <Input placeholder={placeholder.join(", ")}
                     value={keyword}
                     onChange={(e) => onGlobalFilterChange(e.target.value)}
                     className="max-w-sm"
@@ -133,6 +122,7 @@ const DataTable = <TData,TValue>({
                 </div>
             </div>
             <div className="overflow-hidden rounded-md border">
+                {/* add is fetching here */}
                 <Table className='text-center'>
                     <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (

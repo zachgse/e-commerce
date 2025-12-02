@@ -24,7 +24,6 @@ export const fetchFullSearchProducts = async({keyword,sortBy}:ProductFullSearch)
 }
 
 export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,filterValue}:ProductAdminSearch):Promise<ProductAdmin[]> => {
-  // console.log("in api: ", sortOrder);
   const response = await apiAuth.get("/admin/products", {
     params: {
       page,

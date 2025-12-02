@@ -1,4 +1,3 @@
-import type { SortingState,ColumnFiltersState } from "@tanstack/react-table"
 import type { Review } from "../reviews/reviewType"
 
 export type Product = { //used for list of all products
@@ -40,7 +39,7 @@ export type ProductAdmin = {
         stock: number
         total_sold: number
         status: string
-    }[],
+    },
     meta: {
         total: number
     }
@@ -53,6 +52,4 @@ export type ProductAdminSearch = {
     sortOrder?: boolean
     filterBy?: string
     filterValue?: string | unknown
-    // sortByPrice: "asc" | "desc" | null
-    // status: "active" | "inactive" | null
 }
