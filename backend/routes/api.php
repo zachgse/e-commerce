@@ -21,10 +21,12 @@ Route::group(['prefix'=>'products','as'=>'products.','namespace'=>'App\Http\Cont
     Route::get('/',['as'=>'index','uses'=>'ProductController@index']);
     
     Route::get('/search', ['as'=>'search','uses'=>'ProductController@search']);
+
+    //everything below is in admin
     Route::post('create',['as'=>'create','uses'=>'ProductController@store']);
 
     Route::get('{slug}',['as'=>'show','uses'=>'ProductController@show']);
-    Route::patch('{slug?}/update-info',['as'=>'update-info','uses'=>'ProductController@update_info']);
+    Route::put('{slug?}',['as'=>'update-info','uses'=>'ProductController@update_info']);
     Route::patch('{slug?}/update-stock',['as'=>'update-stock','uses'=>'ProductController@update_stock']);
     Route::patch('{slug?}/update-status',['as'=>'update-status','uses'=>'ProductController@update_status']);
     Route::post('{slug?}/upload-image',['as'=>'upload-image','uses'=>'ProductController@upload_image']);

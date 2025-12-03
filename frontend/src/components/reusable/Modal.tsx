@@ -4,7 +4,7 @@ import { IoIosCloseCircle } from "react-icons/io"
 type ModalProps = React.PropsWithChildren<{
     //props.children is automatic here with React.PropsWithChildren
     isOpen : boolean;
-    class ?: string;
+    class ?: string; //stay
     title ?: string; //remove
     message ?: string; //remove
     confirmTitle ?: string; //remove

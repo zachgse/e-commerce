@@ -59,11 +59,11 @@ class ProductRepository implements ProductInterface
         return $mode == "full" ? $query->paginate(config('app.items_per_page')) : $query->get();
     }
 
-    private function generateSlug(string $name) : string
+    private function generateSlug(string $name,int $id = 0) : string
     {
         $cleanedInput = strtolower($name);
         $slug = str_replace(" ","-",$cleanedInput);
-        $exist = Product::where('name',$name)->get();
+        $exist = Product::whereNot('id',$id)->where('name',$name)->get();
         if (count($exist) > 0){
             $count = $exist->count();
             $slug = $slug . "-" . $count++;
@@ -98,9 +98,11 @@ class ProductRepository implements ProductInterface
     {
         $test = $data['name'] ?? null;
         $product->name = $data['name'] ?? $product->name;
-        $product->slug =  isset($data['name']) ? $this->create_slug($data['name']) : $product->slug;
+        $product->slug =  isset($data['name']) ? $this->generateSlug($data['name'],$product->id) : $product->slug;
         $product->description = $data['description'] ?? $product->desription;
         $product->price = $data['price'] ?? $product->price;
+        $product->stock = $data['stock'] ?? $product->stock;
+        if (isset($data['stock']) && $data['stock'] == 0) $product->status = "inactive";
         $product->save();
         return $product;
     }

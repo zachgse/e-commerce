@@ -43,7 +43,7 @@ const RatingForm = (props:RatingFormProps) => {
             setIsVisible(true);
             const payload = {
                 referenceNumber: props.referenceNumber,
-                slug: props.product.slug ?? "",
+                slug: props.product.slug,
                 rating: value.rating,
                 description: value.description,
             }
@@ -106,7 +106,7 @@ const RatingForm = (props:RatingFormProps) => {
                                             {index < field.state.value ? (
                                                 <FaStar className="text-yellow-500 w-8 h-8 cursor-pointer" />
                                             ) : (
-                                                <FaRegStar className="w-8 h-8 cursor-pointer" />
+                                                <FaRegStar className="w-8 h-8 cursor-pointer" />    
                                             )}
                                         </button>
                                     ))}

@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
-import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts } from "../../api/productApi";
+import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo } from "../../api/productApi";
 import type { Product,ProductAdminSearch,ProductDetail,ProductFullSearch } from "./productType";
 
 export const useProductsFetch = () => {
@@ -74,3 +74,9 @@ export const queryFetchAdminProducts = (params:ProductAdminSearch) => ({
 export const useFetchAdminProducts = (params:ProductAdminSearch) => {
     return useQuery(queryFetchAdminProducts(params));
 }
+
+export const useUpdateAdminProductInfo = () => {
+  return useMutation({
+    mutationFn: updateAdminProductInfo
+  });
+};

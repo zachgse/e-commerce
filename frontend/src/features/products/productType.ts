@@ -1,6 +1,6 @@
 import type { Review } from "../reviews/reviewType"
 
-export type Product = { //used for list of all products
+export type Product = { 
     name: string
     slug: string
     price: number
@@ -9,7 +9,7 @@ export type Product = { //used for list of all products
     average_reviews: number
 }
 
-export type ProductDetail = Product & { //used for single products
+export type ProductDetail = Product & { 
     name: string
     slug: string
     price: number
@@ -19,7 +19,7 @@ export type ProductDetail = Product & { //used for single products
     collection_images?: {
         file_path: string
     }[]
-    reviews: Review[]
+    reviews?: Review[]
 }
 
 export type ProductKeywordSearch = {
@@ -52,4 +52,14 @@ export type ProductAdminSearch = {
     sortOrder?: boolean
     filterBy?: string
     filterValue?: string | unknown
+}
+
+export type ProductAdminUpdate = {
+    slug: string
+    payload: {
+        name: string
+        description: string
+        price: number
+        stock: number
+    }
 }
