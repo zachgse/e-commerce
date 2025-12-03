@@ -67,7 +67,7 @@ class ProductService
         return $this->productRepository->updateTotalSold($product,$quantity);    
     }
 
-    public function updateStatus(string $slug) : ?Product
+    public function updateProductStatus(string $slug) : ?Product
     {
         $product = $this->getProductBySlug($slug);
         return $this->productRepository->updateStatus($product);

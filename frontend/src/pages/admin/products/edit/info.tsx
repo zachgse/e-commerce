@@ -1,12 +1,14 @@
 import React from 'react'
+import { toast } from 'react-toastify'
 import { useForm } from '@tanstack/react-form'
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { useSingleProductFetch,useUpdateAdminProductInfo } from '@/features/products/productQueries'
 import { useQueryClient } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 import ModalLoading from '@/components/reusable/ModalLoading'
+import Button from '@/components/reusable/Button'
+import type { ProductAdminModalState } from '..'
 
-type ProductAdminModalProps = {
+type InfoProps = {
     slug: string
     searchParams: {
         page: number
@@ -16,7 +18,7 @@ type ProductAdminModalProps = {
         filterBy: any
         filterValue: any
     }
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setModalProperties: React.Dispatch<React.SetStateAction<ProductAdminModalState|undefined>>
     setProductToEdit: React.Dispatch<React.SetStateAction<string>>
 }
 
@@ -34,10 +36,10 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-const ProductAdminModal = (props:ProductAdminModalProps) => {
+const info = (props:InfoProps) => {
     const queryClient = useQueryClient();
     const { data:product,isLoading } = useSingleProductFetch(props.slug);
-    const { mutateAsync } = useUpdateAdminProductInfo();
+    const { mutateAsync } = useUpdateAdminProductInfo(props.slug);
     const [isUpdating,setIsUpdating] = React.useState<boolean>(false);
     const form = useForm({
         defaultValues: {
@@ -68,11 +70,8 @@ const ProductAdminModal = (props:ProductAdminModalProps) => {
                                 props.searchParams.filterValue
                             ],
                 });
-                await queryClient.invalidateQueries({
-                   queryKey: ["product",props.slug] 
-                });
                 setIsUpdating(false);
-                props.setIsModalOpen(false);
+                props.setModalProperties(undefined);
                 props.setProductToEdit("");
                 toast.success("Product has been updated!");
             } catch (error) {
@@ -196,24 +195,28 @@ const ProductAdminModal = (props:ProductAdminModalProps) => {
                 />
             </div>
 
-            <form.Subscribe selector={(state) => [state.canSubmit,state.isSubmitting]}
-                children={([canSubmit,isSubmitting]) => (
-                    <>
-                    {isSubmitting && (
-                        isUpdating && (<ModalLoading isOpen={true}/>)
-                    )}
-                    <button 
-                        type="submit" disabled={!canSubmit}
-                        className={`flex items-center justify-center bg-black text-white 
-                        rounded-full px-4 w-full py-4 mt-4 ` 
-                        + (!canSubmit ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:opacity-90")}>
-                        Update
-                    </button>
-                    </>
-                )}
-            />     
+            <div className="flex items-center justify-center gap-4">
+                <form.Subscribe selector={(state) => [state.canSubmit,state.isSubmitting]}
+                    children={([canSubmit,isSubmitting]) => (
+                        <>
+                            {isSubmitting && (
+                                isUpdating && (<ModalLoading isOpen={true}/>)
+                            )}
+                            <Button name="Update"
+                                    type="submit" disabled={!canSubmit}
+                                    class={`w-full py-2 ` 
+                                    + (!canSubmit ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:opacity-90")}/>
+                        </>
+                    )}/>    
+                <Button type="button" 
+                    name="Cancel" class='cursor-pointer bg-red-500 hover:opacity-90 w-full py-2' 
+                    onClick={() => {
+                        props.setModalProperties(undefined);
+                        props.setProductToEdit("");
+                    }}/>
+            </div> 
         </form>
     )
 }
 
-export default ProductAdminModal
+export default info

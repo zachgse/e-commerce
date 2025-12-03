@@ -39,6 +39,10 @@ export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,
 
 export const updateAdminProductInfo = async({slug,payload}:ProductAdminUpdate) => {
   const response = await apiAuth.put(`products/${slug}`,payload);
-  console.log("response:" , response);
+  return response.data.data;
+}
+
+export const updateAdminProductStatus = async(slug:string) => {
+  const response = await apiAuth.patch(`products/${slug}`);
   return response.data.data;
 }

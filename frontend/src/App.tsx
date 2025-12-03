@@ -21,7 +21,7 @@ import OrderList from './pages/user/order/OrderList'
 import OrderDetails from './pages/user/order/OrderDetails'
 
 //admins
-import ProductAdmin from './pages/admin/ProductAdmin'
+import ProductAdmin from './pages/admin/products'
 
 const Home = lazy(() => import("./pages/Home"))
 const ProductShow = lazy(() => import("./pages/ProductShow"))

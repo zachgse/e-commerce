@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
-import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo } from "../../api/productApi";
+import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo, updateAdminProductStatus } from "../../api/productApi";
 import type { Product,ProductAdminSearch,ProductDetail,ProductFullSearch } from "./productType";
 
 export const useProductsFetch = () => {
@@ -75,8 +75,22 @@ export const useFetchAdminProducts = (params:ProductAdminSearch) => {
     return useQuery(queryFetchAdminProducts(params));
 }
 
-export const useUpdateAdminProductInfo = () => {
-  return useMutation({
-    mutationFn: updateAdminProductInfo
-  });
+export const useUpdateAdminProductInfo = (slug:string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: updateAdminProductInfo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:["product",slug]})
+        }
+    });
 };
+
+export const useUpdateAdminProductStatus = (slug:string) => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: updateAdminProductStatus,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:["product",slug]})
+        }
+    })
+}
