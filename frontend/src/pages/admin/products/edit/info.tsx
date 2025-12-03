@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import ModalLoading from '@/components/reusable/ModalLoading'
 import Button from '@/components/reusable/Button'
 import type { ProductAdminModalState } from '..'
+import { IoMdClose } from 'react-icons/io'
 
 type InfoProps = {
     slug: string
@@ -20,6 +21,12 @@ type InfoProps = {
     }
     setModalProperties: React.Dispatch<React.SetStateAction<ProductAdminModalState|undefined>>
     setProductToEdit: React.Dispatch<React.SetStateAction<string>>
+}
+
+type PreviewType = {
+    key: number
+    fileKey: number
+    value: string | null
 }
 
 function FieldInfo({ field }: { field: AnyFieldApi }) {
@@ -40,9 +47,11 @@ const info = (props:InfoProps) => {
     const queryClient = useQueryClient();
     const { data:product,isLoading } = useSingleProductFetch(props.slug);
     const { mutateAsync } = useUpdateAdminProductInfo(props.slug);
+    const [previewItem,setPreviewItem] = React.useState<PreviewType[]>([{key:0,fileKey:0,value:null}])
     const [isUpdating,setIsUpdating] = React.useState<boolean>(false);
     const form = useForm({
         defaultValues: {
+            image: undefined as File | undefined,
             name: product?.name ?? "",
             description: product?.description ?? "",
             price: product?.price ?? 0,
@@ -91,6 +100,53 @@ const info = (props:InfoProps) => {
                 form.handleSubmit();
             }}
         >
+            <div className="space-y-2">
+                <form.Field name="image"
+                    validators={{
+                        onChange: ({ value }) => {
+                            if (!value) return "Image is required";
+                            if (value.size > 2 * 1024 * 1024) return "Max size is 2MB";
+                        }
+                    }}
+                    children={(field) => (
+                        <div className='flex flex-col gap-2'>
+                            {previewItem[previewItem.length-1].value ? (
+                                <div className="relative w-40 mx-auto">
+                                    <IoMdClose
+                                        onClick={() => {
+                                            setPreviewItem(prev=>[...prev,{
+                                                key: previewItem.length,
+                                                fileKey: previewItem.length,
+                                                value: null
+                                            }]) }}
+                                        className="w-8 h-8 absolute top-[-12px] right-[-12px] cursor-pointer z-10 text-red-500"/>
+                                    <img src={previewItem[previewItem.length-1].value ?? ""} alt="Preview"
+                                        className="w-40 h-40 object-cover rounded-lg"/>
+                                </div>
+                                ) : (
+                                product?.thumbnail_image ? (
+                                    <img src={product.thumbnail_image} alt={product.slug} className="w-32 h-32 object-cover rounded-lg mx-auto"/>
+                                )   : <p className='text-center'>No product image yet.</p>
+                            )}
+                            <input type="file" accept="image/*" 
+                                key={previewItem[previewItem.length-1].fileKey}
+                                className="w-full border border-gray-200 rounded-lg p-2 cursor-pointer"
+                                id={field.name} 
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    field.handleChange(file);
+                                    setPreviewItem(prev=>[...prev,{
+                                        key: previewItem.length,
+                                        fileKey: file ? previewItem[previewItem.length-1].fileKey : previewItem.length,
+                                        value: file ? URL.createObjectURL(file) : null
+                                    }]);
+                                }}/>
+                            <FieldInfo field={field}/>
+                        </div>
+                    )}
+                />
+            </div>
+
             <div className="space-y-2">
                 <form.Field name="name"
                     validators={{

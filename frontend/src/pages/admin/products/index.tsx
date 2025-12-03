@@ -166,21 +166,23 @@ const index = () =>  {
             <DropdownMenuContent align="end" className="text-center">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => {
-                                          setModalProperties({type:"info"});
-                                          setProductToEdit(row.original.slug);
-                                        }}>
-                <p className="mx-auto cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer"
+                                onClick={() => {
+                                  setModalProperties({type:"info"});
+                                  setProductToEdit(row.original.slug);
+                                }}>
+                <p className="mx-auto">
                   Edit
                 </p>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {
-                                          setModalProperties({
-                                              type:"status",
-                                              "message" : row.original.status});
-                                          setProductToEdit(row.original.slug);
-                                        }}>
-                <p className="mx-auto cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer"
+                                onClick={() => {
+                                  setModalProperties({
+                                      type:"status",
+                                      "message" : row.original.status});
+                                  setProductToEdit(row.original.slug);
+                                }}>
+                <p className="mx-auto">
                   {row.original.status == "active" ? "Deactivate" : "Activate"}
                 </p>
               </DropdownMenuItem>
@@ -197,7 +199,7 @@ const index = () =>  {
   return (
     <>
       {productToEdit && modalProperties && (
-        <Modal class="md:w-2/5 w-4/5"
+        <Modal class="md:w-2/5 w-4/5 max-h-11/12"
           isOpen={true}  
           onCancel={() => {
             setModalProperties(undefined);
