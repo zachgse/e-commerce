@@ -38,7 +38,16 @@ export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,
 }
 
 export const updateAdminProductInfo = async({slug,payload}:ProductAdminUpdate) => {
-  const response = await apiAuth.put(`products/${slug}`,payload);
+  const formData = new FormData();
+  formData.append("name",payload.name);
+  formData.append("description",payload.description);
+  formData.append("price",payload.price.toString());
+  formData.append("stock",payload.stock.toString());
+  if (payload.image) {
+    const file = payload.image instanceof FileList ? payload.image[0] : payload.image;
+    formData.append("image", file);
+  }
+  const response = await apiAuth.post(`products/${slug}`,formData);
   return response.data.data;
 }
 

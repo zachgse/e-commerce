@@ -57,6 +57,7 @@ export type ProductAdminSearch = {
 export type ProductAdminUpdate = {
     slug: string
     payload: {
+        image: File | undefined
         name: string
         description: string
         price: number

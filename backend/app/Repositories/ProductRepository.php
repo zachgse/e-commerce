@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\UploadedFile;
 use App\Interfaces\ProductInterface;
 use App\Models\{Product,ProductImage};
 use Cache;
@@ -63,9 +64,9 @@ class ProductRepository implements ProductInterface
     {
         $cleanedInput = strtolower($name);
         $slug = str_replace(" ","-",$cleanedInput);
-        $exist = Product::whereNot('id',$id)->where('name',$name)->get();
-        if (count($exist) > 0){
-            $count = $exist->count();
+        $fileExist = Product::whereNot('id',$id)->where('name',$name)->get();
+        if (count($fileExist) > 0){
+            $count = $fileExist->count();
             $slug = $slug . "-" . $count++;
         }
         return $slug;
@@ -131,13 +132,18 @@ class ProductRepository implements ProductInterface
         return $product;
     }
 
-    public function upload(Product $product, array $data) : ProductImage
+    public function uploadImage(int $id, array $data) : ProductImage
     {
+        $fileExist = ProductImage::where('product_id',$id)->first();
+        if ($fileExist) {
+            $fileExist->deleted_at = now();
+            $fileExist->save();
+        }
         $product_image = new ProductImage();
-        $product_image->product_id = $product->id;
+        $product_image->product_id = $id;
         $product_image->file_path = $data['url'];
         $product_image->original_name = $data['original_name'];
-        $product_image->type = $data['type'];
+        $product_image->type = "thumbnail"; //remove type
         $product_image->save();
         return $product_image;
     }

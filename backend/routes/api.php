@@ -26,7 +26,7 @@ Route::group(['prefix'=>'products','as'=>'products.','namespace'=>'App\Http\Cont
     Route::post('create',['as'=>'create','uses'=>'ProductController@store']);
 
     Route::get('{slug}',['as'=>'show','uses'=>'ProductController@show']);
-    Route::put('{slug?}',['as'=>'update-info','uses'=>'ProductController@update_info']);
+    Route::post('{slug?}',['as'=>'update-info','uses'=>'ProductController@update_info']);
     // Route::patch('{slug?}/update-stock',['as'=>'update-stock','uses'=>'ProductController@update_stock']);
     Route::patch('{slug?}',['as'=>'update-status','uses'=>'ProductController@update_status']);
     Route::post('{slug?}/upload-image',['as'=>'upload-image','uses'=>'ProductController@upload_image']);

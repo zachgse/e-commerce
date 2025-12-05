@@ -63,6 +63,7 @@ const info = (props:InfoProps) => {
                 await mutateAsync({
                     slug: product?.slug ?? "",
                     payload: {
+                        image: value.image,
                         name: value.name,
                         description: value.description,
                         price: value.price,
@@ -94,6 +95,7 @@ const info = (props:InfoProps) => {
 
     return (
         <form className="space-y-4"
+            encType=''
             onSubmit={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -104,8 +106,7 @@ const info = (props:InfoProps) => {
                 <form.Field name="image"
                     validators={{
                         onChange: ({ value }) => {
-                            if (!value) return "Image is required";
-                            if (value.size > 2 * 1024 * 1024) return "Max size is 2MB";
+                            if (value && value.size > 2 * 1024 * 1024) return "Max size is 2MB";
                         }
                     }}
                     children={(field) => (
@@ -119,7 +120,7 @@ const info = (props:InfoProps) => {
                                                 fileKey: previewItem.length,
                                                 value: null
                                             }]) }}
-                                        className="w-8 h-8 absolute top-[-12px] right-[-12px] cursor-pointer z-10 text-red-500"/>
+                                        className="w-8 h-8 absolute top-[-13px] right-[-13px] cursor-pointer z-10 text-red-500"/>
                                     <img src={previewItem[previewItem.length-1].value ?? ""} alt="Preview"
                                         className="w-40 h-40 object-cover rounded-lg"/>
                                 </div>

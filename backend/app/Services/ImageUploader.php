@@ -9,7 +9,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class ImageUploader
 {
-    public function upload(UploadedFile $file, string $directory = "uploads/",string $type) : array
+    public function upload(UploadedFile $file, string $directory = "uploads/") : array
     {
         $disk = env('FILESYSTEM_DISK', 'public'); // Default to 'public' if not set
         $image = $this->resize($file);
@@ -28,7 +28,6 @@ class ImageUploader
         $url = Storage::disk($disk)->url($path);
 
         return [
-            'type' => $type,
             'path' => $path,
             'url' => $url,
             'original_name' => $file->getClientOriginalName(),

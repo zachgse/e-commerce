@@ -49,10 +49,14 @@ class ProductService
         return $product;
     }
 
-    public function updateProductInfo(string $slug,array $data) : ?Product
+    public function updateProductInfo(string $slug,array $data) 
     {
         $product = $this->getProductBySlug($slug);
-        return $this->productRepository->updateInfo($product,$data);
+        $product = $this->productRepository->updateInfo($product,$data);
+        if (isset($data['image'])) {
+            $this->uploadProductImage($product,$data['image']);
+        }
+        return; 
     }
 
     public function updateProductStock(string $slug,int $quantity) : ?Product
@@ -73,20 +77,10 @@ class ProductService
         return $this->productRepository->updateStatus($product);
     }
 
-    public function uploadProductImage(string $slug,array $files)
+    public function uploadProductImage(Product $product,UploadedFile $file)
     {
-        $product = $this->getProductBySlug($slug);
-        try {
-            $type = $files['type'];
-            $uploaded_images = [];
-            foreach($files['image'] as $file) {
-                $image = $this->imageUploader->upload($file,"uploads/products/${slug}/",$type); 
-                $this->productRepository->upload($product,$image);
-                $uploaded_images[] = $image;
-            }
-            return $uploaded_images;
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
+        $slug = $product->slug;
+        $image = $this->imageUploader->upload($file,"uploads/product/${slug}/");
+        $this->productRepository->uploadImage($product->id,$image);
     }
 }

@@ -14,9 +14,11 @@ class ProductInfoRequest extends RequestManager
     public function rules(): array
     {
         return [
-            'name' => 'nullable',
-            'description' => 'nullable',
-            'price' => 'nullable'
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 

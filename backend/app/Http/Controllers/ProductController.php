@@ -74,8 +74,8 @@ class ProductController extends Controller
     public function update_info(ProductInfoRequest $request, string $slug) : JsonResponse
     {
         try {
-            $product = $this->productService->updateProductInfo($slug,$request->validated());
-            return $this->successResponse($product,200,'Product has been updated');
+            $this->productService->updateProductInfo($slug,$request->validated());
+            return $this->successResponse([],200,'Product has been updated');
         } catch (NotFoundException $e) {
             return $this->errorResponse($e->getCode(),$e->getMessage());
         } catch (\Exception $e) {

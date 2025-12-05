@@ -17,5 +17,5 @@ interface ProductInterface
     public function updateStock(Product $product,int $quantity) : ?Product;
     public function updateTotalSold(Product $product,int $quantity) : ?Product;
     public function updateStatus(Product $product) : ?Product;
-    public function upload(Product $product, array $data); 
+    public function uploadImage(int $id, array $data); 
 }
