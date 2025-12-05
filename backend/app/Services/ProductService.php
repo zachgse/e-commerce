@@ -32,12 +32,12 @@ class ProductService
 
     public function createProduct(array $data) : Product
     {
-        return $this->productRepository->create($data);
+        return $this->productRepository->save($data);
     }
 
-    public function getProduct(int $productId) : ?Product //make by id
+    public function getProductById(int $productId) : ?Product
     {
-        $product = $this->productRepository->find($productId);
+        $product = $this->productRepository->findById($productId);
         if (!$product) throw new NotFoundException('Product not found');
         return $product;
     }
@@ -52,7 +52,7 @@ class ProductService
     public function updateProductInfo(string $slug,array $data) 
     {
         $product = $this->getProductBySlug($slug);
-        $product = $this->productRepository->updateInfo($product,$data);
+        $product = $this->productRepository->save($data,$product);
         if (isset($data['image'])) {
             $this->uploadProductImage($product,$data['image']);
         }

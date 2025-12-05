@@ -60,32 +60,7 @@ class ProductRepository implements ProductInterface
         return $mode == "full" ? $query->paginate(config('app.items_per_page')) : $query->get();
     }
 
-    private function generateSlug(string $name,int $id = 0) : string
-    {
-        $cleanedInput = strtolower($name);
-        $slug = str_replace(" ","-",$cleanedInput);
-        $fileExist = Product::whereNot('id',$id)->where('name',$name)->get();
-        if (count($fileExist) > 0){
-            $count = $fileExist->count();
-            $slug = $slug . "-" . $count++;
-        }
-        return $slug;
-    }
-
-    public function create(array $data) : Product
-    {
-        $product = new Product();
-        $product->name = $data['name'];
-        $product->slug = $this->generateSlug($data['name']);
-        $product->description = $data['description'];
-        $product->price = $data['price'];
-        $product->stock = $data['stock'];
-        $product->status = $data['stock'] ? 'active' : 'inactive';
-        $product->save();
-        return $product;
-    }
-
-    public function find(int $productId) : ?Product
+    public function findById(int $productId) : ?Product
     {
         return Product::find($productId);
     }
@@ -95,9 +70,10 @@ class ProductRepository implements ProductInterface
         return Product::where('slug',$slug)->first();
     }
 
-    public function updateInfo(Product $product,array $data) : ?Product
-    {
-        $test = $data['name'] ?? null;
+    public function save(array $data,Product $product = null) : Product {
+        if (!$product) {
+            $product = new Product();
+        }
         $product->name = $data['name'] ?? $product->name;
         $product->slug =  isset($data['name']) ? $this->generateSlug($data['name'],$product->id) : $product->slug;
         $product->description = $data['description'] ?? $product->desription;
@@ -146,5 +122,17 @@ class ProductRepository implements ProductInterface
         $product_image->type = "thumbnail"; //remove type
         $product_image->save();
         return $product_image;
+    }
+    
+    private function generateSlug(string $name,int $id = 0) : string
+    {
+        $cleanedInput = strtolower($name);
+        $slug = str_replace(" ","-",$cleanedInput);
+        $fileExist = Product::whereNot('id',$id)->where('name',$name)->get();
+        if (count($fileExist) > 0){
+            $count = $fileExist->count();
+            $slug = $slug . "-" . $count++;
+        }
+        return $slug;
     }
 }

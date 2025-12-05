@@ -133,7 +133,7 @@ class PaymentService
         $this->cartService->updateUserCartUponCheckout($order);
 
         foreach(json_decode($order->details) as $orderItem) {
-            $product = $this->productService->getProduct($orderItem->id);
+            $product = $this->productService->getProductById($orderItem->id);
             $this->productService->updateProductStock($product->slug,$orderItem->quantity);
             $this->productService->updateProductTotalSold($product->slug,$orderItem->quantity);
         }
