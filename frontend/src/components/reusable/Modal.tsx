@@ -2,14 +2,9 @@ import React from "react"
 import { IoIosCloseCircle } from "react-icons/io"
 
 type ModalProps = React.PropsWithChildren<{
-    //props.children is automatic here with React.PropsWithChildren
     isOpen : boolean;
-    class ?: string; //stay
-    title ?: string; //remove
-    message ?: string; //remove
-    confirmTitle ?: string; //remove
-    onConfirm ?: () => void;  //remove ??
-    onCancel ?: () => void;    //stay
+    class ?: string;
+    onCancel ?: () => void;
 }>
 
 const Modal = (props:ModalProps) => {
@@ -25,21 +20,6 @@ const Modal = (props:ModalProps) => {
                 <div className="mt-4">
                     {props.children}
                 </div>
-                
-                {/* <div className="flex justify-center space-x-2">
-                    <button
-                    onClick={props.onConfirm}
-                    className="px-4 py-1 bg-red-500 text-white rounded hover:opacity-80 cursor-pointer"
-                    >
-                    {props.confirmTitle}
-                    </button>
-                    <button
-                    onClick={props.onCancel}
-                    className="px-4 py-1 bg-gray-200 rounded hover:opacity-80 cursor-pointer"
-                    >
-                    Cancel
-                    </button>
-                </div> */}
             </div>
         </div>
         </>

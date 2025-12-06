@@ -85,12 +85,12 @@ export const useUpdateAdminProductInfo = (slug:string) => {
     });
 };
 
-export const useUpdateAdminProductStatus = (slug:string) => {
+export const useUpdateAdminProductStatus = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: updateAdminProductStatus,
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey:["product",slug]})
+        mutationFn: ({slug}:{slug:string}) => updateAdminProductStatus(slug),
+        onSuccess: (_,variables) => {
+            queryClient.invalidateQueries({queryKey:["product",variables.slug]})
         }
     })
 }

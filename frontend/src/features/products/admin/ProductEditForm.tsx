@@ -2,14 +2,14 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { useForm } from '@tanstack/react-form'
 import type { AnyFieldApi } from "@tanstack/react-form"
-import { useSingleProductFetch,useUpdateAdminProductInfo } from '@/features/products/productQueries'
 import { useQueryClient } from '@tanstack/react-query'
+import { useSingleProductFetch,useUpdateAdminProductInfo } from '@/features/products/productQueries'
+import type { ProductAdminModalState } from './ProductDashboardContent'
 import ModalLoading from '@/components/reusable/ModalLoading'
 import Button from '@/components/reusable/Button'
-import type { ProductAdminModalState } from '..'
 import { IoMdClose } from 'react-icons/io'
 
-type InfoProps = {
+type ProductEditFormProps = {
     slug: string
     searchParams: {
         page: number
@@ -20,7 +20,6 @@ type InfoProps = {
         filterValue: any
     }
     setModalProperties: React.Dispatch<React.SetStateAction<ProductAdminModalState|undefined>>
-    setProductToEdit: React.Dispatch<React.SetStateAction<string>>
 }
 
 type PreviewType = {
@@ -43,7 +42,7 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-const info = (props:InfoProps) => {
+const ProductEditForm = (props:ProductEditFormProps) => {
     const queryClient = useQueryClient();
     const { data:product,isLoading } = useSingleProductFetch(props.slug);
     const { mutateAsync } = useUpdateAdminProductInfo(props.slug);
@@ -82,7 +81,6 @@ const info = (props:InfoProps) => {
                 });
                 setIsUpdating(false);
                 props.setModalProperties(undefined);
-                props.setProductToEdit("");
                 toast.success("Product has been updated!");
             } catch (error) {
                 toast.error("Something went wrong!");
@@ -91,7 +89,7 @@ const info = (props:InfoProps) => {
         }
     })
 
-    if (isLoading) return <div>Loading...</div>
+    if (isLoading) return <div>Loading...</div> //refactor soon add skely
 
     return (
         <form className="space-y-4"
@@ -267,13 +265,10 @@ const info = (props:InfoProps) => {
                     )}/>    
                 <Button type="button" 
                     name="Cancel" class='cursor-pointer bg-red-500 hover:opacity-90 w-full py-2' 
-                    onClick={() => {
-                        props.setModalProperties(undefined);
-                        props.setProductToEdit("");
-                    }}/>
+                    onClick={() => props.setModalProperties(undefined)}/>
             </div> 
         </form>
     )
 }
 
-export default info
+export default ProductEditForm;

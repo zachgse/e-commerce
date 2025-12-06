@@ -32,7 +32,9 @@ class ProductService
 
     public function createProduct(array $data) : Product
     {
-        return $this->productRepository->save($data);
+        $product = $this->productRepository->save($data);
+        $image = $this->uploadProductImage($product,$data['image']);
+        return $product;
     }
 
     public function getProductById(int $productId) : ?Product
