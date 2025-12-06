@@ -23,7 +23,7 @@ Route::group(['prefix'=>'products','as'=>'products.','namespace'=>'App\Http\Cont
     Route::get('/search', ['as'=>'search','uses'=>'ProductController@search']);
 
     //everything below is in admin
-    Route::post('create',['as'=>'create','uses'=>'ProductController@store']);
+    Route::post('/',['as'=>'create','uses'=>'ProductController@store']);
 
     Route::get('{slug}',['as'=>'show','uses'=>'ProductController@show']);
     Route::post('{slug?}',['as'=>'update-info','uses'=>'ProductController@update_info']);

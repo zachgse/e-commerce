@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
-import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo, updateAdminProductStatus } from "../../api/productApi";
-import type { Product,ProductAdminSearch,ProductDetail,ProductFullSearch } from "./productType";
+import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo, updateAdminProductStatus, createProduct } from "../../api/productApi";
+import type { Product,ProductAdminSearch,ProductCreatePayload,ProductDetail,ProductFullSearch } from "./productType";
 
 export const useProductsFetch = () => {
     return useQuery<
@@ -93,4 +93,10 @@ export const useUpdateAdminProductStatus = () => {
             queryClient.invalidateQueries({queryKey:["product",variables.slug]})
         }
     })
+}
+
+export const useCreateProduct = () => {
+    return useMutation({
+        mutationFn: (payload:ProductCreatePayload) => createProduct(payload)
+    });
 }

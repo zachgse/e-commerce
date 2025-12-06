@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedDecimal('price',$precision=10,$scale=2);
             $table->integer('stock');
             $table->integer('total_sold')->default(0);
-            $table->string('status');
+            $table->string('status')->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

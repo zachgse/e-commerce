@@ -1,5 +1,5 @@
 import { axiosClient,apiAuth } from "./axiosClient"
-import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch, ProductAdminUpdate } from "../features/products/productType"
+import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch, ProductAdminUpdate, ProductCreatePayload } from "../features/products/productType"
 
 export const fetchAllProducts = async () => {
     const response = await axiosClient.get('/products');
@@ -53,5 +53,17 @@ export const updateAdminProductInfo = async({slug,payload}:ProductAdminUpdate) =
 
 export const updateAdminProductStatus = async(slug:string) => {
   const response = await apiAuth.patch(`products/${slug}`);
+  return response.data.data;
+}
+
+export const createProduct = async(payload:ProductCreatePayload) => {
+  const formData = new FormData();
+  formData.append("image", payload.image);
+  formData.append("name",payload.name);
+  formData.append("description",payload.description);
+  formData.append("price",payload.price.toString());
+  formData.append("stock",payload.stock.toString());
+
+  const response = await apiAuth.post('/products',formData);
   return response.data.data;
 }

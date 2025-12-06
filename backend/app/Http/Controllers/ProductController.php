@@ -52,7 +52,7 @@ class ProductController extends Controller
     public function store(ProductNewRequest $request) : JsonResponse
     {
         try {
-            $product = $this->productService->create($request->validated());
+            $product = $this->productService->createProduct($request->validated());
             return $this->successResponse($product,201,'Product has been created.');
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());

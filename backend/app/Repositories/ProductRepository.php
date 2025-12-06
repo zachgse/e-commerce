@@ -75,11 +75,11 @@ class ProductRepository implements ProductInterface
             $product = new Product();
         }
         $product->name = $data['name'] ?? $product->name;
-        $product->slug =  isset($data['name']) ? $this->generateSlug($data['name'],$product->id) : $product->slug;
+        $product->slug =  isset($data['name']) ? $this->generateSlug($data['name'],$product->id ?? 0) : $product->slug;
         $product->description = $data['description'] ?? $product->desription;
         $product->price = $data['price'] ?? $product->price;
         $product->stock = $data['stock'] ?? $product->stock;
-        if (isset($data['stock']) && $data['stock'] == 0) $product->status = "inactive";
+        $product->status = $data['stock'] > 0 ? "active" : "inactive";
         $product->save();
         return $product;
     }

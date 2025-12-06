@@ -64,3 +64,11 @@ export type ProductAdminUpdate = {
         stock: number
     }
 }
+
+export type ProductCreatePayload = {
+    image: File | string
+    name: string
+    description: string
+    price: number
+    stock: number   
+}

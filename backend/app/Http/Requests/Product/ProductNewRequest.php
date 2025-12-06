@@ -17,7 +17,8 @@ class ProductNewRequest extends RequestManager
             'name' => 'required',
             'description' => 'required',
             'price' => 'required',
-            'stock' => 'required'
+            'stock' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 

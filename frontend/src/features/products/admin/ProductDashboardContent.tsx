@@ -7,8 +7,10 @@ import { queryFetchAdminProducts, useFetchAdminProducts,useUpdateAdminProductSta
 import { getProductColumns } from "./ProductColumns"
 import DataTable from "@/components/reusable/DataTable"
 import Modal from "@/components/reusable/Modal"
+import ProductCreateForm from "./ProductCreateForm"
 import ProductEditForm from "./ProductEditForm"
 import Confirmation from "@/components/reusable/Confirmation"
+import Button from "@/components/reusable/Button"
 
 export type ProductAdminModalState = {
   slug?: string
@@ -103,10 +105,14 @@ const ProductDashboardContent = () =>  {
             {modalProperties.type == 'edit' ? (
               <ProductEditForm slug={modalProperties.slug ?? ""} searchParams={params} 
                     setModalProperties={setModalProperties}/>
-            ) : <div>Create here</div>}
+              ) : (<ProductCreateForm searchParams={params} 
+                    setModalProperties={setModalProperties}/>)
+            }
           </Modal>
         )
       )}
+      <Button class="px-4 py-2 cursor-pointer hover:opacity-80" name="Add Product" type="button" 
+              onClick={() => setModalProperties({type:"create"})}/>
       <DataTable isFetching={isFetching}
                   columns={columns} 
                   data={data.list} 
