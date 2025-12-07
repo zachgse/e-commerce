@@ -26,7 +26,7 @@ export const getOrderColumns = (
     {
         accessorKey:"customer",
         header:({column}) => {
-            return <div>Column</div>
+            return <div>Customer</div>
         },
         cell: ({row}) => <div>{row.getValue("customer")}</div>,
     },
