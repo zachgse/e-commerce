@@ -1,5 +1,5 @@
 import { axiosClient,apiAuth } from "./axiosClient"
-import type { Order,OrderDetail } from "../features/order/orderType"
+import type { Order,OrderAdmin,OrderDetail } from "../features/order/orderType"
 
 export const fetchListUserOrder = async(token:string):Promise<Order[]> => {
     const response = await axiosClient.get('user/order', {

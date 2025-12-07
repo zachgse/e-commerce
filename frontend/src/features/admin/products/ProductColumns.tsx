@@ -24,7 +24,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div>{row.getValue("name")}</div>,
-        enableGlobalFilter:true
     },
     {
         accessorKey: "slug",
@@ -34,7 +33,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div>{row.getValue("slug")}</div>,
-        enableGlobalFilter:true
     },
     {
         accessorKey: "price",
@@ -53,7 +51,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div>{money_format(row.getValue("price"))}</div>,
-        enableGlobalFilter:false
     },
     {
         accessorKey: "stock",
@@ -72,7 +69,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div>{row.getValue("stock")}</div>,
-        enableGlobalFilter:false
     },
     {
         accessorKey: "total_sold",
@@ -91,7 +87,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div>{row.getValue("total_sold")}</div>,
-        enableGlobalFilter:false
     },
     {
         accessorKey: "status",
@@ -101,7 +96,6 @@ export const getProductColumns = (
         )
         },
         cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-        enableGlobalFilter:false
     },
     { 
         id: "actions",

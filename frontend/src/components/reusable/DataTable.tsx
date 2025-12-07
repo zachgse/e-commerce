@@ -97,11 +97,11 @@ const DataTable = <TData,TValue>({
                         value={(table.getColumn(filter.columnName)?.getFilterValue() as string) ?? ""} 
                         onValueChange={(e) => table.getColumn(filter.columnName)?.setFilterValue(e)}>
                         <SelectTrigger className="w-[180px] capitalize">
-                            <SelectValue placeholder={filter.columnName} />
+                            <SelectValue placeholder={filter.columnName.replace("_"," ")} />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
-                                <SelectLabel className='capitalize'>{filter.columnName}</SelectLabel>
+                                <SelectLabel className='capitalize'>{filter.columnName.replace("_"," ")}</SelectLabel>
                                 {filter.values.map((filterValue,index) => (
                                     <SelectItem key={index} 
                                         className='capitalize'

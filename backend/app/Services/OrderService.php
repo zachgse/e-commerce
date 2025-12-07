@@ -13,9 +13,9 @@ class OrderService
     {
     }
 
-    public function getOrders()
+    public function getOrders(array $params)
     {
-        return $this->orderRepository->getAllOrders();
+        return $this->orderRepository->getAllOrders($params);
     }
 
     public function createOrderReferenceNumber()

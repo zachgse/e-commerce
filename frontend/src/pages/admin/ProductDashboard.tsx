@@ -1,4 +1,4 @@
-import ProductDashboardContent from '@/features/products/admin/ProductDashboardContent'
+import ProductDashboardContent from "@/features/admin/products/ProductDashboardContent"
 
 const ProductDashboard = () => {
   return (

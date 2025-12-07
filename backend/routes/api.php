@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AdminController;
+
 //auth
 Route::group(['prefix'=>'auth','as'=>'auth.','namespace'=>'App\Http\Controllers'], function() {
     Route::post('/register',['as'=>'register','uses'=>'AuthController@register']);
@@ -65,9 +67,15 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
         });
     });
 
-    Route::group(['prefix'=>'admin','as'=>'admin.','namespace'=>'App\Http\Controllers'], function() {
-        Route::get('products',['as'=>'products','uses'=>'AdminController@products']);
-        Route::get('orders',['as'=>'orders','uses'=>'AdminController@orders']);
+    Route::group(['prefix'=>'admin','as'=>'admin.'], function() {
+        Route::get('products',[AdminController::class,'products']);
+        
+        Route::group(['prefix'=>'orders','as'=>'orders.'], function() {
+            Route::get('',[AdminController::class,'orders']);
+            Route::get('{referenceNumber?}',[AdminController::class,'orderDetails']);
+            Route::put('{referenceNumber?}',[AdminController::class,'orderStatus']);
+        });
+        
         Route::get('payments',['as'=>'payments','uses'=>'AdminController@payments']);
     });
 });

@@ -22,6 +22,7 @@ import OrderDetails from './pages/user/order/OrderDetails'
 
 //admins
 import ProductDashboard from './pages/admin/ProductDashboard'
+import OrderDashboard from './pages/admin/OrderDashboard'
 
 const Home = lazy(() => import("./pages/Home"))
 const ProductShow = lazy(() => import("./pages/ProductShow"))
@@ -75,6 +76,7 @@ function App() {
           </Route>
           <Route path="/admin" element={<AdminLayout/>}>
             <Route path="products" element={<ProductDashboard/>}/>
+            <Route path="orders" element={<OrderDashboard/>}/>
           </Route>
           <Route path="login" element={
             <Suspense fallback={<Loading/>}>

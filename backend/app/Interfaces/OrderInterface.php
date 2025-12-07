@@ -7,7 +7,7 @@ use App\Models\{Order,User};
 
 interface OrderInterface 
 {
-    public function getAllOrders() : Collection;
+    public function getAllOrders(array $params);
     
     public function referenceNumber() : string;
     
