@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import type { OrderAdmin } from "@/types/adminTypes"
+import type { PaymentAdmin } from "@/types/adminTypes"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -12,23 +12,15 @@ import {
 import { ArrowUpDown, ArrowUp,ArrowDown, MoreHorizontal } from "lucide-react"
 import { money_format } from "@/helpers/helper"
 
-export const getOrderColumns = (
-    onView: (referenceNumber:string) => void,
-    onUpdate: (referenceNumber:string) => void
-):ColumnDef<OrderAdmin>[] => [
+export const getPaymentColumns = (
+    onView: (referenceNumber:string) => void 
+):ColumnDef<PaymentAdmin>[] => [
     {
         accessorKey:"reference_number",
         header:({column}) => {
             return <div>Reference #</div>
         },
         cell: ({row}) => <div>{row.getValue("reference_number")}</div>,
-    },
-    {
-        accessorKey:"customer",
-        header:({column}) => {
-            return <div>Column</div>
-        },
-        cell: ({row}) => <div>{row.getValue("customer")}</div>,
     },
     {
         accessorKey:"order_amount",
@@ -50,18 +42,13 @@ export const getOrderColumns = (
     },
     {
         accessorKey:"status",
-        header: ({column}) => {
+        header:({column}) => {
             return <div>Status</div>
         },
-        cell: ({row}) => {
-            const orderStatus:string = row.getValue("status");
-            return (
-                <div className="capitalize">{orderStatus.replace("_"," ")}</div>
-            )
-        }
+        cell: ({row}) => <div className="capitalize">{row.getValue("status")}</div>,
     },
     {
-        accessorKey:"order_placed_at",
+        accessorKey:"created_at",
         header:({column}) => {
             return (
                 <Button
@@ -69,18 +56,32 @@ export const getOrderColumns = (
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                    Date ordered
+                    Payment Initiated
                     {!column.getIsSorted() ? <ArrowUpDown /> : (
                         column.getIsSorted() === "asc" ? <ArrowUp/> : <ArrowDown/>
                     )}
                 </Button>
             )
         },
-        cell: ({row}) => {
+        cell: ({row}) => <div>{row.getValue("created_at")}</div>,
+    },
+    {
+        accessorKey:"updated_at",
+        header:({column}) => {
             return (
-                <div><p>{row.getValue("order_placed_at")}</p></div>
+                <Button
+                    className="text-left capitalize"
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                    Payment Updated
+                    {!column.getIsSorted() ? <ArrowUpDown /> : (
+                        column.getIsSorted() === "asc" ? <ArrowUp/> : <ArrowDown/>
+                    )}
+                </Button>
             )
-        }
+        },
+        cell: ({row}) => <div>{row.getValue("updated_at")}</div>,
     },
     { 
         id: "actions",
@@ -106,13 +107,6 @@ export const getOrderColumns = (
                         View Details
                     </p>
                     </DropdownMenuItem>
-                    {row.original.order_status == "order placed" && (
-                        <DropdownMenuItem className="cursor-pointer" onClick={() => onUpdate(row.original.reference_number)}>
-                            <p className="mx-auto">
-                                Ship order
-                            </p>
-                        </DropdownMenuItem>
-                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
         )

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { fetchOrderDetails, fetchOrders, updateOrder } from "../api/adminApi"
-import type { OrderAdmin, SearchParams } from "@/types/adminTypes"
+import { fetchOrderDetails, fetchOrders, fetchPaymentDetails, fetchPayments, updateOrder } from "../api/adminApi"
+import type { OrderAdmin, PaymentAdmin, SearchParams } from "@/types/adminTypes"
 import type { PaginatedResponse } from "@/types/generalTypes"
 
 // order module
@@ -42,5 +42,36 @@ export const useUpdateOrder = () => {
         onSuccess: (_,variables) => {
             queryClient.invalidateQueries({queryKey:['admin/orders',variables.referenceNumber]});
         }
+    });
+}
+
+// payment module
+export const queryFetchPayments = (params:SearchParams) => ({
+    queryKey: ["admin/payments",
+                params.page,
+                params.keyword,
+                params.sortBy,
+                params.sortOrder,
+                params.filterBy,
+                params.filterValue],
+    queryFn: () => fetchPayments(params),
+    keepPreviousData: true,
+    staleTime: 1000 * 60 * 5,
+    select: (payment:PaginatedResponse<PaymentAdmin>) => {
+        const list = payment.data;
+        const totalItems = payment.meta.total;
+
+        return {list,totalItems}
+    }
+})
+
+export const useQueryFetchPayments = (params:SearchParams) => {
+    return useQuery(queryFetchPayments(params));
+}
+
+export const useFetchPaymentDetails = (referenceNumber:string) => {
+    return useQuery({
+        queryKey: ["admin/payments",referenceNumber],
+        queryFn: () => fetchPaymentDetails(referenceNumber)
     });
 }

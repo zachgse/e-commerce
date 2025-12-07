@@ -26,11 +26,8 @@ const OrderView = (props:OrderViewProps) => {
                 <label className="font-bold" htmlFor="amount">Amount</label>
                 <p id="amount">{data?.order_amount}</p>
 
-                <label className="font-bold" htmlFor="orderStatus">Order Status</label>
-                <p id="orderStatus">{data?.order_status}</p>
-
-                <label className="font-bold" htmlFor="paymentStatus">Payment Status</label>
-                <p id="paymentStatus">{data?.payment_status}</p>
+                <label className="font-bold" htmlFor="orderStatus">Status</label>
+                <p id="orderStatus">{data?.status}</p>
 
                 <label className="font-bold" htmlFor="orderPlacedAt">Order placed at</label>
                 <p id="orderPlacedAt">{data?.order_placed_at.toLocaleString()}</p>

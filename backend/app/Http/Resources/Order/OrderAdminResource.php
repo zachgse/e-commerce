@@ -18,8 +18,7 @@ class OrderAdminResource extends JsonResource
             "reference_number" => $this->reference_number,
             "customer" => $this->user->name,
             "order_amount" => $this->payment->order_amount,
-            "order_status" => $this->status,
-            "payment_status" => $this->payment->status,
+            "status" => $this->status,
             "order_placed_at" => $this->created_at->format("M d, Y")
         ];
     }

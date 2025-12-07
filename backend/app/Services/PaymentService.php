@@ -21,9 +21,14 @@ class PaymentService
     {
     }
 
-    public function getPayments()
+    public function getPayments(array $params)
     {
-        return $this->paymentRepository->getAllPayments();
+        return $this->paymentRepository->getAllPayments($params);
+    }
+
+    public function getPaymentDetails(string $referenceNumber)
+    {
+        return $this->orderService->getOrderByReferenceNumber($referenceNumber);
     }
 
     public function createPaymentCheckout(array $data) 

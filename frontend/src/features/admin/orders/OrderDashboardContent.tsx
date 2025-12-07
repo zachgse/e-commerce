@@ -106,8 +106,7 @@ const OrderDashboardContent = () => {
                         columnFilters={columnFilters} 
                         onColumnFiltersChange={setColumnFilters}
                         filters={[
-                            {columnName:"order_status",values:["order placed","shipped","delivered"]},
-                            {columnName:"payment_status",values:["pending","success","failed"]},
+                            {columnName:"status",values:["order placed","shipped","delivered"]},
                         ]}
             />
         </>

@@ -36,15 +36,7 @@ class OrderRepository implements OrderInterface
         }
 
         if (isset($params['filterBy']) && isset($params['filterValue'])) {
-            if ($params['filterBy'] == "order_status"){
-                $query->where('status',$params['filterValue']);
-            }
-            
-            if ($params['filterBy'] == "payment_status"){
-                $query->whereHas('payment', function($q) use ($params) {
-                    $q->where('status',$params['filterValue']);
-                });
-            }
+            $query->where('status',$params['filterValue']);
         }
 
         return $query->paginate(config("app.items_per_page"));

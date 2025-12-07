@@ -8,9 +8,26 @@ use App\Models\Payment;
 
 class PaymentRepository implements PaymentInterface
 {
-    public function getAllPayments() : Collection
+    public function getAllPayments(array $params)
     {
-        return Payment::all();
+        $query = Payment::query();
+
+        if (isset($params['keyword'])){
+            $query->whereHas('order', function($q) use($params) {
+                $q->where('reference_number',$params['keyword']);
+            });
+        }
+
+        if (isset($params['sortBy']) && isset($params['sortOrder'])){
+            $sortOrder = $params['sortOrder'] == "false" ? "asc" : "desc";
+            $query->orderBy($params['sortBy'],$sortOrder);
+        }
+
+        if (isset($params['filterBy']) && isset($params['filterValue'])) {
+            $query->where('status',$params['filterValue']);
+        }
+
+        return $query->paginate(config('app.items_per_page'));
     }
 
     public function create(int $orderId, string $paymentIntentId,string $clientKeyId,

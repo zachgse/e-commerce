@@ -7,7 +7,7 @@ use App\Models\Payment;
 
 interface PaymentInterface
 {    
-    public function getAllPayments() : Collection;
+    public function getAllPayments(array $params);
     
     public function create(int $orderId, string $paymentIntentId,string $clientKeyId,
                             float $subTotal,float $shippingFee) : Payment;

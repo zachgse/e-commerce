@@ -8,7 +8,7 @@ import './App.css'
 // layout
 import MainLayout from './components/MainLayout'
 import ProfileLayout from './components/ProfileLayout'
-import AdminLayout from './components/AdminLayout'
+import AdminLayout from './layouts/AdminLayout'
 
 import Loading from './components/Loading'
 import ProductSingleSkeleton from './components/products/single/ProductSingleSkeleton'
@@ -23,6 +23,7 @@ import OrderDetails from './pages/user/order/OrderDetails'
 //admins
 import ProductDashboard from './pages/admin/ProductDashboard'
 import OrderDashboard from './pages/admin/OrderDashboard'
+import PaymentDashboard from './pages/admin/PaymentDashboard'
 
 const Home = lazy(() => import("./pages/Home"))
 const ProductShow = lazy(() => import("./pages/ProductShow"))
@@ -77,6 +78,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout/>}>
             <Route path="products" element={<ProductDashboard/>}/>
             <Route path="orders" element={<OrderDashboard/>}/>
+            <Route path="payments" element={<PaymentDashboard/>}/>
           </Route>
           <Route path="login" element={
             <Suspense fallback={<Loading/>}>

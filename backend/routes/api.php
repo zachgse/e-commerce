@@ -76,7 +76,10 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
             Route::put('{referenceNumber?}',[AdminController::class,'orderStatus']);
         });
         
-        Route::get('payments',['as'=>'payments','uses'=>'AdminController@payments']);
+        Route::group(['prefix'=>'payments','as'=>'payments.'], function() {
+            Route::get('',[AdminController::class,'payments']);
+            Route::get('{referenceNumber?}',[AdminController::class,'paymentDetails']);
+        });
     });
 });
 

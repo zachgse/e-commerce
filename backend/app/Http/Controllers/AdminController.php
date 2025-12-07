@@ -7,6 +7,7 @@ use App\Services\{ProductService,OrderService,PaymentService};
 use App\Traits\ApiResponseTrait;
 use App\Http\Resources\Product\ProductAdminResource;
 use App\Http\Resources\Order\{OrderAdminResource,OrderDetailAdminResource};
+use App\Http\Resources\Payment\{PaymentAdminResource,PaymentDetailAdminResource};
 
 class AdminController extends Controller
 {
@@ -58,13 +59,22 @@ class AdminController extends Controller
         }
     }
 
-    public function payments()
+    public function payments(Request $request)
     {
         try {
-            $data = $this->paymentService->getPayments();
-            return $this->successResponse($data,200,"List of payments");
+            $data = PaymentAdminResource::collection($this->paymentService->getPayments($request->all()));
+            return $this->paginatedResponse($data,200,"List of payments");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
         }      
+    }
+
+    public function paymentDetails(string $referenceNumber = null){
+        try {
+            $data = new PaymentDetailAdminResource($this->paymentService->getPaymentDetails($referenceNumber));
+            return $this->paginatedResponse($data,200,"Payment details for reference # ${referenceNumber}");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }  
     }
 }
