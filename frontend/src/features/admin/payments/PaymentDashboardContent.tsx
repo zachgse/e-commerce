@@ -48,7 +48,7 @@ const PaymentDashboardContent = () => {
     return (
         <>
             {referenceNumber && (
-                <Modal class="md:w-auto w-4/5 max-h-11/12"
+                <Modal class="md:w-2/5 w-4/5 max-h-11/12"
                     isOpen={true}  
                     onCancel={() => setReferenceNumber(null)}>
                     <PaymentView referenceNumber={referenceNumber}/>

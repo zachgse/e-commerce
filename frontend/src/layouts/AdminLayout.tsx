@@ -1,21 +1,14 @@
-import { Link, Outlet } from "react-router"
 import { ToastContainer } from "react-toastify"
+import AdminSidebar from "./AdminSidebar"
 
 const AdminLayout = () => {
   return (
     <>
         <ToastContainer position="top-center"
-        hideProgressBar={true}
-        closeOnClick={true}
-        autoClose={2000}/>
-        <div className="flex min-h-screen">
-            <div className="w-1/5 min-h-100 text-center bg-gray-200 flex flex-col items-center justify-center gap-4">
-              <Link to="/admin/products">Products</Link>
-              <Link to="/admin/orders">Orders</Link>
-              <Link to="/admin/payments">Payments</Link>
-            </div>
-            <div className="w-4/5 p-5"><Outlet/></div>
-        </div>
+          hideProgressBar={true}
+          closeOnClick={true}
+          autoClose={2000}/>
+        <AdminSidebar/>
     </>
   )
 }
