@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
 import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo, updateAdminProductStatus, createProduct } from "../../api/productApi";
-import type { Product,ProductAdminSearch,ProductCreatePayload,ProductDetail,ProductFullSearch } from "./productType";
+import type { Product,ProductAdmin,ProductAdminSearch,ProductCreatePayload,ProductDetail,ProductFullSearch } from "./productType";
+import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const useProductsFetch = () => {
     return useQuery<
@@ -61,7 +62,7 @@ export const queryFetchAdminProducts = (params:ProductAdminSearch) => ({
     queryFn: () => fetchAdminProducts(params),
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5, // cache fresh for 5 mins
-    select: (p:any) => {
+    select: (p:PaginatedResponse<ProductAdmin>) => {
         const list = p.data
         const totalItems = p.meta.total
         return {

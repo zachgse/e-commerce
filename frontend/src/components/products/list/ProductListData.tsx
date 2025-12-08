@@ -1,7 +1,7 @@
 import { Link } from "react-router"
 import type { Product } from '../../../features/products/productType'
 import Box from "../../reusable/Box"
-import { money_format } from "../../../helpers/helper"
+import { money_format } from "../../../utils/helper"
 import { FaStar,FaRegStar } from "react-icons/fa"
 
 type ProductListDataProps = {

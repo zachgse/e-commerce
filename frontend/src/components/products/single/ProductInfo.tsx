@@ -4,7 +4,7 @@ import { useAppDispatch,useAppSelector } from '../../../hooks/hooks'
 import { tryAddToCart } from '../../../redux/cartThunk'
 import type { ProductDetail } from '../../../features/products/productType'
 import type { CartItem } from '../../../features/cart/cartType'
-import { money_format } from '../../../helpers/helper'
+import { money_format } from '../../../utils/helper'
 import Box from '../../reusable/Box'
 import { FaStar } from "react-icons/fa"
 import { FaRegStar } from "react-icons/fa"

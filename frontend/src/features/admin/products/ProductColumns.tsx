@@ -10,7 +10,8 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
 import { ArrowUpDown, ArrowUp,ArrowDown, MoreHorizontal } from "lucide-react"
-import { money_format } from "@/helpers/helper"
+import { money_format } from "@/utils/helper"
+import { statusBadgePills } from "@/utils/styleHelper"
 
 export const getProductColumns = (
     onEdit: (slug:string) => void,
@@ -95,7 +96,7 @@ export const getProductColumns = (
             <div className="capitalize">{column.id}</div>
         )
         },
-        cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
+        cell: ({ row }) => <div className={statusBadgePills(row.getValue("status"))}>{row.getValue("status")}</div>,
     },
     { 
         id: "actions",

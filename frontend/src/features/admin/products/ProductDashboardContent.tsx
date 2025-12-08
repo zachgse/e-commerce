@@ -36,7 +36,7 @@ const ProductDashboardContent = () =>  {
     "filterBy":columnFilters[0]?.id,
     "filterValue":columnFilters[0]?.value
   }
-  const { data,isLoading,isError,isFetching } = useFetchAdminProducts(params);
+  const { data,isError,isFetching } = useFetchAdminProducts(params);
   const updateProductStatus = useUpdateAdminProductStatus();
   
   React.useEffect(() => {
@@ -87,7 +87,6 @@ const ProductDashboardContent = () =>  {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error!</div>
 
   return (
@@ -115,8 +114,8 @@ const ProductDashboardContent = () =>  {
               onClick={() => setModalProperties({type:"create"})}/>
       <DataTable isFetching={isFetching}
                   columns={columns} 
-                  data={data.list} 
-                  totalItems={data.totalItems}
+                  data={data?.list ?? []} 
+                  totalItems={data?.totalItems ?? 0}
                   keyword={globalFilter}
                   placeholder={["Name","Slug"]}
                   globalFilter={debouncedFilter} 

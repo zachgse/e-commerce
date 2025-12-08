@@ -9,7 +9,7 @@ import RatingForm from "./RatingForm"
 import Box from "../../../components/reusable/Box"
 import Button from "../../../components/reusable/Button"
 import Modal from "../../../components/reusable/Modal"
-import { money_format } from "../../../helpers/helper"
+import { money_format } from "../../../utils/helper"
 import OrderDeliveredForm from "./OrderDeliveredForm"
 
 const OrderDetails = () => {

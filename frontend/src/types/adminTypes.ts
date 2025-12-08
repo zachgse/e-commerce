@@ -11,7 +11,7 @@ export type OrderAdmin = {
     reference_number: string
     customer: string
     order_amount: number
-    status: string 
+    status: "waiting_for_payment" | "order_placed" | "shipped" | "delivered" 
     order_placed_at: Date
 }   
 

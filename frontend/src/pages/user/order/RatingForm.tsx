@@ -8,7 +8,7 @@ import type { RatingProductInfo } from "../../../features/rating/ratingType"
 import { FaRegStar,FaStar } from "react-icons/fa"
 import Box from "../../../components/reusable/Box"
 import ModalLoading from "../../../components/reusable/ModalLoading"
-import { money_format } from "../../../helpers/helper"
+import { money_format } from "../../../utils/helper"
 
 type RatingFormProps = {
     referenceNumber:string

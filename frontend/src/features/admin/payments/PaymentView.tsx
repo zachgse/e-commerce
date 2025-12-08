@@ -1,4 +1,5 @@
 import { useFetchPaymentDetails } from "@/services/queries/adminQueries"
+import Loading from "@/components/Loading";
 
 type PaymentViewProps = {
     referenceNumber: string
@@ -6,7 +7,7 @@ type PaymentViewProps = {
 
 const PaymentView = (props:PaymentViewProps) => {
     const { data,isLoading } = useFetchPaymentDetails(props.referenceNumber);
-    if (isLoading) return <div>Loading...</div> //refactor soon
+    if (isLoading) return <Loading/>
 
     return (
         <div className="flex flex-col gap-4 w-full">

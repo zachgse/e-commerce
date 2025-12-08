@@ -9,7 +9,7 @@ import Box from "../components/reusable/Box"
 import Button from "../components/reusable/Button"
 import Modal from "../components/reusable/Modal"
 import ErrorComponent from "../components/reusable/ErrorComponent"
-import { money_format } from "../helpers/helper"
+import { money_format } from "../utils/helper"
 
 const Cart = () => {
   const dispatch = useAppDispatch();

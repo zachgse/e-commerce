@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { FaDeleteLeft } from "react-icons/fa6"
+import Loading from '../Loading'
 
 interface DataTableProps<TData, TValue> {
     isFetching: boolean
@@ -81,8 +82,6 @@ const DataTable = <TData,TValue>({
         onSortingChange([]);
         onColumnFiltersChange([]);
     }
-
-    if (isFetching) return <div>Fetching..</div>
 
     return (
         <>
@@ -143,6 +142,7 @@ const DataTable = <TData,TValue>({
                         </TableRow>
                     ))}
                     </TableHeader>
+                    {!isFetching ? (
                     <TableBody>
                     {table.getRowModel().rows?.length ? (
                         table.getRowModel().rows.map((row) => (
@@ -165,6 +165,13 @@ const DataTable = <TData,TValue>({
                         </TableRow>
                     )}
                     </TableBody>
+                    ) : (
+                        <TableRow>
+                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <Loading/>
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </Table>
             </div>
             <div className="flex items-center justify-end space-x-2 py-4">

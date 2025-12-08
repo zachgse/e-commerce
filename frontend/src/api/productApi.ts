@@ -1,5 +1,6 @@
 import { axiosClient,apiAuth } from "./axiosClient"
 import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch, ProductAdminUpdate, ProductCreatePayload } from "../features/products/productType"
+import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const fetchAllProducts = async () => {
     const response = await axiosClient.get('/products');
@@ -23,7 +24,7 @@ export const fetchFullSearchProducts = async({keyword,sortBy}:ProductFullSearch)
     return response.data.data;
 }
 
-export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,filterValue}:ProductAdminSearch):Promise<ProductAdmin[]> => {
+export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,filterValue}:ProductAdminSearch):Promise<PaginatedResponse<ProductAdmin>> => {
   const response = await apiAuth.get("/admin/products", {
     params: {
       page,
@@ -36,7 +37,7 @@ export const fetchAdminProducts = async({page,keyword,sortBy,sortOrder,filterBy,
   });
   return response.data;
 }
-
+//
 export const updateAdminProductInfo = async({slug,payload}:ProductAdminUpdate) => {
   const formData = new FormData();
   formData.append("name",payload.name);

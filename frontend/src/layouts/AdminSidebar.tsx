@@ -23,10 +23,10 @@ const AdminSidebar = () => {
     React.useEffect(() => {
         setIsOpen(mobile ? false : true);
         setIsMobile(mobile);
-    },[location.pathname])
+    },[location.pathname,isMobile])
 
     return (
-        <div className="flex min-h-screen relative">
+        <div className="flex min-h-screen relative overflow-x-hidden">
             {/* backdrop for mobile*/}
             {isMobile && isOpen && (
                 <div
@@ -54,7 +54,7 @@ const AdminSidebar = () => {
             {/* Sidebar wrapper */}
             <div className={clsx(
                 "min-h-full text-center border-r border-gray-300 transition-all duration-200 ease-in-out",
-                !isMobile && (isOpen ? "w-2/12" : "w-1/12")
+                !isMobile && (isOpen ? "w-2/12" : "w-1/12"),
             )}>
                 {/* Sidebar */}
                 <div className={clsx(
@@ -62,7 +62,7 @@ const AdminSidebar = () => {
                     isMobile
                         ? "fixed top-0 left-0 h-full z-30 bg-white"
                         : "sticky top-16",
-                    isMobile && (isOpen ? "w-2/5" : "w-0 overflow-hidden")
+                    isMobile && (isOpen ? "w-2/3" : "w-0 overflow-hidden")
                     )}
                 >
 
@@ -82,7 +82,7 @@ const AdminSidebar = () => {
                     )}
                     
                     {/* sidebar items */}
-                    <Link to="/" className={clsx("text-3xl font-bold mb-12",
+                    <Link to="/" className={clsx("text-3xl font-bold mb-12 px-4",
                                             isMobile && "mt-16"
                     )}>
                         {isOpen ? (
@@ -160,7 +160,7 @@ const AdminSidebar = () => {
             </div>
 
             {/* Main content */}
-            <div className={clsx("p-5 mb-96 transition-all duration-200 ease-in-out",
+            <div className={clsx("mt-12 p-5 mb-96 transition-all duration-200 ease-in-out",
                 isOpen ? "w-10/12" : "w-11/12",
                 isMobile && "w-full")}>
                 <Outlet/>

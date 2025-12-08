@@ -8,6 +8,7 @@ import type { ProductAdminModalState } from './ProductDashboardContent'
 import ModalLoading from '@/components/reusable/ModalLoading'
 import Button from '@/components/reusable/Button'
 import { IoMdClose } from 'react-icons/io'
+import Loading from '@/components/Loading'
 
 type ProductEditFormProps = {
     slug: string
@@ -89,7 +90,7 @@ const ProductEditForm = (props:ProductEditFormProps) => {
         }
     })
 
-    if (isLoading) return <div>Loading...</div> //refactor soon add skely
+    if (isLoading) return <Loading/>
 
     return (
         <form className="space-y-4"
