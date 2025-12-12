@@ -5,10 +5,31 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use App\Interfaces\OrderInterface;
 use App\Models\{Order,Payment,User};
-use Str;
+use Str,DB;
 
 class OrderRepository implements OrderInterface
 {
+    public function getDashboard(int $year) 
+    {
+        $years = Order::selectRaw('DISTINCT(YEAR(created_at)) as year')->get();
+        $orders = Order::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+                            ->whereYear('created_at',$year)
+                            ->groupBy('month')
+                            ->orderBy('month')
+                            ->get();
+
+        $months = array_fill(1, 12, 0);
+    
+        foreach ($orders as $order){
+            $months[$order->month] = $order->total;
+        }
+        
+        return [
+            'yearsAvailable' => $years,
+            'dataForSelectedYear' =>  $months
+        ];
+    }
+
     public function getAllOrders(array $params)
     {
         $query = Order::query();

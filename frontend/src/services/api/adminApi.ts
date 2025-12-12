@@ -1,5 +1,5 @@
 import { apiAuth } from "@/api/axiosClient"
-import type { OrderAdmin, OrderDetailsAdmin, PaymentAdmin, PaymentDetailsAdmin, SearchParams } from "@/types/adminTypes"
+import type { Chart, OrderAdmin, OrderDetailsAdmin, PaymentAdmin, PaymentDetailsAdmin, SearchParams } from "@/types/adminTypes"
 import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const fetchOrders = async(params:SearchParams):Promise<PaginatedResponse<OrderAdmin>> => {
@@ -24,5 +24,10 @@ export const fetchPayments = async(params:SearchParams):Promise<PaginatedRespons
 
 export const fetchPaymentDetails = async(referenceNumber:string):Promise<PaymentDetailsAdmin> => {
     const response = await apiAuth.get(`/admin/payments/${referenceNumber}`);
+    return response.data.data;
+}
+
+export const fetchChartOrders = async(year?:number):Promise<Chart> => {
+    const response = await apiAuth.get(`/admin/chart/orders?year=${year ?? 0}`);
     return response.data.data;
 }

@@ -68,6 +68,12 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
     });
 
     Route::group(['prefix'=>'admin','as'=>'admin.'], function() {
+        Route::group(['prefix'=>'chart','as'=>'chart.'], function() {
+            Route::get('orders',[AdminController::class,'orderChart']);
+        });
+
+        Route::get('',[AdminController::class,'index']);
+
         Route::get('products',[AdminController::class,'products']);
         
         Route::group(['prefix'=>'orders','as'=>'orders.'], function() {

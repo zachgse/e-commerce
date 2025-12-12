@@ -8,6 +8,7 @@ use App\Traits\ApiResponseTrait;
 use App\Http\Resources\Product\ProductAdminResource;
 use App\Http\Resources\Order\{OrderAdminResource,OrderDetailAdminResource};
 use App\Http\Resources\Payment\{PaymentAdminResource,PaymentDetailAdminResource};
+use App\Http\Resources\Admin\ChartResource;
 
 class AdminController extends Controller
 {
@@ -17,6 +18,19 @@ class AdminController extends Controller
                                 protected OrderService $orderService,
                                 protected PaymentService $paymentService)
     {
+        $this->latestYear = now()->format('Y');
+    }
+
+    public function orderChart(Request $request)
+    {
+        try {
+            $year = $request->get('year') ? (int)$request->get('year') : (int)$this->latestYear;
+            $data = new ChartResource($this->orderService->dashboard($year));
+            return $this->successResponse($data,200,"Chart data");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }
+
     }
 
     public function products(Request $request)

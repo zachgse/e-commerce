@@ -13,6 +13,11 @@ class OrderService
     {
     }
 
+    public function dashboard(int $year)
+    {
+        return $this->orderRepository->getDashboard($year);
+    }
+
     public function getOrders(array $params)
     {
         return $this->orderRepository->getAllOrders($params);

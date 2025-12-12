@@ -7,6 +7,8 @@ use App\Models\{Order,User};
 
 interface OrderInterface 
 {
+    public function getDashboard(int $year);
+
     public function getAllOrders(array $params);
     
     public function referenceNumber() : string;

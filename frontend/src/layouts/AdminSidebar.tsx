@@ -90,8 +90,14 @@ const AdminSidebar = () => {
                         ) : <FaStore className="w-8 h-8 mx-auto"/>}
                     </Link>
 
-                    <div className="border-t border-gray-300 flex justify-start
-                                    w-full py-4 hover:bg-gray-100 cursor-pointer">
+                    <NavLink to="/admin"
+                        className={({ isActive }) =>
+                            clsx(
+                            "border-t border-gray-300 flex justify-start w-full py-4 hover:bg-gray-200 cursor-pointer",
+                            isActive && "bg-gray-200 font-semibold text-blue-500"
+                            )
+                        }
+                    >
                         <p className={clsx("flex items-center",
                                     isOpen ? "px-10 gap-2" : "mx-auto"
                         )}>
@@ -100,7 +106,7 @@ const AdminSidebar = () => {
                                 Dashboard  
                             </span>
                         </p>
-                    </div>
+                    </NavLink>
 
                     <NavLink to="/admin/products"
                         className={({ isActive }) =>

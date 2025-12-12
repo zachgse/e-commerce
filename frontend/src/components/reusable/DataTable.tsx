@@ -166,11 +166,13 @@ const DataTable = <TData,TValue>({
                     )}
                     </TableBody>
                     ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                <Loading/>
-                            </TableCell>
-                        </TableRow>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <Loading/>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
                     )}
                 </Table>
             </div>

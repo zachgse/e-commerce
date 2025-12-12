@@ -33,3 +33,11 @@ export type PaymentDetailsAdmin = PaymentAdmin & {
     payment_intent_id: string
     client_key_id: string
 }
+
+export type Chart = {
+    years_available: number[]
+    data_for_selected_year: {
+        month: string
+        count: number
+    }[]
+}
