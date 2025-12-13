@@ -1,22 +1,22 @@
 import React from 'react'
-import { queryFetchChartOrders, useQueryFetchChartOrders } from '@/services/queries/adminQueries'
+import { queryFetchChartUsers,useQueryFetchChartUsers } from '@/services/queries/adminQueries'
 import clsx from 'clsx'
 import Loading from '@/components/Loading'
 import ChartDashboard from '@/components/reusable/ChartDashboard'
 
-const OrderChart = () => {
+const UserChart = () => {
     const [currentYear,setCurrentYear] = React.useState<number>(new Date().getFullYear());
-    const { data:list,isFetching } = useQueryFetchChartOrders(currentYear);   
+    const { data:list,isFetching } = useQueryFetchChartUsers(currentYear);   
     const orders = list?.data_for_selected_year ?? [];
     
     const handleClick = (year:number) => {
-        queryFetchChartOrders(year);
+        queryFetchChartUsers(year);
         setCurrentYear(year);
     }
 
     return (
         <div className='flex flex-col gap-2'>
-            <b>Orders</b>
+            <b>Registered Users</b>
             <div className="flex gap-1">
                 {list?.years_available &&  list?.years_available?.length > 0 && 
                     list.years_available.map((year) => (
@@ -28,17 +28,15 @@ const OrderChart = () => {
                         </div>
                     ))}
             </div>
-            {isFetching ? (
-                <Loading/>
-            ) : (
+            {isFetching ? (<Loading/>) : (
                 <ChartDashboard data_for_selected_year={orders}
                                 years_available={list?.years_available ?? []}
-                                id='order-chart' 
-                                name='Number of orders' 
-                                type='bar'/>    
+                                id='user-chart' 
+                                name='Number of registered users' 
+                                type='line'/>  
             )}
         </div>
     )
 }
 
-export default OrderChart
+export default UserChart

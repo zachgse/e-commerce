@@ -21,7 +21,8 @@ import OrderList from './pages/user/order/OrderList'
 import OrderDetails from './pages/user/order/OrderDetails'
 
 //admins
-import Dashboard from './pages/admin/Dashboard'
+const Dashboard = lazy(() => import("./pages/admin/Dashboard"))
+import DashboardContentSkeleton from './features/admin/dashboard/DashboardContentSkeleton'
 import ProductDashboard from './pages/admin/ProductDashboard'
 import OrderDashboard from './pages/admin/OrderDashboard'
 import PaymentDashboard from './pages/admin/PaymentDashboard'
@@ -77,7 +78,11 @@ function App() {
             </Route>
           </Route>
           <Route path="/admin" element={<AdminLayout/>}>
-            <Route path="" element={<Dashboard/>}/>
+            <Route path="" element={
+              <Suspense fallback={<DashboardContentSkeleton/>}>
+                <Dashboard/>
+              </Suspense>
+            }/>
             <Route path="products" element={<ProductDashboard/>}/>
             <Route path="orders" element={<OrderDashboard/>}/>
             <Route path="payments" element={<PaymentDashboard/>}/>

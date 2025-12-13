@@ -6,14 +6,14 @@ import { FaChartBar } from "react-icons/fa6"
 import { FaStore,FaBox,FaTruck,FaMoneyBillWave } from "react-icons/fa"
 
 const AdminSidebar = () => {
-    const mobile = window.innerWidth < 768;
+    const mobile = window.innerWidth < 1024;
     const location = useLocation();
     const [isOpen,setIsOpen] = React.useState<boolean>(mobile ? false : true);
     const [isMobile,setIsMobile] = React.useState<boolean>(mobile);
 
     React.useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 768);
+            setIsMobile(window.innerWidth < 1024);
         }
         
         window.addEventListener("resize",handleResize);

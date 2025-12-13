@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\{ProductService,OrderService,PaymentService};
+use App\Services\{ProductService,OrderService,PaymentService,AuthService};
 use App\Traits\ApiResponseTrait;
 use App\Http\Resources\Product\ProductAdminResource;
 use App\Http\Resources\Order\{OrderAdminResource,OrderDetailAdminResource};
@@ -16,7 +16,8 @@ class AdminController extends Controller
 
     public function __construct(protected ProductService $productService,
                                 protected OrderService $orderService,
-                                protected PaymentService $paymentService)
+                                protected PaymentService $paymentService,
+                                protected AuthService $authService)
     {
         $this->latestYear = now()->format('Y');
     }
@@ -30,7 +31,17 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
         }
+    }
 
+    public function userChart(Request $request)
+    {
+        try {
+            $year = $request->get('year') ? (int)$request->get('year') : (int)$this->latestYear;
+            $data = new ChartResource($this->authService->dashboard($year));
+            return $this->successResponse($data,200,"Chart data");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }
     }
 
     public function products(Request $request)

@@ -1,15 +1,19 @@
-import React from 'react'
 import OrderChart from './OrderChart'
+import UserChart from './UserChat'
 
-type Chart = {
-  options: ApexCharts.ApexOptions;
-  series: ApexAxisChartSeries;
-}
 
 const DashboardContent = () => {
   return (
     <div>
-        <OrderChart/> 
+      <div className="grid grid-cols-2 gap-6">
+        <div className="col-span-2 lg:col-span-1 w-full min-w-0 mx-auto">
+          <OrderChart />
+        </div>
+
+        <div className="col-span-2 lg:col-span-1 w-full min-w-0 mx-auto">
+          <UserChart />
+        </div>
+      </div>
     </div>
   )
 }

@@ -14,6 +14,11 @@ class AuthService
     {
     }
 
+    public function dashboard(int $year)
+    {
+        return $this->authRepository->getDashboard($year);
+    }
+
     public function authenticate(array $credentials) : array
     {
         if (!Auth::attempt($credentials)){
