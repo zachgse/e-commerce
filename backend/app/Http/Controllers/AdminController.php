@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\{ProductService,OrderService,PaymentService,AuthService};
+use App\Services\{ProductService,OrderService,PaymentService,AuthService,DashboardService};
 use App\Traits\ApiResponseTrait;
+use App\Http\Requests\ChartRequest;
 use App\Http\Resources\Product\ProductAdminResource;
 use App\Http\Resources\Order\{OrderAdminResource,OrderDetailAdminResource};
 use App\Http\Resources\Payment\{PaymentAdminResource,PaymentDetailAdminResource};
-use App\Http\Resources\Admin\ChartResource;
+use App\Http\Resources\Admin\{ChartResource,ProductStatsResource,TransactionResource};
+use Str;
 
 class AdminController extends Controller
 {
@@ -17,31 +19,57 @@ class AdminController extends Controller
     public function __construct(protected ProductService $productService,
                                 protected OrderService $orderService,
                                 protected PaymentService $paymentService,
-                                protected AuthService $authService)
+                                protected AuthService $authService,
+                                protected DashboardService $dashboardService)
     {
         $this->latestYear = now()->format('Y');
     }
 
-    public function orderChart(Request $request)
+    public function index()
     {
         try {
-            $year = $request->get('year') ? (int)$request->get('year') : (int)$this->latestYear;
-            $data = new ChartResource($this->orderService->dashboard($year));
-            return $this->successResponse($data,200,"Chart data");
+            $data = $this->dashboardService->getStatistics();
+            return $this->successResponse($data,200,"Dashboard statistics");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
         }
     }
 
-    public function userChart(Request $request)
+    public function chart(ChartRequest $request)
     {
         try {
+            $module =  $request->get('module');
             $year = $request->get('year') ? (int)$request->get('year') : (int)$this->latestYear;
-            $data = new ChartResource($this->authService->dashboard($year));
-            return $this->successResponse($data,200,"Chart data");
+            $data = $this->dashboardService->getChart($module,$year);
+            if ($module == 'order_status') goto callback;
+            $data = new ChartResource($data);
+            callback:
+            return $this->successResponse($data,200,Str::title($module). " chart");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
         }
+    }
+
+    public function productStats(Request $request)
+    {
+        try {
+            $data = ProductStatsResource::collection($this->dashboardService
+                            ->getProductStats($request->get('filterBy'),
+                                            $request->get('filterOrder') ?? "DESC"));
+            return $this->successResponse($data,200,"Product statistics");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }  
+    }
+
+    public function transactionStats(Request $request)
+    {
+        try {
+            $data = TransactionResource::collection($this->dashboardService->getTransactions());
+            return $this->successResponse($data,200,"Latest payment transactions");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }      
     }
 
     public function products(Request $request)

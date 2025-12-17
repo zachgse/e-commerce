@@ -19,7 +19,7 @@ class ChartResource extends JsonResource
 
         $yearsAvailable = collect($this->resource['yearsAvailable'])->map(function($year) {
             return $year->year;
-        })->reverse()->values()->all();
+        })->values()->all();
         
         if (!in_array($currentYear,$yearsAvailable)) array_unshift($yearsAvailable,$currentYear);
         

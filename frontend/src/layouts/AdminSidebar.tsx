@@ -4,6 +4,7 @@ import clsx from "clsx"
 import { MdOutlineKeyboardDoubleArrowLeft,MdOutlineKeyboardDoubleArrowRight } from "react-icons/md"
 import { FaChartBar } from "react-icons/fa6"
 import { FaStore,FaBox,FaTruck,FaMoneyBillWave } from "react-icons/fa"
+import AdminNavbar from "@/components/AdminNavbar"
 
 const AdminSidebar = () => {
     const mobile = window.innerWidth < 1024;
@@ -35,9 +36,9 @@ const AdminSidebar = () => {
                 />
             )}
 
-            {/* toggle for mobile */}
+            {/* toggler for mobile */}
             {isMobile && (
-                <div className="fixed top-4 left-4 z-40">
+                <div className="fixed top-10 left-2 z-40">
                     <div
                     onClick={() => setIsOpen(prev => !prev)}
                     className="w-8 h-8 bg-white rounded-full border border-gray-300 flex items-center justify-center cursor-pointer"
@@ -68,7 +69,7 @@ const AdminSidebar = () => {
 
                     {/* toggler for web view */}
                     {!isMobile && (
-                        <div className="absolute right-[-15px] top-[-40px] ">
+                        <div className="absolute right-[-15px] top-[-24px] ">
                             <div onClick={() => setIsOpen(prev=>!prev)}
                                 className="w-8 h-8 border border-gray-300 bg-white rounded-full 
                                             flex items-center justify-center cursor-pointer">
@@ -90,7 +91,7 @@ const AdminSidebar = () => {
                         ) : <FaStore className="w-8 h-8 mx-auto"/>}
                     </Link>
 
-                    <NavLink to="/admin"
+                    <NavLink to="/admin" end
                         className={({ isActive }) =>
                             clsx(
                             "border-t border-gray-300 flex justify-start w-full py-4 hover:bg-gray-200 cursor-pointer",
@@ -166,10 +167,13 @@ const AdminSidebar = () => {
             </div>
 
             {/* Main content */}
-            <div className={clsx("mt-12 p-5 mb-96 transition-all duration-200 ease-in-out",
+            <div className={clsx("transition-all duration-200 ease-in-out",
                 isOpen ? "w-10/12" : "w-11/12",
                 isMobile && "w-full")}>
-                <Outlet/>
+                <AdminNavbar/>
+                <div className="p-5">
+                    <Outlet/>
+                </div>
             </div>
 
         </div>

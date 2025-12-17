@@ -41,3 +41,29 @@ export type ChartType = {
         count: number
     }[]
 }
+
+export type OrderStatusChart = {
+    status: string
+    total: number
+}
+
+export type DashboardStats = {
+    total_products_sold: number
+    total_revenue: number
+    total_users: number
+    avg_review: number
+}
+
+export type ProductStats = {
+    name: string,
+    image?: string,
+    avg_rating: number,
+    total_sold: number,
+    stock: number
+}[]
+
+export type TransactionStats = {
+    reference_number: string
+    order_amount: number
+    created_at: Date
+}[]

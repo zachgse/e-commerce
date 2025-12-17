@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { fetchChartOrders, fetchChartUsers, fetchOrderDetails, fetchOrders, fetchPaymentDetails, fetchPayments, updateOrder } from "../api/adminApi"
+import { fetchChart, fetchDashboardStats, fetchOrderDetails, fetchOrders, fetchPaymentDetails, fetchPayments, fetchProductStats, fetchTransactionStats, updateOrder } from "../api/adminApi"
 import type { OrderAdmin, PaymentAdmin, SearchParams } from "@/types/adminTypes"
 import type { PaginatedResponse } from "@/types/generalTypes"
 
@@ -76,27 +76,38 @@ export const useFetchPaymentDetails = (referenceNumber:string) => {
     });
 }
 
-// chart module
-export const queryFetchChartOrders = (year?:number) => ({
-    queryKey: ['admin/chart/orders',year],
-    queryFn: () => fetchChartOrders(year),
+// dashboard module
+export const queryFetchDashboardStats = () => ({
+    queryKey: ['admin/stats'],
+    queryFn: fetchDashboardStats,
+    staleTime: 1000 * 60 * 5,
+    suspense: true
+});
+
+export const queryFetchProductStats = (filterBy:string,filterOrder?:string) => ({
+    queryKey: ['admin/stats/products',filterBy,filterOrder],
+    queryFn: () => fetchProductStats(filterBy,filterOrder),
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
     suspense: true
 });
 
-export const useQueryFetchChartOrders = (year?:number) => {
-    return useQuery(queryFetchChartOrders(year));
-}
+export const queryFetchTransactionStats = () => ({
+    queryKey: ['admin/stats/transactions'],
+    queryFn: fetchTransactionStats,
+    suspense: true
+});
 
-export const queryFetchChartUsers = (year?:number) => ({
-    queryKey: ['admin/chart/users',year],
-    queryFn: () => fetchChartUsers(year),
+export const queryFetchChart = (module:string,year?:number) => ({
+    queryKey: ['admin/chart',module,year],
+    queryFn: () => fetchChart(module,year),
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
     suspense: true
-})
+});
 
-export const useQueryFetchChartUsers = (year?:number) => {
-    return useQuery(queryFetchChartUsers(year));
-}
+
+
+
+
+

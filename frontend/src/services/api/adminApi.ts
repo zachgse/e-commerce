@@ -1,5 +1,5 @@
 import { apiAuth } from "@/api/axiosClient"
-import type { ChartType, OrderAdmin, OrderDetailsAdmin, PaymentAdmin, PaymentDetailsAdmin, SearchParams } from "@/types/adminTypes"
+import type { ChartType, DashboardStats, OrderAdmin, OrderDetailsAdmin, PaymentAdmin, PaymentDetailsAdmin, ProductStats, SearchParams, TransactionStats } from "@/types/adminTypes"
 import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const fetchOrders = async(params:SearchParams):Promise<PaginatedResponse<OrderAdmin>> => {
@@ -27,12 +27,22 @@ export const fetchPaymentDetails = async(referenceNumber:string):Promise<Payment
     return response.data.data;
 }
 
-export const fetchChartOrders = async(year?:number):Promise<ChartType> => {
-    const response = await apiAuth.get(`/admin/chart/orders?year=${year}`);
+export const fetchChart = async(module:string,year?:number):Promise<ChartType> => {
+    const response = await apiAuth.get(`/admin/chart?module=${module}&year=${year}`);
     return response.data.data;
 }
 
-export const fetchChartUsers = async(year?:number):Promise<ChartType> => {
-    const response = await apiAuth.get(`/admin/chart/users?year=${year ?? 0}`);
+export const fetchDashboardStats = async():Promise<DashboardStats> => {
+    const response = await apiAuth.get('/admin');
+    return response.data.data;
+}
+
+export const fetchProductStats = async(filterBy:string,filterOrder?:string):Promise<ProductStats> => {
+    const response = await apiAuth.get(`/admin/products/stats?filterBy=${filterBy}&filterOrder=${filterOrder ?? "DESC"}`);
+    return response.data.data;
+} 
+
+export const fetchTransactionStats = async():Promise<TransactionStats> => {
+    const response = await apiAuth.get('/admin/payments/stats');
     return response.data.data;
 }

@@ -5,10 +5,10 @@ import type { ChartType } from "@/types/adminTypes"
 type OrderChartProps = ChartType & {
   type: "bar" | "pie" | "line"
   id: string
-  name: string
+  label: string
 }
 
-const ChartDashboard = (props: OrderChartProps) => {
+const ChartComponent = (props: OrderChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ChartDashboard = (props: OrderChartProps) => {
 
   const series: ApexAxisChartSeries = [
     {
-      name: props.name,
+      name: props.label,
       data: props.data_for_selected_year.map(d => d.count),
     },
   ]
@@ -51,4 +51,4 @@ const ChartDashboard = (props: OrderChartProps) => {
   )
 }
 
-export default ChartDashboard
+export default ChartComponent

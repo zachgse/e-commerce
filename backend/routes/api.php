@@ -68,13 +68,19 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
     });
 
     Route::group(['prefix'=>'admin','as'=>'admin.'], function() {
+        Route::get('',[AdminController::class,'index']);
+        Route::get('chart',[AdminController::class,'chart']);
+
+        Route::group(['prefix'=>'products','as'=>'products.'], function() {
+            //add product admin routes here 
+            Route::get('stats',[AdminController::class,'productStats']);
+        });
+        
         Route::group(['prefix'=>'chart','as'=>'chart.'], function() {
             Route::get('orders',[AdminController::class,'orderChart']);
             Route::get('users',[AdminController::class,'userChart']);
         });
-
-        Route::get('',[AdminController::class,'index']);
-
+        
         Route::get('products',[AdminController::class,'products']);
         
         Route::group(['prefix'=>'orders','as'=>'orders.'], function() {
@@ -85,6 +91,7 @@ Route::group(['middleware'=>'auth:sanctum'], function() {
         
         Route::group(['prefix'=>'payments','as'=>'payments.'], function() {
             Route::get('',[AdminController::class,'payments']);
+            Route::get('stats',[AdminController::class,'transactionStats']);
             Route::get('{referenceNumber?}',[AdminController::class,'paymentDetails']);
         });
     });
