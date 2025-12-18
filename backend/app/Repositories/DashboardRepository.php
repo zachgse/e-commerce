@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\DashboardInterface;
 use App\Models\{Product,Payment,User,Rating,Order};
 use Illuminate\Database\Query\JoinClause;
-use DB;
+use DB,Cache;
 
 class DashboardRepository implements DashboardInterface 
 {
@@ -26,43 +26,45 @@ class DashboardRepository implements DashboardInterface
 
     public function chart(string $module,int $year)
     {
-        if ($module != 'order_status') {
-            $years = DB::table($module)
-                        ->selectRaw('DISTINCT(YEAR(created_at)) as year')
-                        ->get();
-        }
+        $start = "$year-01-01 00:00:00";
+        $end = "$year-12-31 23:59:59";
 
-        switch ($module){
-            case "order_status":
-                return Order::selectRaw('status,COUNT(*) as total')->groupBy('status')->get();
-                break;
-            case "payments":
-                $data = DB::table($module)
-                    ->selectRaw('MONTH(created_at) as month ,SUM(order_amount) as total')
-                    ->whereYear('created_at',$year)
-                    ->where('deleted_at',null)
-                    ->groupBy('month')
-                    ->orderBy('month')
-                    ->get();
-                break;
-            default:
-                $data = DB::table($module)
-                    ->selectRaw('MONTH(created_at) as month ,COUNT(*) as total')
-                    ->whereYear('created_at',$year)
-                    ->groupBy('month')
-                    ->orderBy('month')
-                    ->get();
-                break;
-        }
+        $years = Cache::remember("chartyear:$module",86400, function() use($module) {
+            return collect([now()->year])
+                ->merge(DB::table($module)
+                    ->selectRaw('DISTINCT(YEAR(created_at)) as year')
+                    ->orderBy('year', 'DESC')
+                    ->pluck('year'))
+                ->unique()
+                ->sortDesc()
+                ->values();
+        });
 
-        $months = array_fill(1,12,0);
-        foreach($data as $d) {
-            $months[$d->month] = (float)$d->total;
-        }
+        $data = Cache::remember("chartdb:$module:$year",86400,function() use($module,$start,$end){
+            $query = DB::table($module)
+                        ->whereNull('deleted_at')
+                        ->whereBetween('created_at',[$start,$end]);
+            
+            $selectStatement = $module == "payments" 
+                        ? "MONTH(created_at) as month ,SUM(order_amount) as total"
+                        : "MONTH(created_at) as month ,COUNT(*) as total";
+            
+            $dataPerMonth = $query->selectRaw($selectStatement)
+                                ->groupBy('month')
+                                ->orderBy('month')
+                                ->get();
+
+            $months = array_fill(1,12,0);
+            foreach($dataPerMonth as $d) {
+                $months[$d->month] = (float)$d->total;
+            }
+
+            return $months;
+        });
 
         return [
             'yearsAvailable' => $years,
-            'dataForSelectedYear' => $months
+            'dataForSelectedYear' => $data
         ];
     }
 

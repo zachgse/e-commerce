@@ -40,10 +40,7 @@ class AdminController extends Controller
         try {
             $module =  $request->get('module');
             $year = $request->get('year') ? (int)$request->get('year') : (int)$this->latestYear;
-            $data = $this->dashboardService->getChart($module,$year);
-            if ($module == 'order_status') goto callback;
-            $data = new ChartResource($data);
-            callback:
+            $data = new ChartResource($this->dashboardService->getChart($module,$year));
             return $this->successResponse($data,200,Str::title($module). " chart");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());

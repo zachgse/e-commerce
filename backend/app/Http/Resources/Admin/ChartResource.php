@@ -15,14 +15,6 @@ class ChartResource extends JsonResource
     public function toArray(Request $request): array
     {
         $months = ['Jan','Feb','Mar','Apr','May','June','July','Aug','Sep','Oct','Nov','Dec'];
-        $currentYear = (int)now()->format('Y');
-
-        $yearsAvailable = collect($this->resource['yearsAvailable'])->map(function($year) {
-            return $year->year;
-        })->values()->all();
-        
-        if (!in_array($currentYear,$yearsAvailable)) array_unshift($yearsAvailable,$currentYear);
-        
         $ordersPerMonth = collect($this->resource['dataForSelectedYear'])->map(function($value,$key) use($months){
             $monthName = $months[$key-1];
             return [
@@ -32,7 +24,7 @@ class ChartResource extends JsonResource
         })->values()->all(); 
 
         return [
-            'years_available' => $yearsAvailable,
+            'years_available' => $this->resource['yearsAvailable'],
             'data_for_selected_year' => $ordersPerMonth
         ];
     }

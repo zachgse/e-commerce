@@ -14,7 +14,7 @@ class ChartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'module' => 'required|in:orders,users,payments,order_status',
+            'module' => 'required|in:orders,payments',
             'year' => 'nullable'
         ];
     }
@@ -23,7 +23,7 @@ class ChartRequest extends FormRequest
     {
         return [
             'required' => 'Field is required.',
-            'module.in' => "Only modules named 'products,orders'payments'order_status' is allowed."
+            'module.in' => "Only modules named 'orders and payments' is allowed."
         ];
     }
 }
