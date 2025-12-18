@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\DashboardInterface;
 use App\Models\{Product,Payment,User,Rating,Order};
 use Illuminate\Database\Query\JoinClause;
-use DB,Cache;
+use DB;
 
 class DashboardRepository implements DashboardInterface 
 {
@@ -29,8 +29,7 @@ class DashboardRepository implements DashboardInterface
         $start = "$year-01-01 00:00:00";
         $end = "$year-12-31 23:59:59";
 
-        $years = Cache::remember("chartyear:$module",86400, function() use($module) {
-            return collect([now()->year])
+        $years = collect([now()->year])
                 ->merge(DB::table($module)
                     ->selectRaw('DISTINCT(YEAR(created_at)) as year')
                     ->orderBy('year', 'DESC')
@@ -38,33 +37,28 @@ class DashboardRepository implements DashboardInterface
                 ->unique()
                 ->sortDesc()
                 ->values();
-        });
 
-        $data = Cache::remember("chartdb:$module:$year",86400,function() use($module,$start,$end){
-            $query = DB::table($module)
-                        ->whereNull('deleted_at')
-                        ->whereBetween('created_at',[$start,$end]);
-            
-            $selectStatement = $module == "payments" 
-                        ? "MONTH(created_at) as month ,SUM(order_amount) as total"
-                        : "MONTH(created_at) as month ,COUNT(*) as total";
-            
-            $dataPerMonth = $query->selectRaw($selectStatement)
-                                ->groupBy('month')
-                                ->orderBy('month')
-                                ->get();
+        $query = DB::table($module)
+                    ->whereNull('deleted_at')
+                    ->whereBetween('created_at',[$start,$end]);
+        
+        $selectStatement = $module == "payments" 
+                    ? "MONTH(created_at) as month ,SUM(order_amount) as total"
+                    : "MONTH(created_at) as month ,COUNT(*) as total";
+        
+        $dataPerMonth = $query->selectRaw($selectStatement)
+                            ->groupBy('month')
+                            ->orderBy('month')
+                            ->get();
 
-            $months = array_fill(1,12,0);
-            foreach($dataPerMonth as $d) {
-                $months[$d->month] = (float)$d->total;
-            }
-
-            return $months;
-        });
+        $months = array_fill(1,12,0);
+        foreach($dataPerMonth as $d) {
+            $months[$d->month] = (float)$d->total;
+        }
 
         return [
             'yearsAvailable' => $years,
-            'dataForSelectedYear' => $data
+            'dataForSelectedYear' => $months
         ];
     }
 
