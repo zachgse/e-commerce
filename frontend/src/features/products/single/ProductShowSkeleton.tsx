@@ -1,23 +1,12 @@
-import Box from "../../reusable/Box";
+import Box from "@/components/reusable/Box"
 
-const ProductSingleSkeleton = () => {
+const ProductShowSkeleton = () => {
     return (
         <div className="flex flex-col gap-8">
             <div className="border-1 border-gray-300 rounded shadow-lg p-6 w-full">
                 <div className="grid grid-cols-3 gap-12">
                     <div className="md:col-span-1 col-span-3 flex flex-col gap-2">
                         <Box class="w-full h-96"/> 
-                        <div className="grid grid-cols-3 gap-4">
-                            <div className="col-span-1">
-                                <Box class="w-full h-40"/>
-                            </div>
-                            <div className="col-span-1">
-                                <Box class="w-full h-40"/>
-                            </div>
-                            <div className="col-span-1">
-                                <Box class="w-full h-40"/>
-                            </div>
-                        </div>
                     </div>
                     <div className="md:col-span-2 col-span-3 flex flex-col gap-2">
                         <Box class="w-60 h-10"/>
@@ -45,4 +34,4 @@ const ProductSingleSkeleton = () => {
     )
 }
 
-export default ProductSingleSkeleton
+export default ProductShowSkeleton

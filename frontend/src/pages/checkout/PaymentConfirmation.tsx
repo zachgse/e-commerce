@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router"
 import { useQueryClient } from "@tanstack/react-query"
-import { useFetchPaymentSession } from "../../features/payment/paymentQueries"
+import { useFetchPaymentSession } from "../../services/queries/paymentQueries"
 import { echo } from "../../lib/echo"
-import type { PaymentStatus } from "../../features/payment/paymentType"
+import type { PaymentStatus } from "../../types/paymentType"
 import { Oval } from 'react-loader-spinner'
 import { FaCheckCircle } from "react-icons/fa"
 import { TiDelete } from "react-icons/ti"

@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { useAppSelector } from "../../../hooks/hooks"
-import { useFetchListUserOrder } from "../../../features/order/orderQueries"
+import { useFetchListUserOrder } from "../../../services/queries/orderQueries"
 import Box from "../../../components/reusable/Box"
 import Button from "../../../components/reusable/Button"
 import { money_format } from "../../../utils/helper"

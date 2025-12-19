@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
-import { useAppDispatch,useAppSelector } from '../../../hooks/hooks'
-import { tryAddToCart } from '../../../redux/cartThunk'
-import type { ProductDetail } from '../../../features/products/productType'
-import type { CartItem } from '../../../features/cart/cartType'
-import { money_format } from '../../../utils/helper'
-import Box from '../../reusable/Box'
+import { useAppDispatch,useAppSelector } from '@/hooks/hooks'
+import { tryAddToCart } from '@/redux/cartThunk'
+import type { ProductDetail } from '@/types/productType'
+import type { CartItem } from '@/types/cartType'
+import { money_format } from '@/utils/helper'
+import Box from '@/components/reusable/Box'
 import { FaStar } from "react-icons/fa"
 import { FaRegStar } from "react-icons/fa"
 

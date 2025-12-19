@@ -11,7 +11,7 @@ import ProfileLayout from './components/ProfileLayout'
 import AdminLayout from './layouts/AdminLayout'
 
 import Loading from './components/Loading'
-import ProductSingleSkeleton from './components/products/single/ProductSingleSkeleton'
+import ProductSingleSkeleton from './features/products/single/ProductShowSkeleton'
 import CheckoutSkeleton from './pages/checkout/CheckoutSkeleton'
 import PaymentConfirmed from './pages/checkout/PaymentConfirmation'
 import Search from './pages/Search'

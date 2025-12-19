@@ -1,6 +1,6 @@
 import React,{ useRef, useState } from "react"
 import { useNavigate,useLocation } from "react-router"
-import { useFetchKeywordSearchProducts } from "../features/products/productQueries"
+import { useFetchKeywordSearchProducts } from "@/services/queries/productQueries"
 import { FaSearch } from "react-icons/fa"
 
 const Searchbar = () => {
@@ -57,7 +57,7 @@ const Searchbar = () => {
           onChange={(e) => setQuery(e.target.value)}
           value={query}
           type="text"
-          className="w-96 h-8 border border-gray-300 px-2"
+          className="lg:w-96 min-w-full h-8 border border-gray-300 px-2"
         />
         <div onClick={handleSearch}
           className="absolute right-2 top-2">
@@ -67,7 +67,7 @@ const Searchbar = () => {
       </div>
 
       {query.length > 0 && !isLoading && isOpen && (
-        <div className="absolute top-8 w-96 h-auto border border-gray-300 
+        <div className="absolute top-8 lg:w-96 min-w-full h-auto border border-gray-300 
                         bg-white z-50 flex flex-col p-1">
         {searchedProducts?.length > 0 ?
            searchedProducts.map((product,index:number) => (

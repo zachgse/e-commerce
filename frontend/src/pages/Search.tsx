@@ -1,8 +1,8 @@
 import { useState } from 'react'  
 import { useSearchParams } from 'react-router'
-import { useFetchFullSearchProducts } from '../features/products/productQueries'
+import { useFetchFullSearchProducts } from '../services/queries/productQueries'
 import { FaRegLightbulb } from "react-icons/fa"
-import ProductListData from '../components/products/list/ProductListData'
+import ProductListData from '../features/products/list/ProductListData'
 
 type SortBy = "asc" | "desc" | "";
 

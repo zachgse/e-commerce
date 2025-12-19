@@ -1,8 +1,8 @@
 import { useParams } from "react-router"
-import { useSingleProductFetch } from "../features/products/productQueries"
-import ProductSingleSkeleton from "../components/products/single/ProductSingleSkeleton"
-import ProductInfo from "../components/products/single/ProductInfo"
-import ProductReview from "../components/products/single/ProductReview"
+import { useSingleProductFetch } from "@/services/queries/productQueries"
+import ProductShowSkeleton from "@/features/products/single/ProductShowSkeleton"
+import ProductInfo from "@/features/products/single/ProductInfo"
+import ProductReview from "@/features/products/single/ProductReview"
 
 const ProductShow = () => {
     const params = useParams();
@@ -14,6 +14,7 @@ const ProductShow = () => {
     const slug = params.slug;
 
     const {data:product,isLoading,error} = useSingleProductFetch(slug);
+    const reviews = product?.reviews;
 
     if (error) {
         console.log("error is ", error);
@@ -21,19 +22,17 @@ const ProductShow = () => {
     }
 
     if (isLoading) {
-        return <ProductSingleSkeleton/>
+        return <ProductShowSkeleton/>
     }
 
     if (!product) {
         return <div>Product not found.</div>
     }
-
-    const reviews = product.reviews;
-    
+        
     return (
         <div className="flex flex-col gap-8">
             <ProductInfo product={product}/>
-            <ProductReview reviews={reviews}/>
+            <ProductReview reviews={reviews ?? []}/>
         </div>
     )
 }

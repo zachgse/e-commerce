@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { useForm } from '@tanstack/react-form'
 import type { AnyFieldApi } from "@tanstack/react-form"
 import { useQueryClient } from '@tanstack/react-query'
-import { useCreateProduct } from '@/features/products/productQueries'
+import { useCreateProduct } from '@/services/queries/productQueries'
 import type { ProductAdminModalState } from './ProductDashboardContent'
 import ModalLoading from '@/components/reusable/ModalLoading'
 import Button from '@/components/reusable/Button'

@@ -1,5 +1,5 @@
-import Box from "../components/reusable/Box"
-import Products from "../components/products/list/Products"
+import Box from "@/components/reusable/Box"
+import ProductListContent from "@/features/products/list/ProductListContent"
 
 const Home = () => {
   return (
@@ -28,7 +28,7 @@ const Home = () => {
         </Box>
       </div>
 
-      <Products/>
+      <ProductListContent/>
     </div>
   )
 }

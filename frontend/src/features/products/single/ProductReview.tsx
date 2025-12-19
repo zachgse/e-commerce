@@ -1,4 +1,4 @@
-import type { Review } from "../../../features/reviews/reviewType"
+import type { Review } from "@/types/reviewType"
 import { FaRegUserCircle } from "react-icons/fa"
 
 type ProductReviewProps = {

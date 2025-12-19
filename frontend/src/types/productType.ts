@@ -1,4 +1,4 @@
-import type { Review } from "../reviews/reviewType"
+import type { Review } from "./reviewType"
 
 export type Product = { 
     name: string

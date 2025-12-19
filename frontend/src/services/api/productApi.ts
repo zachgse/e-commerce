@@ -1,5 +1,5 @@
-import { axiosClient,apiAuth } from "./axiosClient"
-import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch, ProductAdminUpdate, ProductCreatePayload } from "../features/products/productType"
+import { axiosClient,apiAuth } from "../../api/axiosClient"
+import type { ProductDetail,ProductKeywordSearch,ProductFullSearch,ProductAdmin,ProductAdminSearch, ProductAdminUpdate, ProductCreatePayload } from "../../types/productType"
 import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const fetchAllProducts = async () => {

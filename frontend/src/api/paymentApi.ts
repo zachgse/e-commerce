@@ -1,5 +1,5 @@
 import { axiosClient } from "./axiosClient"
-import type { PaymentSession } from "../features/payment/paymentType"
+import type { PaymentSession } from "../types/paymentType"
 
 export const fetchPaymentSession = async(referenceNumber:string) : Promise<PaymentSession> => {
     const response = await axiosClient.get(`payment/check-status/${referenceNumber}`); 

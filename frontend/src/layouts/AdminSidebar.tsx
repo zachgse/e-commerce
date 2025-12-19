@@ -24,7 +24,7 @@ const AdminSidebar = () => {
     React.useEffect(() => {
         setIsOpen(mobile ? false : true);
         setIsMobile(mobile);
-    },[location.pathname,isMobile])
+    },[location.pathname,isMobile]);
 
     return (
         <div className="flex min-h-screen relative overflow-x-hidden">

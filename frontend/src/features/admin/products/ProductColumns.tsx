@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import type { ProductAdmin } from "@/features/products/productType"
+import type { ProductAdmin } from "@/types/productType"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,

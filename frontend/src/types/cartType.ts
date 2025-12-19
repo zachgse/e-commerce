@@ -1,4 +1,4 @@
-import type { ProductDetail } from "../products/productType"
+import type { ProductDetail } from "../../types/productType"
 
 export type Cart = { //used for retrieving the cart of the user
     cart: CartItem[] 

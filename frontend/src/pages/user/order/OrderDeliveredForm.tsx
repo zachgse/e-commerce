@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useQueryClient } from '@tanstack/react-query'
-import { useUpdateOrderStatus } from '../../../features/order/orderQueries'
+import { useUpdateOrderStatus } from '../../../services/queries/orderQueries'
 import ModalLoading from '../../../components/reusable/ModalLoading'
 import Button from '../../../components/reusable/Button'
 
