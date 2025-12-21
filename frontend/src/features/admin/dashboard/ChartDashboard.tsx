@@ -1,7 +1,7 @@
 import React from 'react'
 import type { ChartType } from '@/types/adminTypes'
 import { queryFetchChart } from '@/services/queries/adminQueries'
-import Loading from '@/components/Loading'
+import Loading from '@/components/reusable/Loading'
 import ChartComponent from '@/components/reusable/ChartComponent'
 import Pill from '@/components/reusable/Pill'
 

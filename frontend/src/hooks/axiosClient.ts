@@ -1,5 +1,5 @@
 import axios from "axios"
-import { store } from "../redux/store";
+import { store } from "@/redux/store";
 
 
 export const axiosClient = axios.create({ //refactor rename to api 

@@ -2,13 +2,13 @@ import { Link } from "react-router"
 import { useAppDispatch,useAppSelector } from "@/hooks/hooks"
 import { removeUser } from "@/redux/authSlice"
 import { setInitialCart } from "@/redux/cartSlice"
-import { axiosClient } from "@/api/axiosClient"
+import { axiosClient } from "@/hooks/axiosClient"
 import { AiOutlineShoppingCart } from "react-icons/ai"
 import Searchbar from "./Searchbar"
-import { GiHamburgerMenu } from "react-icons/gi"
 import Sidebar from "./Sidebar"
 import React from "react"
 import { FaStore } from "react-icons/fa"
+import { GiHamburgerMenu } from "react-icons/gi"
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -69,7 +69,6 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="gap-4 md:flex hidden">
-                <Link to="/admin" className="cursor-pointer">Admin</Link>
                 <Link to="/order" className="cursor-pointer">Orders</Link>
                 <Link to="cart" className="relative inline-block">
                   <AiOutlineShoppingCart className="w-7 h-7 text-gray-800" />

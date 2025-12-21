@@ -1,12 +1,12 @@
 import { useState } from "react"
-import { axiosClient } from "../api/axiosClient"
+import { axiosClient } from "../hooks/axiosClient"
 import { setUser } from "../redux/authSlice"
 import { setInitialCart } from "../redux/cartSlice"
 import { useDispatch } from "react-redux"
 import { Link } from "react-router"
 import { useNavigate } from "react-router"
 import Button from "../components/reusable/Button"
-import { fetchUserCart } from "../api/cartApi"
+import { fetchUserCart } from "../services/api/cartApi"
 
 const Login = () => {
     const dispatch = useDispatch();

@@ -10,7 +10,7 @@ import Button from "@/components/reusable/Button"
 import ErrorComponent from "@/components/reusable/ErrorComponent"
 import { money_format } from "@/utils/helper"
 import Confirmation from "@/components/reusable/Confirmation"
-import Loading from "@/components/Loading"
+import Loading from "@/components/reusable/Loading"
 
 const CartContent = () => {
   const dispatch = useAppDispatch();

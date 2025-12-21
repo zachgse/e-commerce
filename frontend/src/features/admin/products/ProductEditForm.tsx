@@ -8,7 +8,7 @@ import type { ProductAdminModalState } from './ProductDashboardContent'
 import ModalLoading from '@/components/reusable/ModalLoading'
 import Button from '@/components/reusable/Button'
 import { IoMdClose } from 'react-icons/io'
-import Loading from '@/components/Loading'
+import Loading from '@/components/reusable/Loading'
 
 type ProductEditFormProps = {
     slug: string

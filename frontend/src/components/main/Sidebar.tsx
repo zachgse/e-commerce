@@ -16,7 +16,6 @@ const Sidebar = ({isOpen,setIsOpen}:SidebarProps) => {
                 <IoMdClose onClick={() => setIsOpen(false)} className="absolute top-8 right-6 cursor-pointer"/>
                 <Link to="/" className="md:text-3xl text-xl uppercase font-bold tracking-wider">E-commerce</Link>
                 <div className="flex flex-col items-center justify-center gap-4"> 
-                    <Link to="/admin" className="cursor-pointer">Admin</Link>
                     <Link to="/order" className="cursor-pointer">Orders</Link>
                     <div className="cursor-pointer">Logout</div>
                 </div>

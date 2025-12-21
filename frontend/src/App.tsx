@@ -6,10 +6,10 @@ import Pusher from 'pusher-js'
 import './App.css'
 
 // layout
-import MainLayout from './components/MainLayout'
+import MainLayout from './layouts/MainLayout'
 import AdminLayout from './layouts/AdminLayout'
 
-import Loading from './components/Loading'
+import Loading from './components/reusable/Loading'
 import ProductSingleSkeleton from './features/products/single/ProductShowSkeleton'
 import CheckoutSkeleton from './pages/checkout/CheckoutSkeleton'
 import PaymentConfirmed from './pages/checkout/PaymentConfirmation'
@@ -20,8 +20,7 @@ import Order from './pages/order/Order'
 import OrderShow from './pages/order/OrderShow'
 
 //admins
-const Dashboard = lazy(() => import("./pages/admin/Dashboard")) //change to normal import since i have batch query
-import DashboardContentSkeleton from './features/admin/dashboard/DashboardContentSkeleton'
+import Dashboard from './pages/admin/Dashboard'
 import ProductDashboard from './pages/admin/ProductDashboard'
 import OrderDashboard from './pages/admin/OrderDashboard'
 import PaymentDashboard from './pages/admin/PaymentDashboard'
@@ -73,11 +72,7 @@ function App() {
             </Route>
           </Route>
           <Route path="/admin" element={<AdminLayout/>}>
-            <Route path="" element={
-              <Suspense fallback={<DashboardContentSkeleton/>}>
-                <Dashboard/>
-              </Suspense>
-            }/>
+            <Route path="" element={<Dashboard/>}/>
             <Route path="products" element={<ProductDashboard/>}/>
             <Route path="orders" element={<OrderDashboard/>}/>
             <Route path="payments" element={<PaymentDashboard/>}/>

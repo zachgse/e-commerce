@@ -3,7 +3,7 @@ import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
 import type { Checkout } from "../../features/cart/cartType"
 import { money_format } from "../../utils/helper"
-import { axiosClient } from "../../api/axiosClient"
+import { axiosClient } from "../../hooks/axiosClient"
 import { useAppSelector } from "../../hooks/hooks"
 import Box from "../../components/reusable/Box"
 

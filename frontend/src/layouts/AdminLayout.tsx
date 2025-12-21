@@ -1,5 +1,5 @@
 import { ToastContainer } from "react-toastify"
-import AdminSidebar from "./AdminSidebar"
+import AdminSidebar from "../components/admin/AdminSidebar"
 
 const AdminLayout = () => {
   return (

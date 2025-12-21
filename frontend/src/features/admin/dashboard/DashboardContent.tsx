@@ -5,6 +5,7 @@ import NumberStats from './NumberStats'
 import ProductStats from './TopProductStats'
 import PaymentStats from './PaymentStats'
 import ChartDashboard from './ChartDashboard'
+import DashboardContentSkeleton from './DashboardContentSkeleton'
 
 const DashboardContent = () => {
   const CURRENT_YEAR = new Date().getFullYear()
@@ -21,7 +22,11 @@ const DashboardContent = () => {
       queryFetchChart("orders",orderYearFilter),
       queryFetchChart("payments",paymentYearFilter)
     ]
-  })
+  });
+  const isLoading = data.some(d => d.isLoading);
+
+  if (isLoading) return <DashboardContentSkeleton/>
+  
   return (
     <div className='flex flex-col gap-8'>
       <NumberStats data={data[0]?.data}/>

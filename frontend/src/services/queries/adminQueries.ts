@@ -78,32 +78,32 @@ export const useFetchPaymentDetails = (referenceNumber:string) => {
 
 // dashboard module
 export const queryFetchDashboardStats = () => ({
-    queryKey: ['admin/stats'],
+    queryKey: ['dashboard','stats'],
     queryFn: fetchDashboardStats,
     staleTime: 1000 * 60 * 5,
-    suspense: true
+    
 });
 
 export const queryFetchProductStats = (filterBy:string,filterOrder?:string) => ({
-    queryKey: ['admin/stats/products',filterBy,filterOrder],
+    queryKey: ['dashboard','products',filterBy,filterOrder],
     queryFn: () => fetchProductStats(filterBy,filterOrder),
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
-    suspense: true
+    
 });
 
 export const queryFetchTransactionStats = () => ({
-    queryKey: ['admin/stats/transactions'],
+    queryKey: ['dashboard','transactions'],
     queryFn: fetchTransactionStats,
-    suspense: true
+    
 });
 
 export const queryFetchChart = (module:string,year?:number) => ({
-    queryKey: ['admin/chart',module,year],
+    queryKey: ['dashboard','chart',module,year],
     queryFn: () => fetchChart(module,year),
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5,
-    suspense: true
+    
 });
 
 

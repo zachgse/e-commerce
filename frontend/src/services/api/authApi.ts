@@ -1,4 +1,4 @@
-import { axiosClient } from "./axiosClient"
+import { axiosClient } from "../../hooks/axiosClient"
 
 export const csrf_cookie = async():Promise<any> => {
     const response = await axiosClient.get('/sanctum/csrf-cookie');

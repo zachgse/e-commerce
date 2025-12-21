@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { FaDeleteLeft } from "react-icons/fa6"
-import Loading from '../Loading'
+import Loading from './Loading'
 
 interface DataTableProps<TData, TValue> {
     isFetching: boolean

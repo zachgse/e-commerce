@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router'
 import { useFetchFullSearchProducts } from '../services/queries/productQueries'
 import { FaRegLightbulb } from "react-icons/fa"
 import ProductListData from '../features/products/list/ProductListData'
-import Loading from '@/components/Loading'
+import Loading from '@/components/reusable/Loading'
 
 type SortBy = "asc" | "desc" | "";
 

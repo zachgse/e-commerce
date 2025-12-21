@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce"
 import { fetchAllProducts,fetchSingleProduct,fetchKeywordSearchProducts,fetchFullSearchProducts,fetchAdminProducts, updateAdminProductInfo, updateAdminProductStatus, createProduct } from "../api/productApi";
-import type { Product,ProductAdmin,ProductAdminSearch,ProductCreatePayload,ProductDetail,ProductFullSearch } from "../../types/productType";
+import type { Product,ProductAdmin,ProductAdminSearch,ProductCreatePayload,ProductDetail,ProductFullSearch } from "@/types/productType";
 import type { PaginatedResponse } from "@/types/generalTypes";
 
 export const useProductsFetch = () => {

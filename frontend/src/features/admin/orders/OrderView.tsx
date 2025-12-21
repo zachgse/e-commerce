@@ -1,4 +1,4 @@
-import Loading from '@/components/Loading';
+import Loading from '@/components/reusable/Loading';
 import { useFetchOrderDetails } from '@/services/queries/adminQueries'
 import { statusBadgePills } from '@/utils/styleHelper';
 

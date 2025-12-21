@@ -1,4 +1,4 @@
-import { apiAuth } from "@/api/axiosClient"
+import { apiAuth } from "@/hooks/axiosClient"
 import type { ChartType, DashboardStats, OrderAdmin, OrderDetailsAdmin, PaymentAdmin, PaymentDetailsAdmin, ProductStats, SearchParams, TransactionStats } from "@/types/adminTypes"
 import type { PaginatedResponse } from "@/types/generalTypes";
 

@@ -4,7 +4,7 @@ import clsx from "clsx"
 import { MdOutlineKeyboardDoubleArrowLeft,MdOutlineKeyboardDoubleArrowRight } from "react-icons/md"
 import { FaChartBar } from "react-icons/fa6"
 import { FaStore,FaBox,FaTruck,FaMoneyBillWave } from "react-icons/fa"
-import AdminNavbar from "@/components/AdminNavbar"
+import AdminNavbar from "@/components/admin/AdminNavbar"
 
 const AdminSidebar = () => {
     const mobile = window.innerWidth < 1024;

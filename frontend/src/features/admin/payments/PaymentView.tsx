@@ -1,5 +1,5 @@
 import { useFetchPaymentDetails } from "@/services/queries/adminQueries"
-import Loading from "@/components/Loading";
+import Loading from "@/components/reusable/Loading";
 
 type PaymentViewProps = {
     referenceNumber: string

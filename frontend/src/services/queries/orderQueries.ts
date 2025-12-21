@@ -1,17 +1,17 @@
 import { useQuery,useMutation } from "@tanstack/react-query"
-import { fetchListUserOrder,fetchSingleUserOrder,updateOrderStatus } from "../../api/orderApi"
+import { fetchListUserOrder,fetchSingleUserOrder,updateOrderStatus } from "../api/orderApi"
 
-export const useFetchListUserOrder = (token:string) => {
+export const useFetchListUserOrder = () => {
     return useQuery({
-        queryKey: ["orders",token],
-        queryFn: () => fetchListUserOrder(token)
+        queryKey: ["orders"],
+        queryFn: () => fetchListUserOrder()
     });
 }
 
-export const useFetchSingleUserOrder = (token:string,referenceNumber:string) => {
+export const useFetchSingleUserOrder = (referenceNumber:string) => {
     return useQuery({
         queryKey: ["order",referenceNumber],
-        queryFn: () => fetchSingleUserOrder(token,referenceNumber)
+        queryFn: () => fetchSingleUserOrder(referenceNumber)
     });
 }
 
