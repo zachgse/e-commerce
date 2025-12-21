@@ -18,6 +18,7 @@ class ProductListResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'price' => (float)($this->price),
+            'stock' => $this?->stock,
             'thumbnail_image' => $this?->thumbnail_image?->file_path,
             'total_number_reviews' => $this->reviews->count(),
             'average_reviews' => (float)($this?->average_rating)

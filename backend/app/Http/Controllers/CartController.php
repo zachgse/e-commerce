@@ -31,7 +31,7 @@ class CartController extends Controller
     public function update(Request $request,CartRequest $cartRequest) : JsonResponse
     {
         try {
-            $data = $this->cartService->updateUserCart($request->user(),$cartRequest->validated());
+            $data = $this->cartService->saveUserCart($request->user(),$cartRequest->validated());
             return $this->successResponse($data,200,"User cart updated");
         } catch (AuthenticationException $e){
             return $this->errorResponse(401,$e->getMessage());

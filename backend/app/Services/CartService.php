@@ -29,19 +29,19 @@ class CartService
         return $this->cartRepository->save($user,$validatedCart);
     }
 
-    private function validateCartProducts(Cart $cart)
+    private function validateCartProducts(array $cart)
     {
         $findProduct = collect($this->products)->keyBy('slug');
-        return collect($cart->contents)->filter(function ($c) use ($findProduct) {
+        return collect($cart['cart'])->filter(function ($c) use ($findProduct) {
             $productItem = $findProduct->get($c['slug']);
             return $productItem && $productItem->status;
-        })->map(function ($c) use ($findProduct) {
-            $productItem = $findProduct->get($c['slug']);
-            $c['quantity'] = min($c['quantity'], $productItem['stock']);
-            return $c;
-        })
-        ->values()
-        ->all();
+            })->map(function ($c) use ($findProduct) {
+                $productItem = $findProduct->get($c['slug']);
+                $c['quantity'] = min($c['quantity'], $productItem['stock']);
+                return $c;
+            })
+            ->values()
+            ->all();
     }
 
     public function formatCart(array $data,string $purpose) 

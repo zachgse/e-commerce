@@ -36,11 +36,15 @@ const CartContent = () => {
       "operation" : operation
     }
 
+    console.log("product data: ", product)
+
     switch(operation) {
       case "add":
+        console.log("cart item quantity:", product.stock);
         if (cartItem.quantity < product.stock){
           dispatch(updateQuantity(payload));
         } else {
+          console.log("result:",cartItem.quantity < product.stock);
           toast.error("The product in your cart exceeds the maximum stock of this product.");
         }
         break;

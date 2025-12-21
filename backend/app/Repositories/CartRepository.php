@@ -22,8 +22,8 @@ class CartRepository implements CartInterface
             $cart = new Cart();
             $cart->user_id = $user->id;
         }
-        
-        $cart->contents = $data['cart']; 
+
+        $cart->contents = $data; 
         $cart->save();
 
         return $cart;

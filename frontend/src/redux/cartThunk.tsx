@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import type { RootState } from "./store"
-import type { CartItem } from "../features/cart/cartType"
+import type { CartItem } from "@/types/cartType"
 import type { ProductDetail } from "../types/productType"
 import { addToCart } from "./cartSlice"
 

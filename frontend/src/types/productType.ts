@@ -10,10 +10,6 @@ export type Product = {
 }
 
 export type ProductDetail = Product & { 
-    name: string
-    slug: string
-    price: number
-    thumbnail_image?: string
     description: string
     stock: number
     collection_images?: {
