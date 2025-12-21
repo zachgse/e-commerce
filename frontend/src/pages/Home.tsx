@@ -27,7 +27,7 @@ const Home = () => {
           Top categories here
         </Box>
       </div>
-
+      
       <ProductListContent/>
     </div>
   )

@@ -1,9 +1,12 @@
-import { Outlet } from "react-router"
+import { Outlet, useLocation } from "react-router"
 import { ToastContainer } from "react-toastify"
 import Navbar from "./Navbar"
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
+import clsx from "clsx"
 
 const MainLayout = () => {
+  const location = useLocation();
+  
   return (
     <>
       <Navbar/>
@@ -11,10 +14,9 @@ const MainLayout = () => {
         hideProgressBar={true}
         closeOnClick={true}
         autoClose={2000}/>
-      <div className="md:px-20 px-8 my-8">
+      <div className={clsx(location.pathname != "/cart" && "md:px-20 px-8 my-8")}>
         <Outlet/>
       </div>
-      
     </>
   )
 }

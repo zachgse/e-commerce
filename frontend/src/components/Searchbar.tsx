@@ -71,7 +71,7 @@ const Searchbar = () => {
                         bg-white z-50 flex flex-col p-1">
         {searchedProducts?.length > 0 ?
            searchedProducts.map((product,index:number) => (
-            <div key={index} 
+            <div key={index} onClick={() => setQuery(product.name)}
               className="flex items-center w-full hover:bg-gray-100 cursor-pointer px-4 py-2">
               <p className="">{product.name}</p>
             </div>

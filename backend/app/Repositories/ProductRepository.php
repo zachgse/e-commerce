@@ -45,8 +45,7 @@ class ProductRepository implements ProductInterface
         $query = Product::query()->where('name','LIKE',"%".$keyword."%");
         
         if ($mode == "full") {
-            $query->with('thumbnail_image')
-                ->select(["name","slug","price"]);
+            $query->with('thumbnail_image')->select(["id","name","slug","price"]);
         } else {
             $query->select(["name"]);
         }

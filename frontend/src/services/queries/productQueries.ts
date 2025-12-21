@@ -27,7 +27,8 @@ export const useProductsFetch = () => {
                 products,
                 map,
             };
-        }
+        },
+        staleTime: 1000 * 60 * 5
     });
 }
 

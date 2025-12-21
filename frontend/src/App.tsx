@@ -28,7 +28,7 @@ import PaymentDashboard from './pages/admin/PaymentDashboard'
 
 const Home = lazy(() => import("./pages/Home"))
 const ProductShow = lazy(() => import("./pages/ProductShow"))
-const Cart = lazy(() => import("./pages/Cart"))
+import Cart from './pages/Cart'
 const Login = lazy(() => import("./pages/Login"))
 const Register = lazy(() => import("./pages/Register"))
 const Checkout = lazy(() => import("./pages/checkout/Checkout"))
@@ -59,11 +59,7 @@ function App() {
                 <ProductShow/>
               </Suspense>
             }/>
-            <Route path="cart" element={
-              <Suspense fallback={<Loading/>}>
-                <Cart/>
-              </Suspense>
-            }/>
+            <Route path="cart" element={<Cart/>}/>
             <Route path="checkout" element={
               <Suspense fallback={<CheckoutSkeleton/>}>
                 <Checkout/>

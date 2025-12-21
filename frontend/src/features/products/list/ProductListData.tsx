@@ -20,11 +20,11 @@ const ProductListData = ({products,isLoading,isFetching,isError}:ProductListData
     return (
     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
         {products ? products.map((product,index) => (
-            <Link to={`product/${product.slug}`} key={index}
+            <Link to={`/product/${product.slug}`} key={index}
             className="border border-gray-300 flex flex-col gap-2 p-4">
                 <div className="flex-none">
-                {product.thumbnail_image ? 
-                    <img src={`${product.thumbnail_image}`}/>
+                {product?.thumbnail_image ? 
+                    <img src={`${product?.thumbnail_image}`}/>
                     : <Box class="w-full aspect-square"/>}
                 </div>
                 <p className="font-bold flex-1 break-all">{product.name}</p>
