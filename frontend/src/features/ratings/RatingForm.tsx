@@ -3,17 +3,16 @@ import { toast } from "react-toastify"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
-import { useCreateRating } from "../../../services/queries/ratingQueries"
-import type { RatingProductInfo } from "../../../types/ratingType"
+import { useCreateRating } from "@/services/queries/ratingQueries"
 import { FaRegStar,FaStar } from "react-icons/fa"
-import Box from "../../../components/reusable/Box"
-import ModalLoading from "../../../components/reusable/ModalLoading"
-import { money_format } from "../../../utils/helper"
+import Box from "@/components/reusable/Box"
+import ModalLoading from "@/components/reusable/ModalLoading"
+import { money_format } from "@/utils/helper"
+import type { ModalProperties } from "../orders/OrderDetails"
 
 type RatingFormProps = {
-    referenceNumber:string
-    product: RatingProductInfo
-    setIsRatingFormOpen: React.Dispatch<React.SetStateAction<boolean>>
+    modalProperties: ModalProperties
+    setModalProperties: React.Dispatch<React.SetStateAction<ModalProperties|undefined>>
 }
 
 function FieldInfo({ field }: { field: AnyFieldApi }) {
@@ -30,9 +29,11 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
   );
 }
 
-const RatingForm = (props:RatingFormProps) => {
+const RatingForm = ({modalProperties,setModalProperties}:RatingFormProps) => {
     const queryClient = useQueryClient();
     const { mutateAsync } = useCreateRating();
+    const product = modalProperties.productToRate;
+    const referenceNumber = modalProperties.referenceNumber;
     const [isVisible,setIsVisible] = useState<boolean>(false);
     const form = useForm({
         defaultValues: {
@@ -42,18 +43,18 @@ const RatingForm = (props:RatingFormProps) => {
         onSubmit: async({value}) => {
             setIsVisible(true);
             const payload = {
-                referenceNumber: props.referenceNumber,
-                slug: props.product.slug,
+                referenceNumber: referenceNumber ?? "",
+                slug: product?.slug ?? "",
                 rating: value.rating,
                 description: value.description,
             }
             try {
                 await mutateAsync(payload);
                 await queryClient.invalidateQueries({
-                    queryKey: ["order",props.referenceNumber]
+                    queryKey: ["order",referenceNumber]
                 });
                 setIsVisible(false);
-                props.setIsRatingFormOpen(false);
+                setModalProperties(undefined);
                 toast.success("Product has been rated!");
             } catch (err) {
                 toast.error("Something went wrong");
@@ -73,15 +74,15 @@ const RatingForm = (props:RatingFormProps) => {
                 <div className="space-y-2">
                     <div className="flex justify-between my-2">
                         <div className="flex gap-2">
-                            {props.product.image ? (<img src={props.product.image}/>) 
+                            {product?.image ? (<img src={product.image}/>) 
                                 : (<Box class="aspect-square w-24 h-24"/>)}
                             <div className="flex flex-col gap-1">
-                                <p className="font-semibold">{props.product.name}</p>
-                                <p className="text-gray-500 text-sm">x{props.product.quantity}</p>
+                                <p className="font-semibold">{product?.name}</p>
+                                <p className="text-gray-500 text-sm">x{product?.quantity}</p>
                             </div>
                         </div>
                         <div>
-                            <p className="font-semibold">{money_format(props.product.subtotal)}</p>
+                            <p className="font-semibold">{product?.subtotal ? money_format(product?.subtotal) : 0}</p>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ import './App.css'
 
 // layout
 import MainLayout from './components/MainLayout'
-import ProfileLayout from './components/ProfileLayout'
 import AdminLayout from './layouts/AdminLayout'
 
 import Loading from './components/Loading'
@@ -17,11 +16,11 @@ import PaymentConfirmed from './pages/checkout/PaymentConfirmation'
 import Search from './pages/Search'
 
 // orders
-import OrderList from './pages/user/order/OrderList'
-import OrderDetails from './pages/user/order/OrderDetails'
+import Order from './pages/order/Order'
+import OrderShow from './pages/order/OrderShow'
 
 //admins
-const Dashboard = lazy(() => import("./pages/admin/Dashboard"))
+const Dashboard = lazy(() => import("./pages/admin/Dashboard")) //change to normal import since i have batch query
 import DashboardContentSkeleton from './features/admin/dashboard/DashboardContentSkeleton'
 import ProductDashboard from './pages/admin/ProductDashboard'
 import OrderDashboard from './pages/admin/OrderDashboard'
@@ -72,9 +71,9 @@ function App() {
             }/>
             <Route path="search" element={<Search/>}/>
             <Route path="payment-confirmation/:reference_number" element={<PaymentConfirmed/>}/>
-            <Route path="/user" element={<ProfileLayout/>}>
-              <Route path="order" element={<OrderList/>}/>
-              <Route path="order/:reference_number" element={<OrderDetails/>}/>
+            <Route path="order/">
+              <Route path="" element={<Order/>}/>
+              <Route path=":reference_number" element={<OrderShow/>}/>
             </Route>
           </Route>
           <Route path="/admin" element={<AdminLayout/>}>

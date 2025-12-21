@@ -1,19 +1,19 @@
-import { Link } from "react-router"
-import { useAppSelector } from "../../../hooks/hooks"
-import { useFetchListUserOrder } from "../../../services/queries/orderQueries"
-import Box from "../../../components/reusable/Box"
-import Button from "../../../components/reusable/Button"
-import { money_format } from "../../../utils/helper"
+import { Link } from 'react-router'
+import { useAppSelector } from '@/hooks/hooks'
+import { useFetchListUserOrder } from '@/services/queries/orderQueries'
+import Box from '@/components/reusable/Box'
+import Button from '@/components/reusable/Button'
+import { money_format } from '@/utils/helper'
 
 const OrderList = () => {
-  const user = useAppSelector((state)=>state.auth.auth)
-  if (!user) return <div>Unauthenticated</div>
-  const { data:orders,isLoading,isError } = useFetchListUserOrder(user.token);
+    const user = useAppSelector((state)=>state.auth.auth)
+    if (!user) return <div>Unauthenticated</div>
+    const { data:orders,isLoading,isError } = useFetchListUserOrder(user.token);
 
-  if (isLoading) return <div>Loading...</div>
-  if (isError) console.log("error");
+    if (isLoading) return <div>Loading...</div>
+    if (isError) console.log("error")
 
-  return (
+    return (
     <div className="flex flex-col gap-4">
       {orders && orders.length > 0 ? 
         orders.map((order,index) => (
@@ -26,7 +26,7 @@ const OrderList = () => {
                   className="flex justify-between">
                   {/* left side */}
                   <div className="flex gap-2"> 
-                    {item.image ? <img src={item.image}/> : <Box class="aspect-square w-24 h-24"/>}
+                    {item.image ? <img src={item.image} className='w-24 h-24'/> : <Box class='aspect-square w-24 h-24'/>}
                     <div className="flex flex-col gap-1">
                       <p className="font-semibold">{item.name}</p>
                       <p className="text-gray-500 text-sm">x{item.quantity}</p>
@@ -40,12 +40,12 @@ const OrderList = () => {
               ))}
               <hr className="text-gray-300"/>
               <Link to={`${order.reference_number}`}>
-                  <Button class="cursor-pointer hover:opacity-80 py-2 ml-auto" name="Order Details"/>
+                  <Button type="button" class="cursor-pointer hover:opacity-80 py-2 ml-auto" name="Order Details"/>
               </Link>
           </div>
         )) : <div>No orders yet.</div>}
     </div>
-  )
+    )
 }
 
 export default OrderList

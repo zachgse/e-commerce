@@ -1,43 +1,50 @@
-import { useEffect, useState } from "react"
-import { useParams,Link } from "react-router"
+import React from "react"
+import { Link } from "react-router"
+import { useAppSelector } from "@/hooks/hooks"
+import { useFetchSingleUserOrder, useUpdateOrderStatus } from "@/services/queries/orderQueries"
+import type { RatingProductInfo } from "@/types/ratingType"
+import Box from "@/components/reusable/Box"
+import Button from "@/components/reusable/Button"
+import Modal from "@/components/reusable/Modal"
+import { money_format } from "@/utils/helper"
 import { FaBox,FaTruck,FaArrowRight,FaArrowLeft } from "react-icons/fa"
 import { GiReceiveMoney } from "react-icons/gi"
-import { useAppSelector } from "../../../hooks/hooks"
-import { useFetchSingleUserOrder } from "../../../services/queries/orderQueries"
-import type { RatingProductInfo } from "../../../types/ratingType"
-import RatingForm from "./RatingForm"
-import Box from "../../../components/reusable/Box"
-import Button from "../../../components/reusable/Button"
-import Modal from "../../../components/reusable/Modal"
-import { money_format } from "../../../utils/helper"
-import OrderDeliveredForm from "./OrderDeliveredForm"
+import RatingForm from "../ratings/RatingForm"
+import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "react-toastify"
+import Confirmation from "@/components/reusable/Confirmation"
 
-const OrderDetails = () => {
-    const user = useAppSelector((state) => state.auth.auth); //refactor remove this since its in middleware already
+type OrderDetailsProps = {
+    referenceNumber: string
+}
+
+export type ModalProperties = {
+    type: "rating" | "complete"
+    referenceNumber?: string
+    productToRate?: RatingProductInfo
+}
+
+const OrderDetails = ({referenceNumber}:OrderDetailsProps) => {
+    const user = useAppSelector((state) => state.auth.auth);
     if (!user) return <div>Unauthorized</div>
 
-    const params = useParams();
-    const referenceNumber = params.reference_number;
-    if (!referenceNumber) return <div>No reference number</div>
-
+    const queryClient = useQueryClient();
     const { data:order,isLoading,isError } = useFetchSingleUserOrder(user.token,referenceNumber);
-    
-    const [isCompleteOrderOpen,setIsCompleteOrderOpen] = useState<boolean>(false);
-    const [isRatingFormOpen,setIsRatingFormOpen] = useState<boolean>(false);
-    const [productToRate,setProductToRate] = useState<RatingProductInfo>();
+    const { mutateAsync } = useUpdateOrderStatus();
+    const [modalProperties,setModalProperties] = React.useState<ModalProperties|undefined>();
 
-    useEffect(() => {
-        if (!isRatingFormOpen) setProductToRate(undefined); 
-    },[isRatingFormOpen])
-
-    const handleRate = (item?:RatingProductInfo) => {
-        setIsRatingFormOpen(item ? true : false);
-        setProductToRate(item ? {slug:item.slug,
-                                name:item.name,
-                                image:item.image,
-                                quantity:item.quantity,
-                                subtotal:item.subtotal}
-                            :  undefined);
+    const handleReceiveOrder = async(refNum:string) => {
+        try {
+            await mutateAsync(refNum);
+            await queryClient.invalidateQueries({
+                queryKey:['order',refNum]
+            });
+            toast.success("Order has been successfully received!");
+            setModalProperties(undefined);
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong!");
+        }
     }
 
     if (isLoading) return <div>Loading...</div>
@@ -45,7 +52,7 @@ const OrderDetails = () => {
 
     return (
     <>
-        <Link to="/user/order">
+        <Link to="/order">
             <FaArrowLeft className="w-6 h-6 cursor-pointer"/>
         </Link>
         <div className="flex justify-center gap-4 mb-12">
@@ -91,7 +98,7 @@ const OrderDetails = () => {
                 className="flex justify-between my-2">
                 {/* left side */}
                 <div className="flex gap-2"> 
-                    {item.image ? <img src={item.image}/> : <Box class="aspect-square w-24 h-24"/>}
+                    {item.image ? <img src={item.image} className="w-24 h-24"/> : <Box class="aspect-square w-24 h-24"/>}
                     <div className="flex flex-col gap-1">
                         <p className="font-semibold">{item.name}</p>
                         <p className="text-gray-500 text-sm">x{item.quantity}</p>
@@ -101,8 +108,8 @@ const OrderDetails = () => {
                 <div className="flex flex-col items-end justify-between">
                     <p className="font-semibold">{money_format(item.subtotal)}</p>
                     {item.can_rate ? (
-                        <Button onClick={() => handleRate(item)} 
-                        class="mt-auto cursor-pointer hover:opacity-90 px-5 text-sm" name="Rate"/>
+                        <Button type="button" class="mt-auto cursor-pointer hover:opacity-90 px-5 text-sm" name="Rate" 
+                        onClick={() => setModalProperties({type:"rating",productToRate:item,referenceNumber:order.reference_number})}/>
                     ) : (order.shipping_status.toLowerCase() == "delivered" && 
                             (<p className="text-gray-500 text-xs font-semibold">Product has been rated</p>)
                         )
@@ -113,7 +120,7 @@ const OrderDetails = () => {
             <hr className="text-gray-300"/>
             <div className="flex items-center">
                 {order.shipping_status.toLowerCase() == "shipped" && (
-                    <Button onClick={() => setIsCompleteOrderOpen(true)} 
+                    <Button type="button" onClick={() => setModalProperties({type:"complete",referenceNumber:order.reference_number})} 
                         class="cursor-pointer hover:opacity-90 w-auto h-8" name="Complete order"/>
                 )}
                 <div className="flex flex-col ml-auto text-right">
@@ -123,22 +130,21 @@ const OrderDetails = () => {
                 </div>
             </div>
         </div>
-        {isCompleteOrderOpen && (
-            <Modal class="md:w-1/5 w-4/5"
-                isOpen={isCompleteOrderOpen}
-                onCancel={() => setIsCompleteOrderOpen(false)}>
-                <OrderDeliveredForm referenceNumber={order.reference_number}
-                                    setIsCompleteOrderOpen={setIsCompleteOrderOpen}/>
-            </Modal>
-        )}
-        {isRatingFormOpen && productToRate &&  (
-            <Modal class="md:w-2/5 w-4/5" 
-                isOpen={isRatingFormOpen}     
-                onCancel={() => handleRate()}>
-                <RatingForm product={productToRate}
-                    referenceNumber={order.reference_number}
-                    setIsRatingFormOpen={setIsRatingFormOpen}/>
-            </Modal>
+        {modalProperties && (
+            modalProperties.type == "rating" ? (
+                <Modal class="md:w-2/5 w-4/5" 
+                    isOpen={true}     
+                    onCancel={() => setModalProperties(undefined)}>
+                    <RatingForm modalProperties={modalProperties}
+                                setModalProperties={setModalProperties}/>
+                </Modal>   
+            ) : (
+                <Confirmation isOpen={true} 
+                                message="Complete receive of the order?"
+                                confirmButton="Complete"
+                                onConfirm={() => handleReceiveOrder(modalProperties.referenceNumber ?? "")}
+                                onCancel={() => setModalProperties(undefined)}/>
+            )
         )}
     </>
     )

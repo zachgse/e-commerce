@@ -70,7 +70,7 @@ const Navbar = () => {
             ) : (
               <div className="gap-4 md:flex hidden">
                 <Link to="/admin" className="cursor-pointer">Admin</Link>
-                <Link to="/user/order" className="cursor-pointer">Orders</Link>
+                <Link to="/order" className="cursor-pointer">Orders</Link>
                 <Link to="cart" className="relative inline-block">
                   <AiOutlineShoppingCart className="w-7 h-7 text-gray-800" />
                   <div className="absolute -top-2 -right-3 flex items-center justify-center w-5 h-5 bg-black text-white text-xs font-semibold rounded-full">

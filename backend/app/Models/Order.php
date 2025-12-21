@@ -44,7 +44,7 @@ class Order extends Model
             return [
                 'slug' => $product->slug,
                 'name' => $orderItem->name,
-                'image' => $product?->thumbnail_image,
+                'image' => $product?->thumbnail_image?->file_path,
                 'price' => (float)$orderItem->price,
                 'quantity' => $orderItem->quantity,
                 'subtotal' => $orderItem->subtotal,
@@ -61,7 +61,7 @@ class Order extends Model
         if ($order->status != "delivered") return false;
         $exists = Rating::where('order_id',$order->id)
                         ->where('product_id',$productId)
-                        ->where('deleted_at',NULL)
+                        ->whereNULL('deleted_at')
                         ->exists();
         return $exists ? false : true;
     }
