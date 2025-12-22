@@ -83,35 +83,11 @@ class ProductController extends Controller
         }
     }
 
-    public function update_stock(ProductStockRequest $request, string $slug) : JsonResponse
-    {
-        try {
-            $product = $this->productService->updateProductStock($slug,$request->validated());
-            return $this->successResponse($product,200,'Product stocks has been updated');
-        } catch (NotFoundException $e) {
-            return $this->errorResponse($e->getCode(),$e->getMessage());
-        } catch (\Exception $e) {
-            return $this->errorResponse(500,$e->getMessage());
-        }
-    }
-
     public function update_status(string $slug) : JsonResponse
     {
         try {
             $product = $this->productService->updateProductStatus($slug);
             return $this->successResponse($product,200,'Product status has been updated');
-        } catch (NotFoundException $e) {
-            return $this->errorResponse($e->getCode(),$e->getMessage());
-        } catch (\Exception $e) {
-            return $this->errorResponse(500,$e->getMessage());
-        }
-    }
-    
-    public function upload_image(ProductImageRequest $request,string $slug) : JsonResponse
-    {
-        try {
-            $product_images = $this->productService->uploadProductImage($slug,$request->validated());
-            return $this->successResponse($product_images,200,'Product image has been uploaded');
         } catch (NotFoundException $e) {
             return $this->errorResponse($e->getCode(),$e->getMessage());
         } catch (\Exception $e) {

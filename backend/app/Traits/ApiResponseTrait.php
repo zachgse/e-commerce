@@ -6,14 +6,17 @@ use Str;
 
 trait ApiResponseTrait 
 {
-    protected function successResponse($data=[],$status_code=200,$msg="Success Response")
+    protected function successResponse($data=null,$status_code=200,$msg="Success Response")
     {
-        return response()->json([
-            'data' => $data,
-            'status' => true,
-            'status_code' => $this->generateStatusCodeKey($msg),
-            'msg' => $msg
-        ],$status_code);
+        return response()->json(
+            array_filter([
+                'data' => $data,
+                'status' => true,
+                'status_code' => $this->generateStatusCodeKey($msg),
+                'msg' => $msg,
+            ], fn ($value) => $value !== null && $value !== ''),
+            $status_code
+        );
     }
 
     protected function paginatedResponse($data=[],$status_code=200,$msg="Success Response")

@@ -15,13 +15,12 @@ class RolesAndPermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name'=>'view products']);
-        Permission::create(['name'=>'create products']);
-
+        Permission::create(['name'=>'view_products']);
+        Permission::create(['name'=>'manage_dashboard']);
         $admin = Role::create(['name'=>'admin']);
         $admin->givePermissionTo(Permission::all());
 
         $customer = Role::create(['name'=>'customer']);
-        $customer->givePermissionTo('view products');
+        $customer->givePermissionTo('view_products');
     }
 }
