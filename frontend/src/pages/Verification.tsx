@@ -4,7 +4,7 @@ import clsx from "clsx"
 import { Oval } from "react-loader-spinner"
 import { useFetchNewOtp, useFetchValidateOtp } from "@/services/queries/authQueries"
 import { otpMessage } from "@/utils/styleHelper"
-import { useAppDispatch } from "@/hooks/hooks"
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
 import { verifyEmail } from "@/redux/authSlice"
 
 type Status = "success" | "resent" | "failed" | undefined
@@ -12,6 +12,10 @@ type Status = "success" | "resent" | "failed" | undefined
 const Verification = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.auth?.user);
+  if (user?.email_verified){
+    navigate("/"); 
+  }
   const LENGTH = 6;
   const resendOtp = useFetchNewOtp();
   const validateOtp = useFetchValidateOtp();
@@ -61,6 +65,7 @@ const Verification = () => {
         const response = await validateOtp.mutateAsync({otp:finalOtp});
         setStatus(response == true ? "success" : "failed");
         dispatch(verifyEmail(response));
+        //check if success sync cart
         setIsLoading(false);
         setTimeout(() => {
           navigate("/");

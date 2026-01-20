@@ -17,7 +17,8 @@ class AuthResource extends JsonResource
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'email_verified' => $this->email_verified_at ? true : false
+            'email_verified' => $this->email_verified_at ? true : false,
+            'type' => $this->hasRole('admin') ? "admin" : "customer"
         ];
     }
 }

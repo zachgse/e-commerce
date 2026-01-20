@@ -7,13 +7,11 @@ export const fetchUserCart = async(token:string) : Promise<Cart[]> => {
             Authorization: `Bearer ${token}`
         }
     });
-    console.log("response: ",response);
     if (response.data.data == null) return [];
     return response.data.data.contents;
 }
 
 export const updateUserCart = async(cart:CartItem[]) : Promise<Cart> => {
     const response = await apiAuth.post('/cart/update',{cart:cart});
-
     return response.data.data;
 }

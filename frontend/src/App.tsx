@@ -1,19 +1,29 @@
 import { lazy,Suspense } from 'react'
 import { BrowserRouter,Routes,Route } from 'react-router'
 import { QueryClient,QueryClientProvider } from '@tanstack/react-query'
-import Echo from 'laravel-echo'
-import Pusher from 'pusher-js'
 import './App.css'
+import Loading from './components/reusable/Loading'
 
 // layout
 import MainLayout from './layouts/MainLayout'
 import AdminLayout from './layouts/AdminLayout'
 
-import Loading from './components/reusable/Loading'
-import ProductSingleSkeleton from './features/products/single/ProductShowSkeleton'
+// custom middlewares
+import AuthRoute from './utils/AuthRoute'
+import AdminRoute from './utils/AdminRoute'
+import GuestRoute from './utils/GuestRoute'
+import EmailVerifiedRoute from './utils/EmailVerifiedRoute'
+
+const Home = lazy(() => import("./pages/Home"))
+const Login = lazy(() => import("./pages/Login"))
+const Register = lazy(() => import("./pages/Register"))
+const Checkout = lazy(() => import("./pages/checkout/Checkout"))
+import Verification from './pages/Verification'
+import ProductShow from './pages/ProductShow'
+import Search from './pages/Search'
+import Cart from './pages/Cart'
 import CheckoutSkeleton from './pages/checkout/CheckoutSkeleton'
 import PaymentConfirmed from './pages/checkout/PaymentConfirmation'
-import Search from './pages/Search'
 
 // orders
 import Order from './pages/order/Order'
@@ -25,24 +35,8 @@ import ProductDashboard from './pages/admin/ProductDashboard'
 import OrderDashboard from './pages/admin/OrderDashboard'
 import PaymentDashboard from './pages/admin/PaymentDashboard'
 
-const Home = lazy(() => import("./pages/Home"))
-const ProductShow = lazy(() => import("./pages/ProductShow"))
-import Cart from './pages/Cart'
-import Verification from './pages/Verification'
-const Login = lazy(() => import("./pages/Login"))
-const Register = lazy(() => import("./pages/Register"))
-const Checkout = lazy(() => import("./pages/checkout/Checkout"))
-
 function App() {
   const queryClient = new QueryClient();
-  window.Pusher = Pusher;
-
-  window.Echo = new Echo({
-    broadcaster: "pusher",
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true,
-  });
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -54,42 +48,51 @@ function App() {
                 <Home/>
               </Suspense>
             }/>
-            <Route path="product/:slug" element={
-              <Suspense fallback={<ProductSingleSkeleton/>}>
-                <ProductShow/>
-              </Suspense>
-            }/>
-            <Route path="cart" element={<Cart/>}/>
-            <Route path="checkout" element={
-              <Suspense fallback={<CheckoutSkeleton/>}>
-                <Checkout/>
-              </Suspense>
-            }/>
+            <Route path="product/:slug" element={<ProductShow/>}/>
             <Route path="search" element={<Search/>}/>
-            <Route path="payment-confirmation/:reference_number" element={<PaymentConfirmed/>}/>
-            <Route path="order/">
-              <Route path="" element={<Order/>}/>
-              <Route path=":reference_number" element={<OrderShow/>}/>
+            <Route element={<AuthRoute/>}>
+              <Route element={<EmailVerifiedRoute/>}>
+                <Route path="cart" element={<Cart/>}/>
+                <Route path="checkout" element={
+                  <Suspense fallback={<CheckoutSkeleton/>}>
+                    <Checkout/>
+                  </Suspense>
+                }/>
+                <Route path="payment-confirmation/:reference_number" element={<PaymentConfirmed/>}/>
+                <Route path="order/">
+                  <Route path="" element={<Order/>}/>
+                  <Route path=":reference_number" element={<OrderShow/>}/>
+                </Route>
+              </Route>
+
+              <Route path="verify" element={<Verification/>}/>
             </Route>
-            <Route path="verify" element={<Verification/>}/>
           </Route>
-          <Route path="/admin" element={<AdminLayout/>}>
-            <Route path="" element={<Dashboard/>}/>
-            <Route path="products" element={<ProductDashboard/>}/>
-            <Route path="orders" element={<OrderDashboard/>}/>
-            <Route path="payments" element={<PaymentDashboard/>}/>
+
+          <Route element={<AuthRoute/>}>
+            <Route element={<AdminRoute/>}>
+              <Route path="/admin" element={<AdminLayout/>}>
+                <Route path="" element={<Dashboard/>}/>
+                <Route path="products" element={<ProductDashboard/>}/>
+                <Route path="orders" element={<OrderDashboard/>}/>
+                <Route path="payments" element={<PaymentDashboard/>}/>
+              </Route>
+            </Route>
           </Route>
-          <Route path="login" element={
-            <Suspense fallback={<Loading/>}>
-              <Login/>
-            </Suspense>
-          }/>
-          <Route path="register" element={
-            <Suspense fallback={<Loading/>}>
-              <Register/>
-            </Suspense>
-          }/>
-          
+
+          <Route element={<GuestRoute/>}>
+            <Route path="login" element={
+              <Suspense fallback={<Loading/>}>
+                <Login/>
+              </Suspense>
+            }/>
+            <Route path="register" element={
+              <Suspense fallback={<Loading/>}>
+                <Register/>
+              </Suspense>
+            }/>
+          </Route>
+
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
