@@ -19,8 +19,7 @@ class CartService
 
     public function getUserCart(User $user)
     {
-        $cart = $this->cartRepository->fetchCart($user);
-        return $cart ?? null;
+        return $this->cartRepository->fetchCart($user);
     }
 
     public function saveUserCart(User $user,array $data)

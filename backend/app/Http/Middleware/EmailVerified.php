@@ -6,9 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Auth;
-
-class EmailNotVerified
+class EmailVerified
 {
     /**
      * Handle an incoming request.
@@ -17,13 +15,9 @@ class EmailNotVerified
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-
-        if ($user->email_verified_at == null) 
-        {
+        if ($request->user()->email_verified_at == null){
             abort(403);
         }
-
         return $next($request);
     }
 }

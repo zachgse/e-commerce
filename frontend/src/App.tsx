@@ -28,6 +28,7 @@ import PaymentDashboard from './pages/admin/PaymentDashboard'
 const Home = lazy(() => import("./pages/Home"))
 const ProductShow = lazy(() => import("./pages/ProductShow"))
 import Cart from './pages/Cart'
+import Verification from './pages/Verification'
 const Login = lazy(() => import("./pages/Login"))
 const Register = lazy(() => import("./pages/Register"))
 const Checkout = lazy(() => import("./pages/checkout/Checkout"))
@@ -70,6 +71,7 @@ function App() {
               <Route path="" element={<Order/>}/>
               <Route path=":reference_number" element={<OrderShow/>}/>
             </Route>
+            <Route path="verify" element={<Verification/>}/>
           </Route>
           <Route path="/admin" element={<AdminLayout/>}>
             <Route path="" element={<Dashboard/>}/>
@@ -87,6 +89,7 @@ function App() {
               <Register/>
             </Suspense>
           }/>
+          
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

@@ -6,12 +6,37 @@ use App\Models\User;
 use App\Repositories\AuthRepository;
 use Illuminate\Auth\AuthenticationException;
 use App\Http\Resources\Auth\AuthResource;
+use App\Jobs\GenerateOTP;
 use Auth;
 
 class AuthService 
 {
     public function __construct(protected AuthRepository $authRepository)
     {
+    }
+
+    public function generateOtp(User $user)
+    {
+        return $this->authRepository->otp($user->id);
+    }
+
+    public function validateOtp(User $user,string $otp)
+    {
+        return $this->authRepository->validate($user->id,$otp);
+    }
+
+    public function resendOtp(User $user)
+    {
+        $otp = $this->generateOtp($user);
+        GenerateOTP::dispatch($user,$otp);
+    }
+
+    public function register(array $data)
+    {
+        $user = $this->authRepository->register($data);
+        $otp = $this->generateOtp($user);
+        GenerateOTP::dispatch($user,$otp);
+        return $user;
     }
 
     public function dashboard(int $year)

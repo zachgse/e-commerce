@@ -52,7 +52,7 @@ const Navbar = () => {
           ) : "E-commercy"}
         </Link>
       </div>
-      <div className=""><Searchbar/></div>
+      {/* <div className=""><Searchbar/></div> */}
       <div className="relative">
       {user
         ? (

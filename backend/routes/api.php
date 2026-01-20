@@ -11,6 +11,8 @@ Route::group(['prefix'=>'auth','as'=>'auth.'], function() {
     Route::middleware('auth:sanctum')->group(function () { //this middleware provides token gen and way to know the user
         Route::post('logout',[AuthController::class,'logout']);
         Route::get('me',[AuthController::class,'check_user']);
+        Route::post('resend',[AuthController::class,'resend_otp']);
+        Route::post('validate_otp',[AuthController::class,'validate_otp']);
     });
 });
 
@@ -22,7 +24,7 @@ Route::group(['prefix'=>'products','as'=>'products.'], function() {
     Route::get('{slug}',[ProductController::class,'show']);
 });
 
-Route::group(['middleware'=>'auth:sanctum'], function() {
+Route::group(['middleware'=>['auth:sanctum','email_verify']], function() {
     Route::group(['prefix'=>'cart','as'=>'cart.'], function() {
         Route::get('',[CartController::class,'index']);
         Route::post('update',[CartController::class,'update']);

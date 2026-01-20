@@ -17,3 +17,14 @@ export const statusBadgePills = (variant: "active" | "inactive" | "waiting_for_p
         variant === undefined && ""
     )
 }
+
+export const otpMessage = (variant: "success" | "resent" | "failed" | undefined) => {
+    return clsx(
+        "border border-1 text-white text-center w-72 h-auto p-4",
+        (variant === "success" || variant === "resent") && 
+            "border-green-500 bg-green-400",
+        variant === "failed" &&
+            "border-red-500 bg-red-400",
+        variant === undefined && ""
+    )
+}

@@ -21,43 +21,43 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        DB::beginTransaction();
         try {
-            $user = new User();
-            $user->username = $request->input('username');
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->password = bcrypt($request->input('password'));
-            $user->save();
-
-            DB::commit();
+            $data = $this->authService->register($request->validated());
+            return $this->successResponse($data,200,"Registration Successful");
         } catch (\Exception $e) {
-            DB::rollback();
-            $this->response['message'] = $e->getMessage();
-            $this->response_code = 500;
-            goto callback;   
-        }
+            return $this->errorResponse(500,$e->getMessage());
+        }      
+    }
 
-        $this->response = [
-            'status' => true,
-            'status_code' => 'USER_REGISTER',
-            'message' => 'Successfully registered.',
-        ];
-        $this->response_code = 201;
+    public function resend_otp(Request $request)
+    {
+        try {
+            $data = $this->authService->resendOtp($request->user());
+            return $this->successResponse($data,200,"OTP has been resent");
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }        
+    }
 
-        callback:
-        return response()->json($this->response,$this->response_code);
+    public function validate_otp(Request $request)
+    {
+        try {
+            $data = $this->authService->validateOtp($request->user(),$request->get('otp'));
+            return $this->successResponse($data,200,$data);
+        } catch (\Exception $e) {
+            return $this->errorResponse(500,$e->getMessage());
+        }  
     }
 
     public function login(LoginRequest $request)
     {   
         try {
             $data = $this->authService->authenticate($request->validated());
-            return $this->successResponse($data,200,"LOGIN_SUCCESSFUL","Login Successful");
+            return $this->successResponse($data,200,"Login Successful");
         } catch (AuthenticationException $e){
-            return $this->errorResponse(401,"INCORRECT_CREDENTIALS",$e->getMessage());
+            return $this->errorResponse(401,$e->getMessage());
         } catch (\Exception $e) {
-            return $this->errorResponse(500,"SERVER_ERROR",$e->getMessage());
+            return $this->errorResponse(500,$e->getMessage());
         }
     }
 
@@ -65,11 +65,11 @@ class AuthController extends Controller
     {
         try {
             $data = $this->authService->getUser($request->user());
-            return $this->successResponse($data,200,"USER_INFO","User information");
+            return $this->successResponse($data,200,"User information");
         } catch (AuthenticationException $e){
-            return $this->errorResponse(401,"UNAUTHORIZED",$e->getMessage());
+            return $this->errorResponse(401,$e->getMessage());
         } catch (\Exception $e) {
-            return $this->errorResponse(500,"SERVER_ERROR","Server error");
+            return $this->errorResponse(500,"Server error");
         }
     }
 
@@ -77,11 +77,11 @@ class AuthController extends Controller
     {
         try {
             $this->authService->logout($request->user());
-            return $this->successResponse("",200,'LOGOUT_SUCCESSFUL','Logout Successful');
+            return $this->successResponse("",200,'Logout Successful');
         } catch (AuthenticationException $e){
-            return $this->errorResponse(401,"UNAUTHORIZED",$e->getMessage());
+            return $this->errorResponse(401,$e->getMessage());
         } catch (\Exception $e) {
-            return $this->errorResponse(500,"SERVER_ERROR","Server error");
+            return $this->errorResponse(500,"Server error");
         }
     }
 }

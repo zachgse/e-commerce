@@ -20,11 +20,14 @@ const Login = () => {
         formData.append('email',email);
         formData.append('password',password);
         const response = await axiosClient.post('/auth/login',formData);
-        const token = response.data.data.token;
-        const cart = await fetchUserCart(token);
         dispatch(setUser(response.data.data));
-        dispatch(setInitialCart(cart ?? []));
-        navigate("/");
+        if (!response.data.data.user.email_verified) {
+            navigate("/verify");
+        } else {
+            const cart = await fetchUserCart(response.data.data.token);
+            dispatch(setInitialCart(cart ?? []));
+            navigate("/");
+        }
     }
         
     return (
@@ -49,7 +52,7 @@ const Login = () => {
                             Doesnt have an account yet? Click <Link className="text-blue-500" to="/register">here</Link> to register
                         </div>
                         <div className="space-y-3 float-right">
-                            <Button name="Login" class="px-8 py-2"/>
+                            <Button type="submit" name="Login" class="px-8 py-2"/>
                         </div>
                     </form>
                 </div>

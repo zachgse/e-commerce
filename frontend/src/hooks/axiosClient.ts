@@ -13,7 +13,9 @@ export const apiAuth = axios.create({
 });
 
 apiAuth.interceptors.request.use((config) => {
+    // console.log("user: ", store.getState().auth.auth);
     const token = store.getState().auth.auth?.token;
+    // console.log("AUTH TOKEN:", token);
     if (token) config.headers.Authorization = `Bearer ${token}`
     return config;
 });

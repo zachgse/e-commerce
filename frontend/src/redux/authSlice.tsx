@@ -19,9 +19,14 @@ const authSlice = createSlice({
         },
         removeUser: (state) => {
             state.auth = null
+        },
+        verifyEmail: (state,action) => {
+            if (state.auth?.user) {
+                state.auth.user.email_verified = action.payload
+            }
         }
     }
 })
 
-export const {setUser,removeUser} = authSlice.actions;
+export const {setUser,removeUser,verifyEmail} = authSlice.actions;
 export default authSlice.reducer;
