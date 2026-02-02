@@ -39,15 +39,18 @@ export const useSingleProductFetch = (slug:string) => {
     });
 }
 
-export const useFetchKeywordSearchProducts = (keyword:string) => {
-    const debouncedKeyword = useDebounce(keyword,200);
-    return useQuery({
-        queryKey: ["keywordSearch",keyword],
-        queryFn: () => fetchKeywordSearchProducts(keyword),
-        enabled: debouncedKeyword.length >= 1,
-        staleTime: 30 * 1000 
-    });
-}
+export const useFetchKeywordSearchProducts = (keyword: string) => {
+  const [debouncedKeyword] = useDebounce(keyword, 200);
+  const search = debouncedKeyword?.trim() || undefined;
+
+  return useQuery({
+    queryKey: ["keywordSearch", search],
+    queryFn: () => fetchKeywordSearchProducts(search!),
+    enabled: !!search,
+    staleTime: 30 * 1000,
+  });
+};
+
 
 export const useFetchFullSearchProducts = ({keyword,sortBy}:ProductFullSearch) => {
     return useQuery({

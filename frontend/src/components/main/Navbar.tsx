@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar"
 import React from "react"
 import { FaStore } from "react-icons/fa"
 import { GiHamburgerMenu } from "react-icons/gi"
+import Confirmation from "../reusable/Confirmation"
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ const Navbar = () => {
   
   const [isMobile,setIsMobile] = React.useState<boolean>(window.innerWidth < 768);
   const [isOpen,setIsOpen] = React.useState<boolean>(false);
+  const [isLogout,setIsLogout] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const handleResize = () => {
@@ -52,7 +54,7 @@ const Navbar = () => {
           ) : "E-commercy"}
         </Link>
       </div>
-      {/* <div className=""><Searchbar/></div> */}
+      <div className=""><Searchbar/></div>
       <div className="relative">
       {user
         ? (
@@ -76,7 +78,12 @@ const Navbar = () => {
                     {cart && cart.length > 0 ? cart.length : 0}
                   </div>
                 </Link>
-                <div onClick={handleLogout} className="cursor-pointer">Logout</div>
+                <div onClick={() => setIsLogout(true)} className="cursor-pointer">Logout</div>
+                  <Confirmation isOpen={isLogout} 
+                                message="Do you want to logout?" 
+                                confirmButton="Confirm"
+                                onConfirm={() => handleLogout()}
+                                onCancel={() => setIsLogout(false)}/>
               </div>
             )}            
           </>
