@@ -1,5 +1,6 @@
 import type { OTP } from "@/types/userType";
 import { axiosClient,apiAuth } from "@/hooks/axiosClient"
+import type { Register } from "@/types/authTypes";
 
 export const csrf_cookie = async():Promise<any> => {
     const response = await axiosClient.get('/sanctum/csrf-cookie');
@@ -13,5 +14,11 @@ export const fetchNewOtp = async():Promise<OTP> => {
 
 export const fetchValidateOTP = async(otp:string):Promise<boolean> => {
     const response = await apiAuth.post('/auth/validate_otp',{otp});
+    return response.data.data;
+}
+
+export const fetchRegister = async(payload:Register):Promise<any> => {
+    const response = await axiosClient.post('/auth/register',payload);
+    console.log("response: ", response);
     return response.data.data;
 }

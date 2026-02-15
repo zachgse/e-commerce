@@ -63,13 +63,14 @@ const Verification = () => {
         setIsLoading(true);
         const finalOtp = otp.join("");
         const response = await validateOtp.mutateAsync({otp:finalOtp});
-        setStatus(response == true ? "success" : "failed");
-        dispatch(verifyEmail(response));
-        //check if success sync cart
         setIsLoading(false);
-        setTimeout(() => {
-          navigate("/");
-        },2000)
+        setStatus(response == true ? "success" : "failed");
+        if (response == true) {
+          dispatch(verifyEmail(response));
+          setTimeout(() => {
+            navigate("/");
+          },2000)
+        }
       } catch (error) {
         setStatus("failed");
       }
