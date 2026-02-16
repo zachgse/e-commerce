@@ -20,7 +20,8 @@ class ProductAdminResource extends JsonResource
             'price' => (float)($this->price),
             'stock' => $this->stock,
             'total_sold' => $this->total_sold,
-            'status' => $this->status
+            'status' => $this->status,
+            'thumbnail_image' => $this?->thumbnail_image?->file_path
         ];
     }
 }

@@ -48,12 +48,12 @@ export const updateAdminProductInfo = async({slug,payload}:ProductAdminUpdate) =
     const file = payload.image instanceof FileList ? payload.image[0] : payload.image;
     formData.append("image", file);
   }
-  const response = await apiAuth.post(`products/${slug}`,formData);
+  const response = await apiAuth.post(`admin/products/${slug}`,formData); //
   return response.data.data;
 }
 
 export const updateAdminProductStatus = async(slug:string) => {
-  const response = await apiAuth.patch(`products/${slug}`);
+  const response = await apiAuth.patch(`addmin/products/${slug}`);
   return response.data.data;
 }
 

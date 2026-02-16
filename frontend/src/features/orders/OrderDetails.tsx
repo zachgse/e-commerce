@@ -29,7 +29,7 @@ const OrderDetails = ({referenceNumber}:OrderDetailsProps) => {
     if (!user) return <div>Unauthorized</div>
 
     const queryClient = useQueryClient();
-    const { data:order,isLoading,isError } = useFetchSingleUserOrder(user.token,referenceNumber);
+    const { data:order,isLoading,isError } = useFetchSingleUserOrder(referenceNumber);
     const { mutateAsync } = useUpdateOrderStatus();
     const [modalProperties,setModalProperties] = React.useState<ModalProperties|undefined>();
 

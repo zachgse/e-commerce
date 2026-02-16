@@ -8,7 +8,7 @@ import { money_format } from '@/utils/helper'
 const OrderList = () => {
     const user = useAppSelector((state)=>state.auth.auth)
     if (!user) return <div>Unauthenticated</div>
-    const { data:orders,isLoading,isError } = useFetchListUserOrder(user.token);
+    const { data:orders,isLoading,isError } = useFetchListUserOrder();
 
     if (isLoading) return <div>Loading...</div>
     if (isError) console.log("error")

@@ -16,7 +16,6 @@ class RatingController extends Controller
 
     public function create(Request $request,RatingRequest $ratingRequest)
     {
-        // dd("hello");
         try {
             $rating = $this->ratingService->createRatingForProduct($request->user(),$ratingRequest->validated());
             return $this->successResponse($rating,200,'Rating has been created');

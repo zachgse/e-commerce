@@ -1,7 +1,7 @@
 import { useLocation } from "react-router"
 import { useForm } from "@tanstack/react-form"
 import type { AnyFieldApi } from "@tanstack/react-form"
-import type { Checkout } from "../../features/cart/cartType"
+import type { Checkout } from "@/types/cartType"
 import { money_format } from "../../utils/helper"
 import { axiosClient } from "../../hooks/axiosClient"
 import { useAppSelector } from "../../hooks/hooks"
@@ -68,7 +68,7 @@ const Checkout = () => {
                 }
             };
 
-            const response = await axiosClient.post('/order/checkout', payload, {
+            const response = await axiosClient.post('/payments/checkout', payload, {
                 headers: {
                     'Authorization': `Bearer ${user?.token}`
                 }

@@ -74,7 +74,7 @@ const RatingForm = ({modalProperties,setModalProperties}:RatingFormProps) => {
                 <div className="space-y-2">
                     <div className="flex justify-between my-2">
                         <div className="flex gap-2">
-                            {product?.image ? (<img src={product.image}/>) 
+                            {product?.image ? (<img src={product.image} className="w-24 h-24"/>) 
                                 : (<Box class="aspect-square w-24 h-24"/>)}
                             <div className="flex flex-col gap-1">
                                 <p className="font-semibold">{product?.name}</p>

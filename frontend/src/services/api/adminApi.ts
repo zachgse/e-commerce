@@ -28,21 +28,21 @@ export const fetchPaymentDetails = async(referenceNumber:string):Promise<Payment
 }
 
 export const fetchChart = async(module:string,year?:number):Promise<ChartType> => {
-    const response = await apiAuth.get(`/admin/chart?module=${module}&year=${year}`);
+    const response = await apiAuth.get(`/admin/dashboard/chart?module=${module}&year=${year}`);
     return response.data.data;
 }
 
 export const fetchDashboardStats = async():Promise<DashboardStats> => {
-    const response = await apiAuth.get('/admin');
+    const response = await apiAuth.get('/admin/dashboard');
     return response.data.data;
 }
 
 export const fetchProductStats = async(filterBy:string,filterOrder?:string):Promise<ProductStats> => {
-    const response = await apiAuth.get(`/admin/products/stats?filterBy=${filterBy}&filterOrder=${filterOrder ?? "DESC"}`);
+    const response = await apiAuth.get(`/admin/dashboard/products?filterBy=${filterBy}&filterOrder=${filterOrder ?? "DESC"}`);
     return response.data.data;
 } 
 
 export const fetchTransactionStats = async():Promise<TransactionStats> => {
-    const response = await apiAuth.get('/admin/payments/stats');
+    const response = await apiAuth.get('/admin/dashboard/transactions');
     return response.data.data;
 }

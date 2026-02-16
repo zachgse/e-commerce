@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{AdminController,AuthController,ProductController,CartController,PaymentController,OrderController};
+use App\Http\Controllers\{AdminController,AuthController,ProductController,CartController,PaymentController,OrderController,RatingController};
 
 Route::group(['prefix'=>'auth','as'=>'auth.'], function() {
     Route::post('register',[AuthController::class,'register']);
@@ -31,7 +31,7 @@ Route::group(['middleware'=>['auth:sanctum','email_verify']], function() {
     });
 
     Route::group(['prefix'=>'payments','as'=>'payments.'], function() {
-        Route::post('checkout',[PaymentController::class,'checkout']);
+        Route::post('checkout',[PaymentController::class,'create']);
         Route::get('{reference_number?}',[PaymentController::class,'getPaymentByReferenceNumber']);
     });
 
