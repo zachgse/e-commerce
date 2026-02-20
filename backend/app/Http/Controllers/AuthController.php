@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
         try {
             $data = $this->authService->register($request->validated());
-            return $this->successResponse($data,200,"Registration Successful");
+            return $this->successResponse($data,201,"Registration Successful");
         } catch (\Exception $e) {
             return $this->errorResponse(500,$e->getMessage());
         }      

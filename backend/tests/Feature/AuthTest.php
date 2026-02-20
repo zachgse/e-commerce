@@ -3,10 +3,10 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-// uses(RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 it('registration username must be unique', function() {
-    // $user = User::factory()->create(['username'=>'zachy_2700']);
+    $user = User::factory()->create(['username'=>'master_admin']);
 
     $response = $this->postJson('/api/auth/register', [
         'username' => 'master_admin',
@@ -21,6 +21,7 @@ it('registration username must be unique', function() {
 });
 
 it('registration email must be unique', function() {
+    $user = User::factory()->create(['email'=>'master_admin@gmail.com']);
     $response = $this->postJson('/api/auth/register', [
         'username' => 'test_user',
         'name' => 'Test User',
@@ -44,10 +45,9 @@ it('registration fields are required', function() {
 
 it('registration successful', function() {
     $response = $this->postJson('/api/auth/register', [
-        'username' => 'test_user',
-        'name' => 'Test User',
-        'email' => 'test_user@gmail.com',
-        'email_verified_at' => now(),
+        'username' => 'test_user_1',
+        'name' => 'Test User 1',
+        'email' => 'test_user_1@gmail.com',
         'password' => bcrypt('admin')
     ]);
 
@@ -77,6 +77,11 @@ it('login error credentials', function() {
 //email unverified (soon with middleware)
 
 it('login successful', function() {
+    $user = User::factory()->create([
+        'email' => 'master_admin@gmail.com',
+        'password' => bcrypt('admin')
+    ]);
+
     $response = $this->postJson('/api/auth/login', [
         'email' => 'master_admin@gmail.com',
         'password' => 'admin'

@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->index(['created_at','deleted_at'],'idx_created_at_deleted');
+            if (env('DB_CONNECTION') !== 'sqlite') {
+                $table->index(['created_at', 'deleted_at'], 'idx_created_at_deleted');
+            }
         });
     }
 

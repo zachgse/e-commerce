@@ -2,6 +2,10 @@
 
 use App\Models\{User,Product};
 use Laravel\Sanctum\Sanctum;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\{Role,Permission};
+
+uses(RefreshDatabase::class);
 
 it('view list of products', function() {
     $response = $this->getJson('/api/products');
@@ -17,7 +21,8 @@ it('view single product with wrong slug', function() {
 });
 
 it('view single product successfully', function() {
-    $slug = "polo_shirt";
+    $slug = "polo-shirt";
+    $product = Product::factory()->create(['slug'=>$slug]);
 
     $response = $this->getJson("/api/products/{$slug}");
 
@@ -25,7 +30,7 @@ it('view single product successfully', function() {
 });
 
 it('create product with unauthenticated user', function() {
-    $response = $this->postJson('/api/products/create', [
+    $response = $this->postJson('/api/admin/products', [
         'name' => 'Test Product',
         'description' => 'Test product description',
         'stock' => 10,
@@ -36,10 +41,11 @@ it('create product with unauthenticated user', function() {
 
 it('create product without permission', function() {
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'customer']);
     $user->assignRole('customer');
     Sanctum::actingAs($user, ['*']);
 
-    $response = $this->postJson('/api/products/create', [
+    $response = $this->postJson('/api/admin/products', [
         'name' => 'Test Product',
         'description' => 'Test product description',
         'stock' => 10,
@@ -50,10 +56,13 @@ it('create product without permission', function() {
 
 it('create product with bad request', function() {
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
     $user->assignRole('admin');
     Sanctum::actingAs($user,['*']);
 
-    $response = $this->postJson('/api/products/create', [
+    $response = $this->postJson('/api/admin/products', [
 
     ]);
 
@@ -61,95 +70,113 @@ it('create product with bad request', function() {
             ->assertJsonValidationErrors(['name','description','stock']);
 });
 
-// it('create product successfully', function() {
-//     $user = User::factory()->create();
-//     $user->assignRole('admin');
-//     Sanctum::actingAs($user,['*']);
-
-//     $response = $this->postJson('/api/products/create', [
-//         'name' => 'Test Product',
-//         'description' => 'Test product description',
-//         'stock' => 10,
-//     ]);
-
-//     $response->assertStatus(201);
-// });
-
-it('update product with wrong slug', function() {
-    $slug = "asdasd";
+it('create product successfully', function() {
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
     $user->assignRole('admin');
-    Sanctum::actingas($user,['*']);
+    Sanctum::actingAs($user,['*']);
 
-    $response = $this->patchJson("/api/products/{$slug}/update-info", [
+    $response = $this->postJson('/api/admin/products', [
         'name' => 'Test Product',
         'description' => 'Test product description',
+        'stock' => 10,
+        'price' => 40000,
+    ]);
+
+    $response->assertStatus(201);
+});
+
+it('update product with wrong slug', function() {
+    $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
+    $user->assignRole('admin');
+    Sanctum::actingAs($user,['*']);
+
+    $slug = "daasdqqweqw";
+
+    $response = $this->postJson("/api/admin/products/{$slug}", [
+        'name' => 'Test Product',
+        'description' => 'Test product description',
+        'price' => 100,
+        'stock' => 23
     ]);
 
     $response->assertStatus(404);
 });
 
 it('update product without permission', function() {
-    $slug = "iphone_13";
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'customer']);
     $user->assignRole('customer');
-    Sanctum::actingas($user,['*']);
+    Sanctum::actingAs($user,['*']);
 
-    $response = $this->patchJson("/api/products/{$slug}/update-info", [
+    $slug = "polo-shirt";
+
+    $response = $this->postJson("/api/admin/products/{$slug}", [
         'name' => 'Test Product',
         'description' => 'Test product description',
+        'price' => 100,
+        'stock' => 23
     ]);
 
     $response->assertStatus(403);
 });
 
 it('update product with bad request', function() {
-    $slug = "test_product";
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
     $user->assignRole('admin');
-    Sanctum::actingas($user,['*']);
+    Sanctum::actingAs($user,['*']);
 
-    $response = $this->patchJson("/api/products/{$slug}/update-info", [
+    $slug = "polo-shirt";
+    $product = Product::factory()->create(['slug'=>$slug]);
+
+    $response = $this->postJson("/api/admin/products/{$slug}", [
 
     ]);
 
-    $response->assertStatus(400);
+    $response->assertStatus(422);
 });
 
 it('update product successfully', function() {
-    $slug = "test_product";
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
     $user->assignRole('admin');
-    Sanctum::actingas($user,['*']);
+    Sanctum::actingAs($user,['*']);
 
-    $response = $this->patchJson("/api/products/{$slug}/update-info", [
+    $slug = "polo-shirt";
+    $product = Product::factory()->create(['slug'=>$slug]);
+
+    $response = $this->postJson("/api/admin/products/{$slug}", [
         'name' => 'Test Product',
         'description' => 'Updated',
+        'stock' => 100,
+        'price' => 6000
     ]);
 
-    $response->assertStatus(201);
-});
-
-it('update product stock successfully' , function() {
-    $slug = "test_product";
-    $user = User::factory()->create();
-    $user->assignRole('admin');
-    Sanctum::actingas($user,['*']);
-
-    $response = $this->patchJson("/api/products/{$slug}/update-stock", [
-        'stock' => 5
-    ]);
-
-    $response->assertStatus(201);
+    $response->assertStatus(200);
 });
 
 it('update product status successfully' , function() {
-    $slug = "test_product";
     $user = User::factory()->create();
+    $role = Role::create(['name'=>'admin']);
+    Permission::create(['name'=>'manage_dashboard']);
+    $role->givePermissionTo(Permission::all());
     $user->assignRole('admin');
-    Sanctum::actingas($user,['*']);
+    Sanctum::actingAs($user,['*']);
 
-    $response = $this->patchJson("/api/products/{$slug}/update-status");
+    $slug = "polo-shirt";
+    $product = Product::factory()->create(['slug'=>$slug]);
 
-    $response->assertStatus(201);
+    $response = $this->patchJson("/api/admin/products/{$slug}");
+
+    $response->assertStatus(200);
 });

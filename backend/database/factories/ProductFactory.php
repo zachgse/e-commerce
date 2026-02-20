@@ -17,18 +17,13 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = faker()->name();
-        $slug = Str::lower($name);
-        $slug = str_replace(" ","_");
         return [
-            "name" => faker()->name(),
-            "slug" => $slug,
-            "description" => faker()->sentence(),
-            "stock" => faker()->numberBetween(1,30),
+            "name" => fake()->name(),
+            "slug" => fake()->name(),
+            "description" => fake()->sentence(),
+            "stock" => fake()->numberBetween(1,30),
+            "price" => fake()->numberBetween(100,50000),
             "status" => "active",
-            "image_path" => "test",
-            "image_directory" => "test",
-            "image_filename" => "test"
         ];
     }
 }

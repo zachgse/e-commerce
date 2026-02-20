@@ -33,7 +33,9 @@ class ProductService
     public function createProduct(array $data) : Product
     {
         $product = $this->productRepository->save($data);
-        $image = $this->uploadProductImage($product,$data['image']);
+        if (isset($data['image'])) {
+            $image = $this->uploadProductImage($product,$data['image']);
+        }
         return $product;
     }
 
